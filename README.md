@@ -14,3 +14,8 @@ Repository per il corso triennale di Sistemi e Reti presso ITI Agnelli
 - [U6 - Il backward learning](https://mancusoa74.github.io/RETI/3/U6_backward_learning)
 - [U6 - Indirizzi MAC e IP](https://mancusoa74.github.io/RETI/3/U6_mac_ip)
 - [U6 - Configuriamo un vero switch Cisco](https://mancusoa74.github.io/RETI/3/U6_switch_config)
+
+## RETI 4
+
+- [Cisco Packet Tracert](RETI_4/PacketTracer/packet_tracer.md)
+
