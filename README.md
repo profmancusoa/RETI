@@ -3,6 +3,10 @@ Repository per il corso triennale di Sistemi e Reti presso ITI Agnelli
 
 # Table Of Content
 
+## Cisco Catalyst 2950 Switch 
+
+- [Manuale](https://mancusoa74.github.io/RETI/CAT2950_manual.pdf)
+
 ## RETI 3
 
 - [U0 - Introduzione a Sistemi e Reti](https://mancusoa74.github.io/RETI/3/U0_intro)
