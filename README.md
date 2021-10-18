@@ -24,3 +24,7 @@ Repository per il corso triennale di Sistemi e Reti presso ITI Agnelli
 
 - [Cisco Packet Tracert](RETI_4/PacketTracer/packet_tracer.md)
 
+### Esercitazioni
+
+- [Cisco Port Security su Cat 2950](https://mancusoa74.github.io/RETI/4/Port_Security/)
+
