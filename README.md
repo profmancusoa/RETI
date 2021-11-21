@@ -22,6 +22,8 @@ Repository per il corso triennale di Sistemi e Reti presso ITI Agnelli
 
 ## RETI 4
 
+### Esercitazioni
+
 - [Cisco Packet Tracert](RETI_4/PacketTracer/packet_tracer.md)
-- [Cisco Port Security su Cat 2950](/RETI/4/Port_Security)
-- [VLAN Trunk](/RETI/4/VLAN_Trunk)
+- [Cisco Port Security su Cat 2950](https://mancusoa74.github.io/RETI/4/Port_Security/)
+- [VLAN Trunk](https://mancusoa74.github.io/RETI/4/VLAN_Trunk)
