@@ -29,3 +29,9 @@ Repository per il corso triennale di Sistemi e Reti presso ITI Agnelli
 - [VLAN Trunk](https://profmancusoa.github.io/RETI/4/VLAN_Trunk)
 - [IP Routing](https://profmancusoa.github.io/RETI/4/IP_routing)
 - [DHCP](https://profmancusoa.github.io/RETI/4/DHCP)
+
+## RETI 5
+
+### Esercitazioni
+
+- [PGP: Firma digitale e Encryption](https://profmancusoa.github.io/RETI/5/PGP/)
