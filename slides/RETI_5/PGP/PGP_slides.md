@@ -28,6 +28,108 @@ Firma Digitale e Encryption
   </span>
 </div>
 
+
+--- 
+
+# Firma Digitale
+
+Identità, Autenticità e Integrità
+
+- Ma cos'è la firma digitale?
+
+<br>
+
+<img src="/media/gpg_00.webp" style="width:500px;margin:auto;"/>
+
+
+--- 
+
+# Firma Digitale
+
+Identità, Autenticità e Integrità
+
+- La firma elettronica o digitale è il risultato di un metodo matematrico e di una procedura informatica, che garantisce:
+  -  ***autenticità***: permette di verificare con certezza l'identidà dell'origine del documento
+  -  ***integrità***: garantisce che il documento non sia stato alterato in nessun modo
+  -  ***non ripudio***: il mittente NON può negare la proprietà del documento ed il suo contenuto
+- dei documenti informatici e che consente di scambiare in rete documenti con piena validità legale.
+
+
+--- 
+
+# Firma Digitale
+
+Identità, Autenticità e Integrità
+
+- Pertanto la firma digitale è un "oggetto" che viene aggiunto al documento originale, che garantisce l'autenticità, l'integrità e la non ripudiabilità del documento stesso
+
+
+<img src="/media/gpg_00a.png" style="width:250px;margin:auto;"/>
+
+
+- Pertanto quando ricevo un documento (o un email) firmata digitalmente, sono certo che sia stata creata ed inviata dal suo proprietario
+- Perciò mi posso fidare del documento ricevuto (ordine di acquisto, pagamento, documento legale, etc...)
+
+---
+
+# Firma Digitale
+
+PEC
+
+- La ***Posta Elettronica Certificata (PEC)*** è il sistema che consente di inviare e-mail con valore legale equiparato ad una raccomandata con ricevuta di ritorno, come stabilito dalla normativa (DPR 11 Febbraio 2005 n.68).
+- Rispetto alla Posta Elettronica ordinaria, la PEC presenta delle caratteristiche aggiuntive che forniscono agli utenti la certezza a valore legale dell’invio e della consegna delle e-mail al destinatario:
+  - ha lo stesso valore legale della raccomandata con ricevuta di ritorno con attestazione dell'orario esatto di spedizione
+  - grazie ai protocolli di sicurezza utilizzati, è in grado di garantire la certezza del contenuto non rendendo possibile nessun tipo di modifica nè al messaggio nè agli eventuali allegati
+
+<br>
+
+<img src="/media/gpg_00b.png" style="width:400px;margin:auto;"/>
+
+---
+
+# Firma Digitale
+
+PEC
+
+<img src="/media/gpg_00c.png" style="width:550px;margin:auto;"/>
+
+--- 
+
+# Firma Digitale
+
+Email
+
+- Vediamo ora uno dei metodi più semplici per firmare digitalmente un messaggio di posta elettronica
+- In questo modo i nostri messaggi di posta elettronica saranno protetti da encription e firmati digitalmente
+- Questo ci permetterà di scambiare in modo sicuro e fidato messaggi di posta elettronica con i nostri interlocutori
+- Ciò che vederemo è concettualmente il meccanismo alla base della PEC o di qualsiasi altro sistema di firma digitale
+
+
+---
+
+# PGP
+
+Pretty Good Privacy
+
+
+
+---
+
+# PGP
+
+Pretty Good Privacy
+
+<div style="border: 3px solid red;">
+
+- Nel 1991, il famoso crittografo americano, ***Phil Zimmermann*** crea un suite di strumenti software aperti per la crittografia e la firma digitale che nel corso del tempo diventano i più utilizzati al mondo
+- PGP è stata la prima implementazione dell'encryption a chiave asimmetrica ad essere realmente fruibile da un vasto pubblico (PGP fu rilasciato come software libero)
+- Negli anni successivi il governo degli stati uniti mise Zimmermann sotto inchiesta per violazione delle leggi federali. Nel 1996 le accuse vennero ritirate
+- Tuttora lo standard PGP permette a due persone di comunicare (ad esempio tramite posta elettronica) in totale riservatezza anche se il canale di comunicazione fosse sotto sorveglianza o non-sicuro
+
+</div>
+
+<img src="/media/gpg_00d.png" style="width:150px;position:relative;top:-300px;left:700px;"/>
+
 ---
 
 # GPG
