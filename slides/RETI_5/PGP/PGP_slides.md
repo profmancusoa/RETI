@@ -111,7 +111,16 @@ Email
 
 Pretty Good Privacy
 
+<div style="border: 0px solid red; width: 85%;">
 
+- Nel 1991, il famoso crittografo americano, ***Phil Zimmermann*** crea una suite di strumenti software aperti, per la crittografia e la firma digitale che nel corso del tempo diventano **i più utilizzati al mondo**
+- PGP è stata la prima implementazione dell'encryption a chiave asimmetrica ad essere realmente fruibile da un vasto pubblico (PGP fu rilasciato come software libero)
+- Negli anni successivi il governo degli stati uniti mise Zimmermann sotto inchiesta per violazione delle leggi federali. Nel 1996 le accuse vennero ritirate
+- Tuttora lo standard PGP permette a due persone di comunicare (ad esempio tramite posta elettronica) in totale riservatezza anche se il canale di comunicazione fosse sotto sorveglianza o non-sicuro
+
+</div>
+
+<img src="/media/gpg_00d.png" style="width:120px;position:relative;top:-400px;left:770px;"/>
 
 ---
 
@@ -119,16 +128,57 @@ Pretty Good Privacy
 
 Pretty Good Privacy
 
-<div style="border: 3px solid red;">
+- L'encryption dei dati e la sua  firma digitale PGP è basata sull'uso di algoritmi asimmetrici
+- Pertanto, ogni utente, che vuole usare PGP deve possedere:
+  - **PRIVATE KEY**: chiave privata segreta e da custodire con cura
+  - **PUBLIC KEY**: chiave pubblica da condividere il più possibile
 
-- Nel 1991, il famoso crittografo americano, ***Phil Zimmermann*** crea un suite di strumenti software aperti per la crittografia e la firma digitale che nel corso del tempo diventano i più utilizzati al mondo
-- PGP è stata la prima implementazione dell'encryption a chiave asimmetrica ad essere realmente fruibile da un vasto pubblico (PGP fu rilasciato come software libero)
-- Negli anni successivi il governo degli stati uniti mise Zimmermann sotto inchiesta per violazione delle leggi federali. Nel 1996 le accuse vennero ritirate
-- Tuttora lo standard PGP permette a due persone di comunicare (ad esempio tramite posta elettronica) in totale riservatezza anche se il canale di comunicazione fosse sotto sorveglianza o non-sicuro
+- Un'iniziale difficoltà di questo meccanismo era lo scambio in modo sicuro delle chiavi pubbliche
 
+---
+
+# PGP
+
+Pretty Good Privacy
+
+- Negli anni 90 e agli inizi degli anni 2000 erano in voga i [**PGP Party**](https://www.gnupg.org/howtos/it/keysigning_party.html#overview)
+
+<br>
+<div style="border: 1px solid red; width: 70%; line-height: 2rem; padding: 0rem 1rem 0rem 1rem">
+
+- Un key signing party è una riunione di persone che usano il sistema di crittografia PGP, durante la quale ogni partecipante ha la possibilità di firmare la chiave degli altri.
+
+- I key signing party aiutano in modo consistente a estendere la propria rete della fiducia, inoltre offrono un'opportunità per discutere di questioni sociali e politiche che riguardano la crittografia forte, la sovranità e le libertà individuali, dell'implementazione di tecnologie crittografiche, o perfino degli sviluppi futuri del software libero per la crittografia.
 </div>
 
-<img src="/media/gpg_00d.png" style="width:150px;position:relative;top:-300px;left:700px;"/>
+<img src="/media/gpg_26.jpg" style="width:250px; position: relative; top: -350px;left: 650px;"/>
+
+
+
+---
+
+# GPG
+
+Firma Digitale e Encryption
+
+- **GNU Privacy Guard (GPG)** è un'implementazione free e open di *OpenPGP*, che è lo standard di email encryption più diffuso su Internet
+- Nel resto dell'esercitazione, vedremo quali sono i passi per inviare e ricevere email in modo sicuro, cifrate e firmate digitalmente
+
+---
+
+# GPG
+
+Firma Digitale e Encryption
+
+<img src="/media/gpg_27.jpg" style="width:500px; margin:auto;"/>
+
+---
+
+# GPG
+
+Firma Digitale e Encryption
+
+<img src="/media/gpg_28.png" style="width:550px; margin:auto;"/>
 
 ---
 
