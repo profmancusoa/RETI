@@ -18,9 +18,6 @@ version: '1.0.0'
 
 ---  
 
-
-https://informatica.unibas.it/moodle/pluginfile.php/19562/mod_resource/content/1/07%20-%20Programmazione%20delle%20socket.pdf
-
 # SISTEMI & RETI
 
 La comunicazione client-server e i socket
@@ -75,7 +72,10 @@ I Socket
   - Offrono due tipologie di servizi di trasporto
     - Datagramma inaffidabile (UDP)
     - Affidabile, orientato ai byte (TCP)
-  
+
+- Windows espone un API chiamata `WinSock`, molto simile(copiata) da quella Berkley, tuttavia non sarà oggetto del nostro studio
+- **Linux implementa l'API Berkley socket pertanto l'esercitazione si svolgerà su Linux**
+
 --- 
 
 # La comunicazione client-server 
@@ -168,13 +168,13 @@ DESCRIPTION
 
 Socket API
 
-`socket` - `man socket`
+`socket` - `man socket` - client/server
 
 ```c
 int socket(int domain, int type, int protocol);
 ```
 
-***crea un endpoint (socket) per la comunicazione con un altro processo remoto e restituisce ul file descriptor (everything is a file in UNIX)***
+***crea un endpoint (socket) per la comunicazione con un altro processo remoto e restituisce un file descriptor (everything is a file in UNIX)***
 
 - **domain**: dominio di comunicazione (**AF_INET**) per i socket IP
 - **type**: tipo di socket (**SOCK_STREAM**) per TCP e (**SOCK_DGRAM**) per UDP
@@ -187,7 +187,7 @@ int socket(int domain, int type, int protocol);
 
 Socket API
 
-`bind` - `man bind`
+`bind` - `man bind` - server
 
 ```c
 int bind(int sockfd, const struct sockaddr *addr, socklen_t addrlen);
@@ -196,7 +196,7 @@ int bind(int sockfd, const struct sockaddr *addr, socklen_t addrlen);
 ***associa un indirizzo IP ad un socket esistente***
 
 - **sockfd**: il file descriptor del socket precedentemente creato
-- **addr**: indirizzo da associare (bind) al socket
+- **addr**: indirizzo e porta da associare (bind) al socket
 - **addrlen**: specifica la lunghezza dell'indirizzo. 
 - **return value**: -1 in caso di errore, 0 in caso positivo
   
@@ -206,7 +206,7 @@ int bind(int sockfd, const struct sockaddr *addr, socklen_t addrlen);
 
 Socket API
 
-`bind` - `man bind`
+`bind` - `man bind` - server
 
 ```c
 struct sockaddr *addr
@@ -220,7 +220,7 @@ struct sockaddr *addr
 struct sockaddr_in
   {
     sa_family_t  sin_family;  /* Famiglia di indirizzi */
-    in_port_t sin_port;		  /* Numero di porta  in network byte order*/
+    in_port_t sin_port;		    /* Numero di porta  in network byte order*/
     struct in_addr sin_addr;  /* Indirizzo IP in network byte order*/
 
     /* Padding alle dimensioni di  `struct sockaddr'.  */
@@ -274,7 +274,7 @@ endianess
 
 endianess
 
-- Quindi un numero, per esempio su 16 bit, rappresentato in big endian ha un valore diverso rispetto allo stesso numero rappresentato in little endia
+- Quindi un numero, per esempio su 16 bit, rappresentato in big endian ha un valore diverso rispetto allo stesso numero rappresentato in little endian
 
 **0xA5F2**
 
@@ -294,17 +294,35 @@ endianess
 host vs network byte order
 
 - Quindi in una comunicazione di rete, quale tipo di endianess ha il mittente e quale tipo il ricevente?
-- E' chiaro che se mittente e ricevente utilizzano endianess difefrenti la comunicazione risulterà corretta
+- E' chiaro che se mittente e ricevente utilizzano endianess differenti la comunicazione risulterà incorretta
   - il mittente little endian invia una word 0xA5F2 per rappresentare il numero 42482 mentre il ricevente bigendian penserà di aver ricevuto 61117
+
+
 - Per tale motivo, è stato definito un metodo per rappresentare i numeri in modo indipendente dall'architettura HW, nominato `NETWORK ORDER`
 
-<div style="background: green; color:yellow;padding: 1rem;">
+<br>
+
+<div style="background: green; color:yellow;padding: 2rem;font-size:2rem;">
 Il <b>NETWORK ORDER</b> è convenzionalmente definito come BIG ENDIAN
 </div>
 
-- Quindi utilizzando il NETWORK ORDER pe rle comunicazioni di rete di possono traferire le informazioni correttamente indipendentemente dall'endianess degli host
+
+--- 
+
+# La comunicazione client-server 
+
+host vs network byte order
+
+<div style="width:50%;">
+
+- Quindi utilizzando il **NETWORK ORDER** per le comunicazioni di rete si possono traferire le informazioni correttamente indipendentemente dall'endianess degli host coinvolti
 - Pertanto due host, uno little endian e uno big endian, possono comunicare senza problemi adottando il NETWORK ORDER
 - Per uno dei due host il network order coincide con l'endianess nativa. L'altro host deve tradurre i valori prima di inviarli e dopo averli ricevuti
+
+</div>
+
+<img src="/media/socket10.png" style="position: relative; top: -300px; left: 450px;" width="500">
+
 
 --- 
 
@@ -314,10 +332,24 @@ host vs network byte order
 
 - La libreria C mette a disposizioni una serie di funzione adibite esattamente allo scopo di convertire da host a network byte order e viceversa
 
-- **htonl()**: converte un unsigned long da host a network order
-- **htons()**: converte un unsigned short da host a network order
-- **ntohl()**: converte un unsigned long da network a host
-- **ntohs()**: converte un unsigned short da network a host
+<div style="width:60%;">
+
+- **htonl()** 
+  
+  converte un unsigned long da host a network order
+- **htons()** 
+  
+  converte un unsigned short da host a network order
+- **ntohl()** 
+  
+  converte un unsigned long da network a host
+- **ntohs()** 
+  
+  converte un unsigned short da network a host
+
+</div>
+
+<img src="/media/socket11.png" style="position: relative; top: -300px; left: 500px;" width="400">
 
 --- 
 
@@ -326,12 +358,12 @@ host vs network byte order
 Conversione host vs network byte order
 
 - scrivere un programma in C che:
--  converta i seguenti numeri su 16 bit da host a network order e stampi la conversione sulla console in formato esadecimale:
-  - 1000
-  - 12890
-  - 54163
-  - 34012
-  - 62984
+  -  converta i seguenti numeri su 16 bit da host a network order e stampi la conversione sulla console in formato esadecimale:
+     - 1000
+     - 12890
+     - 54163
+     - 34012
+     - 62984
 --- 
 
 # Esercizio 1 
@@ -339,28 +371,32 @@ Conversione host vs network byte order
 Conversione host vs network byte order
 
 - converta i seguenti numeri su 16 bit da network a  host order e stampi la conversione sulla console in formato esadecimale:
-  - 5499
   - 19875
+  - 5499
   - 59821
   - 43120
   - 26489
 - consegnare il codice in C senza errori e che compila correttamente
 - consegnare il file .c su github con il seguente nome: *|cognome|_es1_byte_order.c*
 
-
 --- 
 
 # La comunicazione client-server 
 
-host vs network byte order
+Socket API
+
+`listen` - `man listen` - server
+
+```c
+int listen(int sockfd, int backlog);
+```
+
+***mette il socket in ascolto e quindi in attesa di connessioni in entrara***
 
 
---- 
-
-# La comunicazione client-server 
-
-host vs network byte order
-
+- **sockfd**: il file descriptor del socket precedentemente creato
+- **backlog**: specifica la luinghezza della coda di attesa delle richieste di connessione
+-  **return value**: -1 in caso di errore, 0 in caso positivo
 
 --- 
 
@@ -368,54 +404,21 @@ host vs network byte order
 
 Socket API
 
-`listen` - `man listen`
+`connect` - `man connect` - client
 
 ```c
-int socket(int domain, int type, int protocol);
+int connect(int sockfd, const struct sockaddr *addr, socklen_t addrlen);
 ```
 
-
-- *cosa fa*
-
-- **par1**: x
-- **par2**: y
-  
-
---- 
-
-# La comunicazione client-server 
-
-Socket API
-
-`connect` - `man connect`
-
-```c
-int socket(int domain, int type, int protocol);
-```
+***crea una connessione tra il socket locale e quello remoto***
 
 
-- *cosa fa*
+- **sockfd**: il file descriptor del socket precedentemente creato
+- **addr**: indirizzo e porta del socket remoto
+- **addrlen**: specifica la lunghezza dell'indirizzo. 
+- **return value**: -1 in caso di errore, 0 in caso positivo
 
-- **par1**: x
-- **par2**: y
-
---- 
-
-# La comunicazione client-server 
-
-Socket API
-
-`accept` - `man accept`
-
-```c
-int socket(int domain, int type, int protocol);
-```
-
-
-- *cosa fa*
-
-- **par1**: x
-- **par2**: y
+- In caso di socket UDP, addr rappresenta l'indirizzo e porta a cui inviare il datagram
   
 --- 
 
@@ -423,17 +426,20 @@ int socket(int domain, int type, int protocol);
 
 Socket API
 
-`recv` - `man recv`
+`accept` - `man accept` - server
 
 ```c
-int socket(int domain, int type, int protocol);
+ int accept(int sockfd, struct sockaddr *addr, socklen_t *addrlen);
 ```
 
+***accetta la prima richiesta, presente in coda di listening e crea la connessione (socket connesso) con il socket remoto***
 
-- *cosa fa*
-
-- **par1**: x
-- **par2**: y
+- **sockfd**: il file descriptor del socket precedentemente creato
+- **addr**: indirizzo e porta del socket locale e remoto
+- **addrlen**: dimensione dell'indirizzo addr
+- **return value**: -1 in caso di errore, socket descriptor del socket connesso
+  
+- **Questa chiamata, per default, è bloccante e blocca il processo finchè non sarà presente una richiesta nella coda di listening**
 
 --- 
 
@@ -441,16 +447,43 @@ int socket(int domain, int type, int protocol);
 
 Socket API
 
-`send` - `man send`
+`recv` - `man recv` - client/server
 
 ```c
-int socket(int domain, int type, int protocol);
+ssize_t recv(int sockfd, void *buf, size_t len, int flags);
 ```
 
-- *cosa fa*
+***riceve un messaggio da un socket***
 
-- **par1**: x
-- **par2**: y
+
+- **sockfd**: socket descriptor del connection socket
+- **buf**: buffer di ricezione in cui memorizzare il messaggio ricevuto
+- **len**: dimensione del buffer di ricezione. Deve avere capienza sufficiente per tutto il messaggio pena la perdita dei byte in eccesso
+- **flags**: abilità funzionalità avanzate
+- **return value**: -1 in caso di errore locale oppure il numero di byte ricevuti dal socket
+  
+- al posto di recv si può utilizzare `read` in quanto conf flag = 0 è esattamente uguale (everything is a file in UNIX)
+--- 
+
+# La comunicazione client-server 
+
+Socket API
+
+`send` - `man send` - client/server
+
+```c
+ssize_t send(int sockfd, const void *buf, size_t len, int flags);
+```
+
+***invia un messaggio su un socket***
+
+- **sockfd**: socket descriptor del connection socket
+- **buf**: buffer di trasmissione 
+- **len**: dimensione del buffer di trasmissione. Deve avere dimensione inferiore o uguale alla massima lunghezza del campo dati TCP/UDP
+- **flags**: abilità funzionalità avanzate
+- **return value**: -1 in caso di errore locale oppure il numero di byte inviati
+  
+- al posto di send si può utilizzare `write` in quanto con flag = 0 è esattamente uguale (everything is a file in UNIX)
 
 --- 
 
@@ -458,5 +491,380 @@ int socket(int domain, int type, int protocol);
 
 Socket API
 
-- xxx
-- 
+- Vediamo in dettaglio l'implementazione di un server TCP tramite le API Berkley Socket
+
+[Qui il codice completo del server TCP](https://github.com/profmancusoa/RETI/code/RETI5/tcp_server.c)
+
+<br>
+
+```c
+int main(int argc, char **argv) 
+{
+    unsigned short tcp_port; /* TCP port in ascolto */
+    int socket_fd;           /* welcoming socket file descriptor */
+    int connection_fd;       /* connection socket file descriptor */
+    char buf[BUFSIZE];       /* RX buffer */
+    int msg_size;            /* dimensione messaggio ricevuto */
+
+    /* Verifico la presenza del parametro porta e lo leggo*/ 
+    if(argc ! = 2) {
+        printf("uso: %s <porta>\n", argv[0]);
+        exit(1);
+    }
+    ...
+```
+
+--- 
+
+# La comunicazione client-server 
+
+Socket API
+
+- Vediamo in dettaglio l'implementazione di un client TCP tramite le API Berkley Socket
+
+[Qui il codice completo del client TCP](https://github.com/profmancusoa/RETI/code/RETI5/tcp_client.c)
+
+<br>
+
+```c
+int main(int argc, char **argv) 
+{
+    unsigned short tcp_port; /* porta tcp di destinazione */
+    char *ip;                /* indirizzo ip di destinazione */
+    int socket_fd;           /* connection socket */    
+    int byte_sent;           /* numero byte inviati */
+
+    /* Verifico la presenza dei parametre IP e porta */ 
+    if(argc != 4) {
+        printf("uso: %s <IP> <porta> <string>\n", argv[0]);
+        exit(1);
+    }
+    ...
+```
+
+--- 
+
+# Esercizio 2
+
+TCP echo server
+
+> Un echo server è un'applicazione di rete che serve per testare il corretto funzionamento di una connessione tra client e server. Consiste in un server TCP che invia al client esattamente il testo che ha ricevuto dal client stesso.
+
+- scrivere un programma in C che:
+  - implementi un echo server TCP
+  
+- consegnare il codice in C senza errori e che compila correttamente
+- consegnare il file .c su github con il seguente nome: *|cognome|_echo_server_tcp.c*
+
+--- 
+
+# Esercizio 3
+
+TCP echo client
+
+> Un echo server è un'applicazione di rete che serve per testare il corretto funzionamento di una connessione tra client e server. Consiste in un server TCP che invia al client esattamente il testo che ha ricevuto dal client stesso.
+
+- scrivere un programma in C che:
+  - implementi un echo client TCP
+  
+- consegnare il codice in C senza errori e che compila correttamente
+- consegnare il file .c su github con il seguente nome:  *|cognome|_echo_client_tcp.c*
+
+--- 
+
+# Esercizio 4
+
+TCP Socket
+
+- tramite lo sniffer di rete (Wireshark) verificare:
+  - il 3 way handshake tra client e server per la creazione di una connessione
+  - lo scambio dei messaggi da client a server e viceversa
+  - il 4 way haddshake per l'abbattimento della connessione
+
+--- 
+
+# La comunicazione client-server 
+
+Socket UDP
+
+<div style="width: 50%;">
+
+- Siccome UDP è connectionless client e server per comunicare non devono instaurare la connessione
+- Pertanto il flusso tra client e server risulta semplificato
+- Alcune delle API usate per TCP non sono quindi più necessarie
+  - server: listen() e accept() non servono in quanto non si instaura nessuna connessione e non ci sono richieste da gestire
+  - client: connect() per lo stesso motivo non è presente
+- Ovviamente il 3 e 4 way handshake non avviene
+
+</div>
+
+<img src="/media/socket13.png" style="position: relative; top: -400px; left: 500px;" width="350">
+
+--- 
+
+# La comunicazione client-server 
+
+Socket API
+
+`recvfrom` - `man recv` - client/server
+
+```c
+ssize_t recvfrom(int sockfd, void *buf, size_t len, int flags,
+                        struct sockaddr *src_addr, socklen_t *addrlen);
+```
+
+***riceve un messaggio da un socket non connesso - Normalmente recv() si usa solo per socket connessi***
+
+- **sockfd**: socket descriptor del connection socket
+- **buf**: buffer di ricezione in cui memorizzare il messaggio ricevuto
+- **len**: dimensione del buffer di ricezione. Deve avere capienza sufficiente per tutto il messaggio pena la perdita dei byte in eccesso
+- **flags**: abilità funzionalità avanzate
+- **src_ddr**: indirizzo e porta del client da cui proviene il datagram
+- **return value**: -1 in caso di errore locale oppure il numero di byte ricevuti dal socket
+  
+- al posto di recv si può utilizzare `read` in quanto conf flag = 0 è esattamente uguale (everything is a file in UNIX)
+--- 
+
+# La comunicazione client-server 
+
+Socket API
+
+`sendto` - `man send` - client/server
+
+```c
+ssize_t sendto(int sockfd, const void *buf, size_t len, int flags,
+                      const struct sockaddr *dest_addr, socklen_t addrlen);
+```
+
+***invia un messaggio su un socket non connesso - Normalmente send() si usa solo per socket connessi***
+
+- **sockfd**: socket descriptor del connection socket
+- **buf**: buffer di trasmissione 
+- **len**: dimensione del buffer di trasmissione. Deve avere dimensione inferiore o uguale alla massima lunghezza del campo dati TCP/UDP
+- **flags**: abilità funzionalità avanzate
+- **dest_addr**: indirizzo e porta del server a cui inviare il datagram
+- **return value**: -1 in caso di errore locale oppure il numero di byte inviati
+  
+- al posto di send si può utilizzare `write` in quanto con flag = 0 è esattamente uguale (everything is a file in UNIX)
+
+--- 
+
+# La comunicazione client-server 
+
+Socket UDP
+
+
+- Vediamo in dettaglio l'implementazione di un server UDP tramite le API Berkley Socket
+
+[Qui il codice completo del server UDP](https://github.com/profmancusoa/RETI/code/RETI5/udp_server.c)
+
+<br>
+
+```c
+int main(int argc, char **argv) 
+{
+    unsigned short udp_port; /* UDP port in ascolto */
+    int socket_fd;           /* welcoming socket file descriptor */
+    char buf[BUFSIZE];       /* RX buffer */
+    int msg_size;            /* dimensione messaggio ricevuto */
+
+    /* Verifico la presenza del parametro porta e lo leggo*/ 
+    if(argc ! = 2) {
+        printf("uso: %s <porta>\n", argv[0]);
+        exit(1);
+    }
+    udp_port = (unsigned short)atoi(argv[1]);
+    ...
+```
+
+--- 
+
+# La comunicazione client-server 
+
+Socket UDP
+
+- Vediamo in dettaglio l'implementazione di un client UDP tramite le API Berkley Socket
+
+[Qui il codice completo del client UDP](https://github.com/profmancusoa/RETI/code/RETI5/udp_client.c)
+
+<br>
+
+```c
+int main(int argc, char **argv) 
+{
+    unsigned short udp_port; /* porta tcp di destinazione */
+    char *ip;                /* indirizzo ip di destinazione */
+    int socket_fd;           /* connection socket */  
+    int byte_sent;           /* numero byte inviati */
+
+    /* Verifico la presenza dei parametre IP e porta */ 
+    if(argc != 4) {
+        printf("uso: %s <IP> <porta> <string>\n", argv[0]);
+        exit(1);
+    }
+    ...
+```
+
+--- 
+
+# Esercizio 5
+
+UDP echo server
+
+- scrivere un programma in C che:
+  - implementi un echo server UDP
+  
+- consegnare il codice in C senza errori e che compila correttamente
+- consegnare il file .c su github con il seguente nome: *|cognome|_echo_server_udp.c*
+
+--- 
+
+# Esercizio 6
+
+UDP echo client
+
+- scrivere un programma in C che:
+  - implementi un echo client UDP
+  
+- consegnare il codice in C senza errori e che compila correttamente
+- consegnare il file .c su github con il seguente nome:  *|cognome|_echo_client_udp.c*
+
+--- 
+
+# Esercizio 7
+
+UDP Socket
+
+- tramite lo sniffer di rete (Wireshark) verificare:
+  - l'asssenza del 3 way handshake tra client e server per la creazione di una connessione
+  - lo scambio dei messaggi da client a server e viceversa
+  - l'assenza del 4 way haddshake per l'abbattimento della connessione
+
+
+--- 
+
+# La comunicazione client-server 
+
+Socket UDP
+
+- Si fornisce solo per completezza la macchina a stati di una connessione TCP
+
+
+<img src="/media/socket12.png" style="margin: auto;" width="500">
+
+--- 
+
+# La comunicazione client-server 
+
+Socket TCP in Java
+
+- Vediamo in dettaglio l'implementazione di un server TCP tramite in Java
+
+[Qui il codice completo del server TCP](https://github.com/profmancusoa/RETI/code/RETI5/tcp_server.java)
+
+<br>
+
+```java
+public class tcp_server {
+    public static void main(String[] args) {
+        ServerSocket server_socket;
+        Socket client_connection;
+        
+        /* Verifico la presenza del parametro porta e lo leggo*/ 
+        if (args.length != 1) {
+            System.out.println("uso: tcp_server <PORT>");
+            return;
+        }
+    ...
+```
+
+--- 
+
+# La comunicazione client-server 
+
+Socket TCP in Java
+
+- Vediamo in dettaglio l'implementazione di un client TCP tramite in Java
+
+[Qui il codice completo del client TCP](https://github.com/profmancusoa/RETI/code/RETI5/tcp_client.java)
+
+<br>
+
+```java
+public class tcp_client {
+    public static void main(String[] args) {
+        Socket client_socket;
+        
+        /* Verifico la presenza del parametro porta e lo leggo*/ 
+        if (args.length != 3) {
+            System.out.println("uso: tcp_client  <IP> <porta> <string>");
+            return;
+        }
+    ...
+```
+
+--- 
+
+# Esercizio 8
+
+Java TCP echo server
+
+- scrivere un programma in Java che:
+  - implementi un echo server TCP
+  
+- consegnare il codice in java senza errori e che compila correttamente
+- consegnare il file .java su github con il seguente nome: *|cognome|_tcp_server.java*
+
+--- 
+
+# Esercizio 9
+
+Java TCP echo client
+
+- scrivere un programma in Java che:
+  - implementi un echo client TCP
+  
+- consegnare il codice in java senza errori e che compila correttamente
+- consegnare il file .java su github con il seguente nome: *|cognome|_tcp_client.java*
+
+--- 
+
+# Esercizio 10
+
+TCP in Java
+
+- utilizzare il server echo TCP in Java 
+- utilizzare il client echo TCP in Java
+- tramite lo sniffer di rete (Wireshark) verificare:
+  - il 3 way handshake tra client e server per la creazione di una connessione
+  - lo scambio dei messaggi da client a server e viceversa
+  - il 4 way haddshake per l'abbattimento della connessione
+
+
+--- 
+
+# Esercizio 11
+
+TCP Socket C e Java
+
+- utilizzare il server echo TCP in C 
+- utilizzare il client echo TCP in Java
+- tramite lo sniffer di rete (Wireshark) verificare:
+  - il 3 way handshake tra client e server per la creazione di una connessione
+  - lo scambio dei messaggi da client a server e viceversa
+  - il 4 way haddshake per l'abbattimento della connessione
+
+--- 
+
+# Esercizio 12
+
+TCP Socket C e Java
+
+- utilizzare il server echo TCP in Java 
+- utilizzare il client echo TCP in C
+- tramite lo sniffer di rete (Wireshark) verificare:
+  - il 3 way handshake tra client e server per la creazione di una connessione
+  - lo scambio dei messaggi da client a server e viceversa
+  - il 4 way haddshake per l'abbattimento della connessione
+
+
