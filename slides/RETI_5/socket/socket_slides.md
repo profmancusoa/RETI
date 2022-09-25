@@ -494,7 +494,7 @@ Socket API
 
 - Vediamo in dettaglio l'implementazione di un server TCP tramite le API Berkley Socket
 
-[Qui il codice completo del server TCP](https://github.com/profmancusoa/RETI/code/RETI5/tcp_server.c)
+[Qui il codice completo del server TCP](https://github.com/profmancusoa/RETI/blob/main/code/RETI5/tcp_server.c)
 
 <br>
 
@@ -523,7 +523,7 @@ Socket API
 
 - Vediamo in dettaglio l'implementazione di un client TCP tramite le API Berkley Socket
 
-[Qui il codice completo del client TCP](https://github.com/profmancusoa/RETI/code/RETI5/tcp_client.c)
+[Qui il codice completo del client TCP](https://github.com/profmancusoa/RETI/blob/main/code/RETI5/tcp_client.c)
 
 <br>
 
@@ -657,7 +657,7 @@ Socket UDP
 
 - Vediamo in dettaglio l'implementazione di un server UDP tramite le API Berkley Socket
 
-[Qui il codice completo del server UDP](https://github.com/profmancusoa/RETI/code/RETI5/udp_server.c)
+[Qui il codice completo del server UDP](https://github.com/profmancusoa/RETI/blob/main/code/RETI5/udp_server.c)
 
 <br>
 
@@ -686,7 +686,7 @@ Socket UDP
 
 - Vediamo in dettaglio l'implementazione di un client UDP tramite le API Berkley Socket
 
-[Qui il codice completo del client UDP](https://github.com/profmancusoa/RETI/code/RETI5/udp_client.c)
+[Qui il codice completo del client UDP](https://github.com/profmancusoa/RETI/blob/main/code/RETI5/udp_client.c)
 
 <br>
 
@@ -761,7 +761,7 @@ Socket TCP in Java
 
 - Vediamo in dettaglio l'implementazione di un server TCP tramite in Java
 
-[Qui il codice completo del server TCP](https://github.com/profmancusoa/RETI/code/RETI5/tcp_server.java)
+[Qui il codice completo del server TCP](https://github.com/profmancusoa/RETI/blob/main/code/RETI5/tcp_server.java)
 
 <br>
 
@@ -787,7 +787,7 @@ Socket TCP in Java
 
 - Vediamo in dettaglio l'implementazione di un client TCP tramite in Java
 
-[Qui il codice completo del client TCP](https://github.com/profmancusoa/RETI/code/RETI5/tcp_client.java)
+[Qui il codice completo del client TCP](https://github.com/profmancusoa/RETI/blob/main/code/RETI5/tcp_client.java)
 
 <br>
 
