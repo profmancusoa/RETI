@@ -89,7 +89,7 @@ int main(int argc, char **argv)
     /* invio sul socket la stringa */
      byte_sent = socket_send(socket_fd, argv[3]); 
 
-    printf("Inviato %d bytes con successo\n", byte_sent); printf("Inviato %d bytes con successo\n", byte_sent);
+    printf("Inviato %d bytes con successo\n", byte_sent);
 
     close(socket_fd);
 }
