@@ -15,7 +15,7 @@ aspectRatio: '16_/9'
 routerMode: 'hash'
 materia: "RETI"
 as: "2022/2023"
-version: '1.0.0'
+version: '1.0.1'
 
 ---  
 
@@ -581,6 +581,7 @@ TCP Socket
   - il 3 way handshake tra client e server per la creazione di una connessione
   - lo scambio dei messaggi da client a server e viceversa
   - il 4 way haddshake per l'abbattimento della connessione
+- consegnare il file .pcapng su github con il seguente nome:  *|cognome|_sniff_tcp.pcapng*
 
 --- 
 
@@ -740,6 +741,7 @@ UDP Socket
   - l'asssenza del 3 way handshake tra client e server per la creazione di una connessione
   - lo scambio dei messaggi da client a server e viceversa
   - l'assenza del 4 way haddshake per l'abbattimento della connessione
+- consegnare il file .pcapng su github con il seguente nome:  *|cognome|_sniff_udp.pcapng*
 
 
 --- 
@@ -840,7 +842,7 @@ TCP in Java
   - il 3 way handshake tra client e server per la creazione di una connessione
   - lo scambio dei messaggi da client a server e viceversa
   - il 4 way haddshake per l'abbattimento della connessione
-
+- consegnare il file .pcapng su github con il seguente nome:  *|cognome|_sniff_tcp_javasc.pcapng*
 
 --- 
 
@@ -854,7 +856,8 @@ TCP Socket C e Java
   - il 3 way handshake tra client e server per la creazione di una connessione
   - lo scambio dei messaggi da client a server e viceversa
   - il 4 way haddshake per l'abbattimento della connessione
-
+- consegnare il file .pcapng su github con il seguente nome:  *|cognome|_sniff_tcp_javac.pcapng*
+  
 --- 
 
 # Esercizio 12
@@ -867,5 +870,5 @@ TCP Socket C e Java
   - il 3 way handshake tra client e server per la creazione di una connessione
   - lo scambio dei messaggi da client a server e viceversa
   - il 4 way haddshake per l'abbattimento della connessione
-
+- consegnare il file .pcapng su github con il seguente nome:  *|cognome|_sniff_tcp_javas.pcapng*
 
