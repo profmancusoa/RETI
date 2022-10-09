@@ -15,7 +15,7 @@ aspectRatio: '16_/9'
 routerMode: 'hash'
 materia: "RETI"
 as: "2022/2023"
-version: '1.0.1'
+version: '1.0.2'
 
 ---  
 
@@ -494,7 +494,7 @@ Socket API
 
 - Vediamo in dettaglio l'implementazione di un server TCP tramite le API Berkley Socket
 
-[Qui il codice completo del server TCP](https://github.com/profmancusoa/RETI/blob/main/code/RETI5/tcp_server.c)
+[Qui il codice completo del server TCP](https://gist.github.com/profmancusoa/f208669e997ae6c1162e42b10357b59f)
 
 <br>
 
@@ -523,7 +523,7 @@ Socket API
 
 - Vediamo in dettaglio l'implementazione di un client TCP tramite le API Berkley Socket
 
-[Qui il codice completo del client TCP](https://github.com/profmancusoa/RETI/blob/main/code/RETI5/tcp_client.c)
+[Qui il codice completo del client TCP](https://gist.github.com/profmancusoa/2b03a41a010822ef514b5ad5e284374a)
 
 <br>
 
@@ -658,7 +658,7 @@ Socket UDP
 
 - Vediamo in dettaglio l'implementazione di un server UDP tramite le API Berkley Socket
 
-[Qui il codice completo del server UDP](https://github.com/profmancusoa/RETI/blob/main/code/RETI5/udp_server.c)
+[Qui il codice completo del server UDP](https://gist.github.com/profmancusoa/6ea60dad35054fc44d4fc720f7f83962)
 
 <br>
 
@@ -687,7 +687,7 @@ Socket UDP
 
 - Vediamo in dettaglio l'implementazione di un client UDP tramite le API Berkley Socket
 
-[Qui il codice completo del client UDP](https://github.com/profmancusoa/RETI/blob/main/code/RETI5/udp_client.c)
+[Qui il codice completo del client UDP](https://gist.github.com/profmancusoa/20d50cd07ef76b52db8558c146347fca)
 
 <br>
 
@@ -763,7 +763,7 @@ Socket TCP in Java
 
 - Vediamo in dettaglio l'implementazione di un server TCP tramite in Java
 
-[Qui il codice completo del server TCP](https://github.com/profmancusoa/RETI/blob/main/code/RETI5/tcp_server.java)
+[Qui il codice completo del server TCP](https://gist.github.com/profmancusoa/cdaabf67b7fb2e85d6599ede4ed21551)
 
 <br>
 
@@ -789,7 +789,7 @@ Socket TCP in Java
 
 - Vediamo in dettaglio l'implementazione di un client TCP tramite in Java
 
-[Qui il codice completo del client TCP](https://github.com/profmancusoa/RETI/blob/main/code/RETI5/tcp_client.java)
+[Qui il codice completo del client TCP](https://gist.github.com/profmancusoa/2c0470986963d222f6718c678dcda4c5)
 
 <br>
 
