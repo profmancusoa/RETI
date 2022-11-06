@@ -1,0 +1,594 @@
+---
+theme: default
+# random image from a curated Unsplash collection by Anthony
+# like them? see https://unsplash.com/collections/94734566/slidev
+background: https://source.unsplash.com/collection/94734566/1920x1080
+# apply any windi css classes to the current slide
+class: 'text-center'
+# https://sli.dev/custom/highlighters.html
+#highlighter: shiki
+# show line numbers in code blocks
+lineNumbers: false
+aspectRatio: '16_/9'
+routerMode: 'hash'
+materia: "RETI"
+as: "2022/2023"
+version: '1.0.0'
+
+---  
+
+
+# SISTEMI & RETI
+
+Encryption e Decryption Simmetrica e Asimmetrica
+
+<div class="pt-12">
+  <span class="px-2 py-1">
+    Premi spazio o <carbon:arrow-right class="inline"/> per la prossima slide
+  </span>
+</div>
+
+
+--- 
+
+# Encryption e Decryption
+
+Simmetrica
+
+- L'Encryption (Cifratura) e Decryption (Decifratura) a chiave simmetrica prevede l'uso di una sola chiave utilizzata sia per la cifratura del testo in chiaro che per la decifratura del chyper text.
+
+<img src="/media/enc01.png" style="width:800px;margin:auto;"/>
+
+
+--- 
+
+# Encryption e Decryption
+
+Simmetrica
+
+- Vediamo come cifrare un file con l'agoritmo DES da linea di comando su Linux
+
+```bash
+openssl enc -des -e -iter 1000 -a -provider legacy -provider default  -in clear.txt -out chyper.txt
+```
+
+- dato un file in chiaro **clear.txt** genera un file cifrato **chyper.txt** con l'algoritmo simmetrico DES e successivamente codificato in base64
+   
+clear.txt
+
+```bash
+ciao questo è un file in chiaro da rendere segreto
+```
+
+chyper.txt
+```bash
+U2FsdGVkX19DooxcqNlXI2AKYTOQYfxaMIadM6ODILoZnWp53zmjrIHWyZzUn8IF
+iow02vCkHqaGmeMawK3/57IWB7MVYXog
+```
+
+--- 
+
+# Encryption e Decryption
+
+Simmetrica
+
+- Analizziamo il comando (il manuale completo disponibile con man openssl enc)
+
+```bash
+openssl enc -des -e -iter 1000 -a -provider legacy -provider default  -in clear.txt -out chyper.txt
+```
+
+- **openssl**: uno strumento molto versatile che supporta oltre 140 algoritmi di cifratura simmetrica
+- **enc**: abilita il tool di encryption/decryption  
+- **-des**: specifica quale chyper (algoritmo) usare    
+- **-e**: specifica che vogliamo fare l'encryption 
+- **-iter 1000**: esegue 1000 iterazioni per derivare la chiave privata da un passphrse inserito dall'utente 
+- **-a**: esegue l'encoding in base64 del risultato per una maggior leggibilità
+- **-provider legacy**: in openssl3 è necessario abilitare gli algoritmi deprecaty (come il DES)
+- **-provider default**: abilita il provider di algoritmi di default
+- **-in**: file in chiaro 
+- **-out**: file cifrato 
+
+
+--- 
+
+# Encryption e Decryption
+
+Simmetrica
+
+- Vediamo come decifrare un file con l'algoritmo DES
+
+```bash
+openssl enc -des -d -iter 1000 -a -provider legacy -provider default  -in chyper.txt -out clear.txt
+```
+
+- **-d**: usiamo il flag -d per dire a openssl di effettuare il processo di decryption
+- **-int**: file cifrato 
+- **-out**: file in chiaro 
+
+chyper.txt
+```bash
+U2FsdGVkX19DooxcqNlXI2AKYTOQYfxaMIadM6ODILoZnWp53zmjrIHWyZzUn8IF
+iow02vCkHqaGmeMawK3/57IWB7MVYXog
+```
+
+clear.txt
+
+```bash
+ciao questo è un file in chiaro da rendere segreto
+```
+--- 
+
+# Encryption e Decryption
+
+Simmetrica
+
+- Se non forniamo esattamente la stessa chiave utilizzata per la cifratura otteniamo un errore
+
+```bash
+enter DES-CBC decryption password:
+bad decrypt
+805B4FAD4B7F0000:error:1C800064:Provider routines:ossl_cipher_unpadblock:bad decrypt:../providers/implementations/ciphers/ciphercommon_block.c:124:
+```
+
+- questo conferma che i processi di cifratura e di decifratura devono utilizzare assolutamente la stessa chiave
+
+--- 
+
+# Encryption e Decryption
+
+Simmetrica
+
+- Possiamo anche passare direttamente una chiave ed un IV
+
+```bash
+openssl enc -des -e  -K 3d4325a3676f34bb  -iv be1d78bd53f11a02  -a -provider legacy -provider default  -in clear.txt -out chyper.txt
+```
+
+- **-K**: chiave a 64 bit (di cui solo 56 vengono effettivamente utilizzati)
+- **-iv**: initialization vector utilizzato dall'algoritmo
+
+chyper.txt
+
+```bash
+UaUtgHrvqGTu0K8X/GBNDYSEZOhrc8fhNiZm35ERSKW8zmAjUV609FgjAtUJVPoE
+cdcVgt5T3fs=
+```
+
+--- 
+
+# Encryption e Decryption
+
+Simmetrica
+
+```bash
+openssl enc -des -e  -K 2d4325a3676f34bb  -iv be1d78bd53f11a02  -a -provider legacy -provider default  -in clear.txt -out chyper.txt
+```
+
+chyper.txt
+
+```bash
+IWt8ua1R+kQmIVaP+CWIxfdBKLp52LRU8z4PAvRahaXEuL1jfDDVCUJnBpJUxBJr
+xbRFkZ9VL2Q=
+```
+
+vs
+
+```bash
+UaUtgHrvqGTu0K8X/GBNDYSEZOhrc8fhNiZm35ERSKW8zmAjUV609FgjAtUJVPoE
+cdcVgt5T3fs=
+```
+
+- come si può notare cambiando un solo bit della chiave, il chyper text è completamente diverso
+- Questa è una caratteristica fondamentale di ogni algortimo di encryption
+  
+--- 
+
+# Encryption e Decryption
+
+Simmetrica
+
+- Vediamo come decifrare un file con l'algoritmo DES
+
+```bash
+openssl enc -des -d  -K 3d4325a3676f34bb  -iv be1d78bd53f11a02  -a -provider legacy -provider default  -in chyper.txt -out clear.txt
+```
+
+chyper.txt
+```bash
+UaUtgHrvqGTu0K8X/GBNDYSEZOhrc8fhNiZm35ERSKW8zmAjUV609FgjAtUJVPoE
+cdcVgt5T3fs=
+```
+
+clear.txt
+
+```bash
+ciao questo è un file in chiaro da rendere segreto
+```
+
+
+--- 
+
+# Encryption e Decryption
+
+Simmetrica
+
+- Trasferiamo un file in modo sicuro e confidenziale via socket
+
+**Ricevitore**
+
+```bash
+nc -l 8080 | openssl enc -des -d  -K 3d4325a3676f34bb  -iv be1d78bd53f11a02  \\
+-a -provider legacy -provider default > ricevuto.txt
+```
+
+**Trasmettitore**
+
+```bash
+openssl enc -des -e  -K 3d4325a3676f34bb  -iv be1d78bd53f11a32  \\
+-a -provider legacy -provider default -in clear.txt  | nc -N 192.168.1.77 8080
+```
+--- 
+
+# Esercizio crypto_01
+
+Simmetrica
+
+- Lavorando a coppie (studente A e B):
+  - generare una chiave privata condivisa
+  - A invia via rete un messaggio cifrato a B
+  - B lo decifra e confronta con A se è efefttivamente il messaggio originale
+  - Effettuare la trasmissione in senso opposto da B a A e verificare il messaggio
+
+Consegnare su classroom:
+- il file originale in chiaro |cognome|_es1_clear.txtx
+- il file cifrato e codificato in base64 |cognome|_es1_chyper.txt
+- la chiave in esadecimale |cognome|_es1_key.txt 
+- l'IV in esadecimale |cognome|_es1_iv.txt
+
+--- 
+
+# Encryption e Decryption
+
+Asimmetrica
+
+- L'Encryption (Cifratura) e Decryption (Decifratura) a chiave asimmetrica (pubblica) prevede l'uso di due chiavi distinte. Una pubblica nota a tutti ed una privata da custodire con cura.
+
+<br>
+
+<img src="/media/enc02.png" style="width:400px;margin:auto;"/>
+
+--- 
+
+# Encryption e Decryption
+
+Asimmetrica
+
+- Anche in questo scenario openssl può esserci utile per generare le chiavi e poi per effettuare l'encryption e decryption
+
+**Generazione delle chiavi asimmetriche**
+
+- Chiave privata con parametri di default (2048 bit)
+```bash
+openssl genpkey -algorithm RSA -out alice_privata.pem
+```
+
+```bash
+-----BEGIN PRIVATE KEY-----
+MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDEeuwgU9iOfNaM
+WUTyqxKsQWJPlewgJfmslkeEl1FTBOFg5X7qdaFWukwDby6dV7ibJaIfkeLFiFbO
+qG3vaW6aimTmZWJCGS9szRUfj7ANO5yzx/RX2VSAiBpB5SxzPuDzJ0GbF5/U2nGe
+.................................................................
+EnrP00FXFIfFODotK3j2TbythXvgXu61xsl/UazNCTyS0TaqadHRbzXMI9UI2EFuZ
+XjQGil6H0qtI47xcxOrkBDxTGjoxAiXAA3yATkMm4DmOz8/e5hjR09FUtziVfG5fF
+3d/dsBElFz9i7Iui7mqUuQEskznRc=
+-----END PRIVATE KEY-----
+```
+
+--- 
+
+# Encryption e Decryption
+
+Asimmetrica
+
+- Generiamo la chiave pubblica da quella privata (ricorda sono matetamicamente correlate)
+
+```bash
+openssl rsa -in alice_privata.pem -pubout > alice_pubblica.pem
+```
+
+```bash
+-----BEGIN PUBLIC KEY-----
+MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAs5ic2uyImlx1r9RViduV
+nntm8UdLNYkHntpv1EK9bjOc/T172nsRQX4QPb+sGLl30kNYGfbh+wAxNTxzl2NS
+hUDAM5FKun132/+LOy0oP+0MGOMa4/P+b8cTtqhwlaysAxtmj4fWRpo6y8b+PhS7
+eJboA030A3oJR9hx7EfE3PX62Ro9ZZzFPk6skSgdXp586NS13lIr9wIeHNUf0jum
+sEd10mwFy7VS3HBA3yPJxeBpyC4BI/5pQfbSqw3Gz4o9DqhhNwgRn2kp4teKOsF+
+qTwmQQomD2cc4vEkLHLb+G8tUvSny8g9EdOCqlc95OFO61FPsPAwU/3uf/zr1LNX
+qwIDAQAB
+-----END PUBLIC KEY-----
+```
+
+- Ora Bob e Alice si possono scambiare le rispettive chiavi pubbliche
+
+```bash
+scp alice_pubblica.pem bob@host:/path/
+
+scp bob_pubblica.pem alice@host:/path/
+
+```
+
+--- 
+
+# Encryption e Decryption
+
+Asimmetrica
+
+ Vediamo come alice cifra un file con la chiave pubblica di Bob
+
+```bash
+openssl pkeyutl -encrypt -pubin -inkey bob_pubblica.pem -in clear.txt  | base64 > chypher.txt
+```
+
+- dato un file in chiaro **clear.txt** genera un file cifrato **chyper.txt** con l'algoritmo simmetrico DES e successivamente codificato in base64
+   
+clear.txt
+
+```bash
+ciao questo è un file in chiaro da rendere segreto
+```
+
+chyper.txt
+```bash
+bFXO5nneszlYxJ/gBOLSKD2Xst1uKmG7sKKX/s8cWN5pV0vVmuFW1+ifeeJ8XMtDrI5ElNL5tCEO
+lXsyNkpBe01URMkDWjg8cgbQKnt30+fjjF1QQ+5aqeAesJ8pk23QtlioXW4U/p8L6rwhB79fpAdH
+af7D4Mh6p2jvMhLVIpQMwVpQgjPSAYXWRfA8UAjbINOXQa9z1qTPmtCmOz7CvQRY2bYbU8WP00s3
+vK25Uo8Rmf3HWeu0QfnXPYDabLiEtQCVT+5GP7SNrjQi1H5KbGkB5DMOdadmHpcxwKMemeZgWUVO
+cfNxe3RpQqPXNMV0iN6JdzfgeNZmeDH4dedrWQ==
+
+```
+
+--- 
+
+# Encryption e Decryption
+
+Asimmetrica
+
+- Analizziamo il comando (il manuale completo disponibile con man openssl enc)
+
+```bash
+openssl pkeyutl -encrypt -pubin -inkey bob_pubblica.pem -in clear.txt  | base64 > chypher.txt
+```
+
+- **openssl**: uno strumento molto versatile che supporta oltre 140 algoritmi di cifratura simmetrica
+- **pkeyutl**: abilita il tool di gestione dei servizi public key   
+- **-encrypt**: specifica che vogliamo fare l'encryption 
+- **-pubin**: specifica che si tratta di una chiave pubblica in ingresso (default chiave privata)
+- **-inkey**: specifica la chiave da usare
+- **-in**: file in chiaro 
+- **| base64**: encoding in base64
+- **>**: redirige l'output sul file chyper.txt
+
+
+--- 
+
+# Encryption e Decryption
+
+Asimmetrica
+
+Vediamo come Bob decifra il file ricevuto da alice con la sua chiave privata
+
+```bash
+cat chypher.txt | base64 -d | openssl pkeyutl -decrypt -inkey bob_privata.pem -out clear.txt
+```
+
+chyper.txt
+```bash
+bFXO5nneszlYxJ/gBOLSKD2Xst1uKmG7sKKX/s8cWN5pV0vVmuFW1+ifeeJ8XMtDrI5ElNL5tCEO
+lXsyNkpBe01URMkDWjg8cgbQKnt30+fjjF1QQ+5aqeAesJ8pk23QtlioXW4U/p8L6rwhB79fpAdH
+af7D4Mh6p2jvMhLVIpQMwVpQgjPSAYXWRfA8UAjbINOXQa9z1qTPmtCmOz7CvQRY2bYbU8WP00s3
+vK25Uo8Rmf3HWeu0QfnXPYDabLiEtQCVT+5GP7SNrjQi1H5KbGkB5DMOdadmHpcxwKMemeZgWUVO
+cfNxe3RpQqPXNMV0iN6JdzfgeNZmeDH4dedrWQ==
+
+```
+
+clear.txt
+
+```bash
+ciao questo è un file in chiaro da rendere segreto
+```
+
+--- 
+
+# Encryption e Decryption
+
+Asimmetrica
+
+- Se un attaccante (Jon) prova a decifrare il messaggio cifrato con le sue chiavi
+
+**Privata**
+```bash
+cat chypher.txt | base64 -d | openssl pkeyutl -decrypt -inkey jon_privata.pem -out clear.txt 
+Public Key operation error
+807B85E5FD7E0000:error:0200009F:rsa routines:RSA_padding_check_PKCS1_type_2:pkcs decoding error:../crypto/rsa/rsa_pk1.c:269:
+807B85E5FD7E0000:error:02000072:rsa routines:rsa_ossl_private_decrypt:padding check failed:../crypto/rsa/rsa_ossl.c:500:
+```
+
+**Pubblica**
+
+```bash
+cat chypher.txt | base64 -d | openssl pkeyutl -decrypt -inkey jon_pubblica.pem -out clear.txt 
+Could not read private key from jon_pubblica.pem
+806B853BBF7F0000:error:1608010C:STORE routines:ossl_store_handle_load_result:unsupported:../crypto/store/store_result.c:151:
+806B853BBF7F0000:error:1608010C:STORE routines:ossl_store_handle_load_result:unsupported:../crypto/store/store_result.c:151:
+pkeyutl: Error initializing context
+```
+
+--- 
+
+# Encryption e Decryption
+
+Asimmetrica
+
+- In entrambi i casi l'attaccante Jon NON è riuscito a leggere il messaggio originale inviato da Alice a Bob
+- Questo ci dimostra che la **confidenzialità** è garantita dal meccanismo di encryption a chiave pubblica
+
+<br>
+
+<img src="/media/enc03.png" style="width:300px;margin:auto;"/>
+
+
+--- 
+
+# Encryption e Decryption
+
+Asimmetrica
+
+- Vediamo ora come usare le chiavi asimmetriche per garantire l'autenticità di un messaggio
+- Importante notare che in questo caso la confidenzialità non è ciò che si vuole garantire
+- Bob vuole essere sicuro che l'ordine di pagamento provenga da Alice
+
+<br>
+
+<img src="/media/enc04.png" style="width:600px;margin:auto;"/>
+
+--- 
+
+# Encryption e Decryption
+
+Asimmetrica
+
+- Alice genera un hash del messaggio e lo cifra con la sua chiave privata
+
+**pagamento.txt**
+
+```bash
+Io Alice dichiaro di pagare a Bob 1000 Euro
+```
+
+```bash
+openssl pkeyutl -sign -inkey alice_privata.pem -in pagamento.txt -out pagamento_signature.bin
+```
+
+**pagamento_signature.bin**
+
+```bash
+00000000  53 3f 74 bb 09 a3 60 3b  62 5f 6e 47 e5 1f 61 46  |S?t...`;b_nG..aF|
+00000010  32 74 d0 48 4b e0 ca 7e  79 b8 5c 95 07 da 2b 05  |2t.HK..~y.\...+.|
+00000030  db a2 f4 62 98 c7 bf f5  44 e5 f2 51 ca ed 5a ac  |...b....D..Q..Z.|
+00000040  0b 84 9f dd b4 8e ca 9d  77 15 65 c6 5d aa 13 e3  |........w.e.]...|
+..............................................................................
+000000e0  3d 34 5e d1 0f 23 e9 fd  5d 60 00 7e da ae 23 53  |=4^..#..]`.~..#S|
+000000f0  4b cd df 91 40 39 89 05  e0 8b 4a 5e 17 99 65 59  |K...@9....J^..eY|
+```
+
+- Questa è la firma digitale del file che Alice vuole inviare a Bob
+
+
+--- 
+
+# Encryption e Decryption
+
+Asimmetrica
+
+- Bob riceve il file **pagamento.tx** e la sua firma digitale **pagamento_signature.bin**
+- Il messaggio che Bob ha ricevuto è stato effettivamente inviato da Alice?
+- Ora Bob ha tutti gli elementi per rispondere in modo certo a questa domanda
+
+```bash
+openssl pkeyutl -verify -pubin -inkey alice_pubblica.pem -sigfile pagamento_signature.bin -in pagamento.txt       
+
+Signature Verified Successfully
+```
+
+- OK come possiamo vedere la firma digitale è stata confermata, in quanto dedcifratya con la chiave pubblica di Alice
+- Questo garantisce che il file ricevuto è effettivamente inviato da Alice e cioè è **autentico**
+--- 
+
+# Encryption e Decryption
+
+Asimmetrica
+
+- Ora se un soggetto malizioso (attaccante) modificasse il messaggio di Alice
+
+**pagamento.txt**
+
+```bash
+Io Alice dichiaro di pagare a Bob 2000 Euro
+```
+
+```bash
+openssl pkeyutl -verify -pubin -inkey alice_pubblica.pem -sigfile pagamento_signature.bin -in pagamento.txt       
+
+Signature Verified Failure
+```
+<br>
+
+- Bob sarebbe in grado di accorgersene in quanto la firma digitale non è quella associata con il file ricevuto
+- Pertanto la firma digitale permette anche di assicurare **l'integrità** di un messaggio
+
+--- 
+
+# Encryption e Decryption
+
+Asimmetrica
+
+- Ora unendo i due processi siamo in grado di garantire **la confidenzialità**, **l'autenticità** e **l'integrità** di una comunicazione digitale
+
+**ALICE**
+
+<img src="/media/enc05.png" style="width:500px;position:relative;top:-3rem;right:-10rem;"/>
+
+
+```bash
+openssl pkeyutl -encrypt -pubin -inkey bob_pubblica.pem -in pagamento.txt  -out pagamento_enc.bin
+md5sum pagamento.txt > pagamento_hash.md5
+openssl pkeyutl -sign -inkey alice_privata.pem -in pagamento_hash.md5 -out pagamento_signature.bin
+```
+
+- Ora trasmetto a Bob **pagamento_enc.bin** con la sua firma digitale **pagamento_signature.bin**
+
+--- 
+
+# Encryption e Decryption
+
+Asimmetrica
+
+**BOB**
+
+<img src="/media/enc06.webp" style="width:500px;position:relative;top:-3rem;right:-10rem;"/>
+
+```bash
+openssl pkeyutl -decrypt -inkey bob_privata.pem -in pagamento_enc.bin -out pagamento.txt
+md5sum pagamento.txt > pagamento_hash.md5
+openssl pkeyutl -verify -pubin -inkey alice_pubblica.pem -sigfile pagamento_signature.bin -in pagamento_hash.md5  
+
+Signature Verified Successfully
+```
+<br>
+
+<div style="background-color:green;color:white;padding:1rem;font-size:1.5rem;">
+Alice ha inviato a Bob un messaggio sicuro, confidenziale, integro e autentico
+</div>
+
+--- 
+
+# Esercizio crypto_02
+
+Asimmetrica
+
+
+- Lavorando in gruppi di 3 (studente A,B e C):
+  - generare una coppia di chiave asimmetriche per ogni studente
+  - Ogni studente distribuisce la propria chiave pubblica agli altri due
+  - A invia un file e la sua firma a B e C
+  - B e C verificano l'autenticità del file
+  - A invia un file e la sua firma a B che lo intercetta
+  - B lo modifica e poi lo reinvia a C
+  - C crede di averlo ricevuto da A e ne verifica l'autenticità e l'integrità
+  - A invia un file cifrato e la sua firma a B e B invia un file cifrato e la sua firma a C
+  - B verifica e decifra il messaggio di A
+  - C verifica e decifra il messaggio di B
+
+Consegnare su classroom:
+- tutti i file e le chiavi utilizzati per lo svolgimento dell'esercitazione 
