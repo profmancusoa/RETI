@@ -13,7 +13,7 @@ aspectRatio: '16_/9'
 routerMode: 'hash'
 materia: "RETI"
 as: "2022/2023"
-version: '1.0.0'
+version: '1.1.0'
 
 ---  
 
@@ -165,6 +165,18 @@ Vediamo ora tutti i passi
 
 Configurazione openVPN server
 
+- Realizziamo la seguente VPN
+
+<br>
+<img src="/media/openvpn_43.png" style="width:900px;margin:auto;"/>
+
+
+--- 
+
+# OpenVPN
+
+Configurazione openVPN server
+
 - Installiamo **pivpn** e configuriamo il server openVPN
 
 ````bash
@@ -221,37 +233,6 @@ Configurazione openVPN server
 
 <img src="/media/openvpn_07.png" style="width:650px;margin:auto;"/>
 
---- 
-
-# OpenVPN
-
-Configurazione openVPN server
-
-<img src="/media/openvpn_08.png" style="width:650px;margin:auto;"/>
-
---- 
-
-# OpenVPN
-
-Configurazione openVPN server
-
-- Impostiamo l'indirizzo statico dell'interfaccia esterna del server VPN
-
-<br>
-
-<img src="/media/openvpn_09.png" style="width:650px;margin:auto;"/>
-
---- 
-
-# OpenVPN
-
-Configurazione openVPN server
-
-- Impostiamo il default gateway in modo appropriato alla rete a cui siamo collegati
-
-<br>
-
-<img src="/media/openvpn_10.png" style="width:650px;margin:auto;"/>
 
 --- 
 
@@ -473,13 +454,13 @@ Configurazione openVPN client
 - Modificare la linea
 
 ````bash
-remote 93.39.136.162 8080
+remote 93.39.136.162 1194
 ````
 
 in 
 
 ````bash
-remote <public ip> 8080
+remote 192.168.194.53 1194
 ````
 
 --- 
@@ -507,22 +488,22 @@ Configurazione openVPN client
 - Se tutto ha funzionato correttamente dovremmo vedere un output simile a questo
 
 ````bash
-antonio@asus  ~  sudo openvpn --config vpnClient.ovpn 
-2023-02-05 18:00:12 DEPRECATED OPTION: --cipher set to 'AES-256-CBC' but missing in --data-ciphers (AES-256-GCM:AES-128-GCM). Future OpenVPN version will ignore --cipher for cipher negotiations. Add 'AES-256-CBC' to --data-ciphers or change --cipher 'AES-256-CBC' to --data-ciphers-fallback 'AES-256-CBC' to silence this warning.
-2023-02-05 18:00:12 OpenVPN 2.5.5 x86_64-pc-linux-gnu [SSL (OpenSSL)] [LZO] [LZ4] [EPOLL] [PKCS11] [MH/PKTINFO] [AEAD] built on Jul 14 2022
-2023-02-05 18:00:12 library versions: OpenSSL 3.0.2 15 Mar 2022, LZO 2.10
+2023-02-20 22:55:34 library versions: OpenSSL 3.0.2 15 Mar 2022, LZO 2.10
 🔐 Enter Private Key Password: ******                  
-2023-02-05 18:00:13 Outgoing Control Channel Encryption: Cipher 'AES-256-CTR' initialized with 256 bit key
-2023-02-05 18:00:13 Outgoing Control Channel Encryption: Using 256 bit message hash 'SHA256' for HMAC authentication
-2023-02-05 18:00:13 Incoming Control Channel Encryption: Cipher 'AES-256-CTR' initialized with 256 bit key
-2023-02-05 18:00:13 Incoming Control Channel Encryption: Using 256 bit message hash 'SHA256' for HMAC authentication
-2023-02-05 18:00:13 TCP/UDP: Preserving recently used remote address: [AF_INET]192.168.1.183:8080
-2023-02-05 18:00:13 Socket Buffers: R=[212992->212992] S=[212992->212992]
-2023-02-05 18:00:13 UDP link local: (not bound)
-2023-02-05 18:00:13 UDP link remote: [AF_INET]192.168.1.183:8080
-2023-02-05 18:00:14 TLS: Initial packet from [AF_INET]192.168.1.183:8080, sid=54e88a0c 50b9e861
-2023-02-05 18:00:14 VERIFY OK: depth=1, CN=Easy-RSA CA
-2023-02-05 18:00:14 VERIFY KU OK
+2023-02-20 22:55:37 Outgoing Control Channel Encryption: Cipher 'AES-256-CTR' initialized with 256 bit key
+2023-02-20 22:55:37 Outgoing Control Channel Encryption: Using 256 bit message hash 'SHA256' for HMAC authentication
+2023-02-20 22:55:37 Incoming Control Channel Encryption: Cipher 'AES-256-CTR' initialized with 256 bit key
+2023-02-20 22:55:37 Incoming Control Channel Encryption: Using 256 bit message hash 'SHA256' for HMAC authentication
+2023-02-20 22:55:37 TCP/UDP: Preserving recently used remote address: [AF_INET]192.168.194.53:1194
+2023-02-20 22:55:37 Socket Buffers: R=[212992->212992] S=[212992->212992]
+2023-02-20 22:55:37 UDP link local: (not bound)
+2023-02-20 22:55:37 UDP link remote: [AF_INET]192.168.194.53:1194
+2023-02-20 22:55:37 TLS: Initial packet from [AF_INET]192.168.194.53:1194, sid=1b999276 33ce3ff1
+2023-02-20 22:55:37 VERIFY OK: depth=1, CN=Easy-RSA CA
+2023-02-20 22:55:37 VERIFY KU OK
+2023-02-20 22:55:37 Validating certificate extended key usage
+2023-02-20 22:55:37 ++ Certificate has EKU (str) TLS Web Server Authentication, expects TLS Web Server Authentication
+2023-02-20 22:55:37 VERIFY EKU OK
 ````
 
 ---
@@ -532,48 +513,64 @@ antonio@asus  ~  sudo openvpn --config vpnClient.ovpn
 Configurazione openVPN client
 
 ````bash
-2023-02-05 18:00:14 Validating certificate extended key usage
-2023-02-05 18:00:14 ++ Certificate has EKU (str) TLS Web Server Authentication, expects TLS Web Server Authentication
-2023-02-05 18:00:14 VERIFY EKU OK
-2023-02-05 18:00:14 VERIFY X509NAME OK: CN=raspberrypi_1a5ad65e-5bb3-4924-a49c-4493a1e00f56
-2023-02-05 18:00:14 VERIFY OK: depth=0, CN=raspberrypi_1a5ad65e-5bb3-4924-a49c-4493a1e00f56
-2023-02-05 18:00:14 Control Channel: TLSv1.3, cipher TLSv1.3 TLS_AES_256_GCM_SHA384, peer certificate: 256 bit EC, curve prime256v1, signature: ecdsa-with-SHA256
-2023-02-05 18:00:14 [raspberrypi_1a5ad65e-5bb3-4924-a49c-4493a1e00f56] Peer Connection Initiated with [AF_INET]192.168.1.183:8080
-2023-02-05 18:00:14 PUSH: Received control message: 'PUSH_REPLY,dhcp-option DNS 127.0.0.1,block-outside-dns,redirect-gateway autolocal,route-gateway 10.211.225.1,topology subnet,ping 15,ping-restart 120,ifconfig 10.211.225.2 255.255.255.0,peer-id 0,cipher AES-256-GCM'
-2023-02-05 18:00:14 Options error: Unrecognized option or missing or extra parameter(s) in [PUSH-OPTIONS]:2: block-outside-dns (2.5.5)
-2023-02-05 18:00:14 OPTIONS IMPORT: timers and/or timeouts modified
-2023-02-05 18:00:14 OPTIONS IMPORT: --ifconfig/up options modified
-2023-02-05 18:00:14 OPTIONS IMPORT: route options modified
-2023-02-05 18:00:14 OPTIONS IMPORT: route-related options modified
-2023-02-05 18:00:14 OPTIONS IMPORT: --ip-win32 and/or --dhcp-option options modified
-2023-02-05 18:00:14 OPTIONS IMPORT: peer-id set
-2023-02-05 18:00:14 OPTIONS IMPORT: adjusting link_mtu to 1624
-2023-02-05 18:00:14 OPTIONS IMPORT: data channel crypto options modified
+2023-02-20 22:55:37 OPTIONS IMPORT: route options modified
+2023-02-20 22:55:37 OPTIONS IMPORT: route-related options modified
+2023-02-20 22:55:37 OPTIONS IMPORT: --ip-win32 and/or --dhcp-option options modified
+2023-02-20 22:55:37 OPTIONS IMPORT: peer-id set
+2023-02-20 22:55:37 OPTIONS IMPORT: adjusting link_mtu to 1624
+2023-02-20 22:55:37 OPTIONS IMPORT: data channel crypto options modified
+2023-02-20 22:55:37 Data Channel: using negotiated cipher 'AES-256-GCM'
+2023-02-20 22:55:37 Outgoing Data Channel: Cipher 'AES-256-GCM' initialized with 256 bit key
+2023-02-20 22:55:37 Incoming Data Channel: Cipher 'AES-256-GCM' initialized with 256 bit key
+2023-02-20 22:55:37 net_route_v4_best_gw query: dst 0.0.0.0
+2023-02-20 22:55:37 net_route_v4_best_gw result: via 192.168.194.11 dev wlo1
+2023-02-20 22:55:37 ROUTE_GATEWAY 192.168.194.11/255.255.255.0 IFACE=wlo1 HWADDR=40:ec:99:e2:f1:85
+2023-02-20 22:55:37 TUN/TAP device tun0 opened
+2023-02-20 22:55:37 net_iface_mtu_set: mtu 1500 for tun0
+2023-02-20 22:55:37 net_iface_up: set tun0 up
+2023-02-20 22:55:37 net_addr_v4_add: 10.174.64.2/24 dev tun0
+2023-02-20 22:55:37 ROUTE remote_host is LOCAL
+2023-02-20 22:55:37 net_route_v4_del: 0.0.0.0/0 via 192.168.194.11 dev [NULL] table 0 metric -1
+2023-02-20 22:55:37 net_route_v4_add: 0.0.0.0/0 via 10.174.64.1 dev [NULL] table 0 metric -1
+2023-02-20 22:55:37 Initialization Sequence Completed
 ````
 
-
----
+--- 
 
 # OpenVPN
 
 Configurazione openVPN client
 
+- Ora verifichiamo la raggiungibilità di un host nella rete privata all'altro capo del tunnel
+
+<br>
+
+<img src="/media/openvpn_41.png" style="width:750px;margin:auto;"/>
+
+<br>
+
+- Come si vede non siamo ancora in grado di raggiungere un host nella rete interna remota
+
+--- 
+
+# OpenVPN
+
+Configurazione openVPN client
+
+- Ciò avviene perchè il server 192.168.1.235 non ha nessuna informazione su come raggiungere la rete del client (192.168.194.0/24)
+- Pertanto è necessario aggiungere una entry alla tabella di routing del WS
+
+<br>
+
 ````bash
-2023-02-05 18:00:14 Data Channel: using negotiated cipher 'AES-256-GCM'
-2023-02-05 18:00:14 Outgoing Data Channel: Cipher 'AES-256-GCM' initialized with 256 bit key
-2023-02-05 18:00:14 Incoming Data Channel: Cipher 'AES-256-GCM' initialized with 256 bit key
-2023-02-05 18:00:14 net_route_v4_best_gw query: dst 0.0.0.0
-2023-02-05 18:00:14 net_route_v4_best_gw result: via 192.168.1.254 dev wlo1
-2023-02-05 18:00:14 ROUTE_GATEWAY 192.168.1.254/255.255.255.0 IFACE=wlo1 HWADDR=40:ec:99:e2:f1:85
-2023-02-05 18:00:14 TUN/TAP device tun0 opened
-2023-02-05 18:00:14 net_iface_mtu_set: mtu 1500 for tun0
-2023-02-05 18:00:14 net_iface_up: set tun0 up
-2023-02-05 18:00:14 net_addr_v4_add: 10.211.225.2/24 dev tun0
-2023-02-05 18:00:14 ROUTE remote_host is LOCAL
-2023-02-05 18:00:14 net_route_v4_del: 0.0.0.0/0 via 192.168.1.254 dev [NULL] table 0 metric -1
-2023-02-05 18:00:14 net_route_v4_add: 0.0.0.0/0 via 10.211.225.1 dev [NULL] table 0 metric -1
-2023-02-05 18:00:14 Initialization Sequence Completed
+route add -net 10.72.12.0 netmask 255.255.255.0 gw 192.168.1.250 dev enp5s0
 ````
+
+<br>
+
+- In tal  modo tutti i pacchetti che sono diretti verso il tunne VPN sono vengono correttamete instradati 
+- A questo punto è possibile raggiungere dal client, il WS remoto nella rete privata attraverso il tunnel VPN
+
 
 --- 
 
@@ -587,7 +584,7 @@ Configurazione openVPN client
   
 <br>
 
-<img src="/media/openvpn_28.png" style="width:750px;margin:auto;"/>
+<img src="/media/openvpn_42.png" style="width:750px;margin:auto;"/>
 
 --- 
 
@@ -639,18 +636,6 @@ Configurazione openVPN client
 
 <br>
 <img src="/media/openvpn_31a.png" style="width:350px;margin:auto;"/>
-
---- 
-
-# OpenVPN
-
-Configurazione openVPN client
-
-- Impostiamo la porta custom che avevamo configurato lato server
-
-<br>
-
-<img src="/media/openvpn_31b.png" style="width:650px;margin:auto;"/>
 
 
 --- 
@@ -710,6 +695,7 @@ Configurazione openVPN client
 
 <img src="/media/openvpn_37.png" style="width:650px;margin:auto;"/>
 
+
 --- 
 
 # OpenVPN
@@ -720,7 +706,7 @@ Configurazione openVPN client
 
 <br>
 
-<img src="/media/openvpn_39.png" style="width:650px;margin:auto;"/>
+<img src="/media/openvpn_42.png" style="width:650px;margin:auto;"/>
 
 --- 
 
