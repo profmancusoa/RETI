@@ -45,4 +45,8 @@ sudo dpkg -i CiscoPacketTracer_801_Ubuntu_64bit.deb
 
 Bene ora sei pronto ad utilizzare Cisco Packet Tracer!!!
 
+```
+PS: Se hai qualche problema con packetracer, eseguilo con il flag `--no-sandbox`, dovrebbe risolvere alcuni tipi di problemi
+```
+
 **Happy Networking!!**
