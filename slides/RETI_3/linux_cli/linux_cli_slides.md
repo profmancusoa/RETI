@@ -1541,12 +1541,59 @@ $ rm -rf DIR3
  
 more - visualizzazione file paginata
 
+- more permette di leggere un file di testo una pagina alla volta
+
+```bash
+$ more <nome file>
+```
+
+<br>
+
+- Se il file è più corto di una pagina di video viene visualizzato e more esce
+- Se il file è più lungo e rivhiede più paginate del video per essere visualizzato, more entra in modalità comando
+- more accetta i seguenti comandi principali:
+
+<br>
+
+```bash
+<spaca>: avanza alla prossima pagina del testo
+b: torna indietro alla pagina precedente
+/<pattern>: effettua una ricerca del pattern all'interno del file
+n: salta alla prossima occorrenza di <pattern> se presente
+q: esce dalla visualizzazione
+```
+
 ---
 
 # Linux CLI 
  
 less - visualizzazione file avanzata
 
+- less è molto simile a more ed ha lo stesso scopo che è quello di visualizzare un file multipagina
+- less ha alcune funzione più sofisticate di more, ma nell'uso comune sono sostanzialmente uguali
+
+<br>
+
+```bash
+$ less <nome file>
+```
+
+<br>
+
+- i comandi accettati sono gli stessi di more
+
+- Spesso **more** e **less** sono utilizzati come filtri finali di una pipeline di comandi
+
+<br>
+
+```bash
+$ cat file_grande | sort -r | less
+
+oppure
+
+$ $ cat file_grande | sort -r | more
+ 
+```
 
 ---
 
@@ -1554,11 +1601,80 @@ less - visualizzazione file avanzata
  
 cat - concatenazione file
 
+- **cat** concatena uno o più file e lo visualizza sullo standard output
+- quindi usando cat con un solo file ha l'effetto di visualizzare il file sullo schermo
+
+<br>
+
+```bash
+$ cat  <nome file> [<nome file> <nome file>]
+
+$ ls -la
+ls -la     
+drwxrwxr-x   4 antonio antonio   4096 set 12 14:54 .
+drwxrwxr-x 225 antonio antonio 241664 set 12 14:47 ..
+drwxrwxr-x   2 antonio antonio   4096 set 11 19:11 DIR11
+drwxrwxr-x   2 antonio antonio   4096 set 10 12:37 DIR2
+-rw-rw-r--   1 antonio antonio      7 set 12 14:54 file1
+-rw-rw-r--   1 antonio antonio      7 set 12 14:54 file2
+-rw-rw-r--   1 antonio antonio      7 set 12 14:54 file3
+```
+
+---
+
+# Linux CLI 
+ 
+cat - concatenazione file
+
+```bash
+$cat file1               
+linea1
+
+$ cat file2
+linea2
+
+$ cat file3
+linea3
+
+$ cat file1 file2 file3
+linea1
+linea2
+linea3
+
+$ cat file1 file2 file3 > file4
+$ cat file4                    
+linea1
+linea2
+linea3
+```
+
 ---
 
 # Linux CLI 
  
 head - visualizzare la parte iniziale di un file
+
+- Visualizza la prima parte di un file di solito specificata in bytes o linee
+
+```bash
+$ head < - parametri opzionali> <file>
+
+$ head file1
+linea 1
+linea 2
+linea 3
+linea 4
+linea 5
+linea 6
+linea 7
+linea 8
+linea 9
+linea 10
+
+$ head -n 2 file1 # visualizza solo le prime 2 linee del file
+linea 1
+linea 2
+```
 
 ---
 
@@ -1566,11 +1682,148 @@ head - visualizzare la parte iniziale di un file
  
 tail - visualizzare la parte finale di un file
 
+- In maniera esattamente analoga ad head, visualizza la parte finale di un file in linee o bytes
+
+```bash
+$tail file1                                  
+linea 991
+linea 992
+linea 993
+linea 994
+linea 995
+linea 996
+linea 997
+linea 998
+linea 999
+linea 1000
+
+$ tail -n 3 file1 # visualizza le ultime 3 linee di un file
+linea 998
+linea 999
+linea 1000
+```
+
+---
+
+# Linux CLI 
+ 
+tail - visualizzare la parte finale di un file
+
+- Un parametro molto usate per tail è `-f` che permette di continuare a leggere un file per scritture successive
+- Utilizzato prevalentemente per l'analisi di file di log in cui un processo "appende" nuovi dati al fondo del file
+
+Aprire due shelle 1 e 2
+
+shell 1:
+```bash
+$ touch file1
+$ tail -f file1
+```
+
+shell 2:
+```bash
+$ echo ciao > file1
+```
+
 ---
 
 # Linux CLI 
  
 sort - ordinare le linee di un file di testo
+
+- Ordina un file di testo
+
+```bash
+$ sort < - parametri opzionali> <file>
+
+$ sort file1
+1
+10
+2
+3
+4
+5
+6
+7
+8
+9
+```
+
+---
+
+# Linux CLI 
+ 
+sort - ordinare le linee di un file di testo
+
+
+```bash
+$ sort -g file1 # usa ordine numerico
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+```
+
+---
+
+# Linux CLI 
+ 
+sort - ordinare le linee di un file di testo
+
+
+```bash
+$ sort -rg file1 # usa ordine numerico inverso (reverse)
+10
+9
+8
+7
+6
+5
+4
+3
+2
+1
+```
+
+<br>
+
+- Sort ha 20 parametri opzionali inclusi **g** e **r**
+- Consultare il manuale per eventuali necessità
+  
+---
+
+# Linux CLI 
+ 
+uniq - rimuovere le linee occorrenti di un file
+
+- Uniq permette di identificare le occorrenze uguali di linee di testo in un file
+- Permette di riportare o di eliminare tali occorrenze
+
+```bash
+$ cat file1 
+1
+2
+3
+1
+7
+3
+4
+5
+6
+7
+3
+8
+9
+6
+10
+1
+```
 
 ---
 
@@ -1578,11 +1831,91 @@ sort - ordinare le linee di un file di testo
  
 uniq - rimuovere le linee occorrenti di un file
 
+- uniq deve lavorare su un file ordinato
+
+```bash
+$ cat file1 | sort -g | uniq
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+```
+
+<br>
+
+- **uniq** ha rimosso le occorrenze e ora tutti i numeri compaio una sola volta
+
+---
+
+# Linux CLI 
+ 
+uniq - rimuovere le linee occorrenti di un file
+
+```bash
+$cat file1 | sort -g | uniq -d
+
+1
+3
+6
+7
+```
+
+<br>
+
+- **uniq** ha mantenuto solo le occorrenze doppie e rimosso quelle singole
+
+
 ---
 
 # Linux CLI 
  
 wc - contare caratteri, parole e linee di un file
+
+- Spesso è utile contare quanti caratteri, parole o linee sono presenti in un file di testo
+- **wc** assolve esattamente a questo compito
+
+<br>
+
+```bash
+$ wc < - parametri opzionali> <file>
+
+-c: conta i bytes o caratteri
+-w: conta le parole
+-l: conta le linee 
+
+$ cat file1                    
+Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
+Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. 
+It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. 
+It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+```
+
+---
+
+# Linux CLI 
+ 
+wc - contare caratteri, parole e linee di un file
+
+```bash
+$ wc -c file1
+579 file1
+
+$ wc -w file1
+91 file1
+
+$ wc -l file1
+5 file1
+```
+
+<br>
+
+- Spesso usato come parte finale di una pipeline di comandi
 
 ---
 
@@ -1590,11 +1923,50 @@ wc - contare caratteri, parole e linee di un file
  
 touch - creare un file vuoto
 
+- Per creare velocemente un file vuoto è possibile usare il comando **touch**
+
+```bash
+$ touch <nome file>
+
+$ touch file4
+
+$ ls -la
+drwxrwxr-x   4 antonio antonio   4096 set 12 15:22 .
+drwxrwxr-x 225 antonio antonio 241664 set 12 15:13 ..
+drwxrwxr-x   2 antonio antonio   4096 set 11 19:11 DIR11
+drwxrwxr-x   2 antonio antonio   4096 set 10 12:37 DIR2
+-rw-rw-r--   1 antonio antonio    579 set 12 15:21 file1
+-rw-rw-r--   1 antonio antonio      9 set 12 15:04 file2
+-rw-rw-r--   1 antonio antonio      0 set 12 15:22 file4
+```
 ---
 
 # Linux CLI 
 
 mkdir - creare una directory
+
+- Per creare una nuova directory o albero di directory si usa il comando **mkdir**
+
+```bash
+$ mkdir <directory> # crea una nuova directory
+
+$ mkdir -p <dir1>/<dir2>/.../<dirN> # crea un albero di directory
+
+$ mkdir DIR3
+$ ls -la
+drwxrwxr-x 2 antonio antonio 4,0K set 11 19:11 DIR11
+drwxrwxr-x 2 antonio antonio 4,0K set 10 12:37 DIR2
+drwxrwxr-x 2 antonio antonio 4,0K set 12 15:24 DIR3
+
+$ mkdir -p DIR4/DIR5/DIR6
+
+$  tree DIR4   
+DIR4
+└── DIR5
+    └── DIR6
+
+2 directories, 0 files
+```
 
 ---
 
@@ -1602,11 +1974,52 @@ mkdir - creare una directory
 
 du - calcola lo spazio disco occupato da una directory
 
+```bash
+$ du
+4	./DIR3
+12	./DIR2
+12	./DIR11
+4	./DIR4/DIR5/DIR6
+8	./DIR4/DIR5
+12	./DIR4
+52	.
+
+$ du -h # visualizza le dimensioni human readable
+4,0K	./DIR3
+12K	./DIR2
+12K	./DIR11
+4,0K	./DIR4/DIR5/DIR6
+8,0K	./DIR4/DIR5
+12K	./DIR4
+52K	.
+```
 ---
 
 # Linux CLI 
 
 df - visualizza lo spazio disponibile su un filesystem
+
+```bash
+$ df   
+File system    1K-blocchi     Usati Disponib. Uso% Montato su
+tmpfs             1617056      2132   1614924   1% /run
+/dev/nvme0n1p4  123390456  82302484  34773940  71% /
+tmpfs             8085268     45036   8040232   1% /dev/shm
+tmpfs                5120         0      5120   0% /run/lock
+tmpfs             8085268         0   8085268   0% /run/qemu
+/dev/nvme0n1p1     521200    326952    194248  63% /boot/efi
+/dev/nvme0n1p5  775506816 491167292 249685692  67% /home
+
+$ df -h # visualizza le dimensioni human readable
+File system     Dim. Usati Dispon. Uso% Montato su
+tmpfs           1,6G  2,1M    1,6G   1% /run
+/dev/nvme0n1p4  118G   79G     34G  71% /
+tmpfs           7,8G   48M    7,7G   1% /dev/shm
+tmpfs           5,0M     0    5,0M   0% /run/lock
+tmpfs           7,8G     0    7,8G   0% /run/qemu
+/dev/nvme0n1p1  509M  320M    190M  63% /boot/efi
+/dev/nvme0n1p5  740G  469G    239G  67% /home
+```
 
 ---
 
