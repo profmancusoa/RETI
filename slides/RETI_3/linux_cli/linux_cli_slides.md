@@ -2080,7 +2080,53 @@ $ find . -size +100M -exec rm {} \; # rimuove tutti i file più grandi di 100MBy
 
 watch - eseguire un programma periodicamente (monitoring)
 
+- Il comando **watch** permette di eseguire un comando periodicamente e di visualizzare il suo output sullo schermo
+- Quindi **watch** è molto comodo per monitorare un'attività di sistema di cui vogliamo osservare il progresso nel tempo
 
+```bash
+$ watch < -parametri opzionali> <comando>
+
+$ watch ls -la
+Every 2,0s: ls -la                            
+drwxrwxr-x   6 antonio antonio   4096 set 12 15:24 .
+drwxrwxr-x 225 antonio antonio 241664 set 12 15:13 ..
+drwxrwxr-x   3 antonio antonio   4096 set 12 15:24 DIR4
+-rw-rw-r--   1 antonio antonio    579 set 12 15:21 file1
+-rw-rw-r--   1 antonio antonio      9 set 12 15:04 file2
+-rw-rw-r--   1 antonio antonio      0 set 12 15:22 file4
+```
+
+<br>
+
+- Esegue ogni 2 secondi il comando `ls -la`
+
+---
+
+# Linux CLI 
+
+watch - eseguire un programma periodicamente (monitoring)
+
+- I parametri più importanti sono
+
+```bash
+-d: evidenzia le differenze tra un periodo di osservazione e il successivo
+-n: specifica l'intervallo di osservazione in secondi
+```
+
+```bash
+$ watch -d -n1 ls -la
+very 1,0s: ls -la                            
+drwxrwxr-x   6 antonio antonio   4096 set 12 15:24 .
+drwxrwxr-x 225 antonio antonio 241664 set 12 15:13 ..
+drwxrwxr-x   3 antonio antonio   4096 set 12 15:24 DIR4
+-rw-rw-r--   1 antonio antonio    579 set 12 15:21 file1
+-rw-rw-r--   1 antonio antonio      9 set 12 15:04 file2
+-rw-rw-r--   1 antonio antonio      0 set 12 15:22 file4
+```
+<br>
+
+- Visualizza ogni secondo l'output di ls -la evidenziandone le differenze
+- Watch è il tool perfetto per il monitoring di sistema
 
 ---
 
@@ -2088,8 +2134,56 @@ watch - eseguire un programma periodicamente (monitoring)
  
 chown - cambiare proprietario di un file
 
-- xxxxx
+- **chown** permette di cambiare l'owner o proprietario di un file
+- Nello specifico permette di cambiare l'utente e/o il gruppo di appartenenza di un file
 
+```bash
+$ chown < -parametri opzionali> [Utente][:Gruppo] <file>
+
+$ ls -la
+drwxrwxr-x 3 antonio antonio 4,0K set 12 15:24 DIR4
+-rw-rw-r-- 1 antonio antonio    0 set 12 15:22 file4
+-rw-rw-r-- 1 antonio    antonio    0 set 16 19:16 file5
+
+$ sudo chown root file5 #cambia l'utente proprietario del file
+
+$ ls -la
+drwxrwxr-x 3 antonio antonio 4,0K set 12 15:24 DIR4
+-rw-rw-r-- 1 antonio antonio    0 set 12 15:22 file4
+-rw-rw-r-- 1 root    antonio    0 set 16 19:16 file5
+```
+
+---
+
+# Linux CLI 
+ 
+chown - cambiare proprietario di un file
+
+
+```bash
+$ sudo chown root:backup file5 # cambia il gruppo di appartenenza del file
+
+$ ls -la
+drwxrwxr-x 3 antonio antonio 4,0K set 12 15:24 DIR4
+-rw-rw-r-- 1 antonio antonio    0 set 12 15:22 file4
+-rw-rw-r-- 1 root    backup     0 set 16 19:16 file5
+```
+
+<br>
+
+- **-R** è il parametro più importante che cambia l'ownership ricorsivamente di tutti i file e directory 
+
+<br>
+
+```bash
+$ chown -R antonio:backup DIR4
+
+ $ ls -la
+drwxrwxr-x 2 antonio antonio 4,0K set 11 19:11 DIR11
+drwxrwxr-x 2 antonio antonio 4,0K set 10 12:37 DIR2
+drwxrwxr-x 2 antonio antonio 4,0K set 12 15:24 DIR3
+drwxrwxr-x 3 antonio backup  4,0K set 12 15:24 DIR4
+```
 
 ---
 
@@ -2097,7 +2191,28 @@ chown - cambiare proprietario di un file
  
 chmod - cambiare permessi di un file
 
-- xxxxx
+- Il comando **chmod** permette di cambiare i permessi di un file di cui si è proprietari
+
+```bash
+$ chmod < -parametri opzionali> <octal mode> <file>
+
+$ ls -la
+drwxrwxr-x   2 antonio antonio   4096 set 10 12:37 DIR2
+drwxrwxr-x   2 antonio antonio   4096 set 12 15:24 DIR3
+drwxrwxr-x   3 antonio backup    4096 set 12 15:24 DIR4
+-rw-rw-r--   1 antonio antonio    579 set 12 15:21 file1
+-rw-rw-r--   1 antonio antonio      9 set 12 15:04 file2
+
+$ chmod 551 file1
+
+$ ls -la
+drwxrwxr-x   2 antonio antonio   4096 set 10 12:37 DIR2
+drwxrwxr-x   2 antonio antonio   4096 set 12 15:24 DIR3
+drwxrwxr-x   3 antonio backup    4096 set 12 15:24 DIR4
+-r-xr-x--x   1 antonio antonio    579 set 12 15:21 file1
+-rw-rw-r--   1 antonio antonio      9 set 12 15:04 file2
+```
+
 
 ---
 layout: section
@@ -2111,7 +2226,29 @@ layout: section
  
 ps - visualizza i processi di sistema
 
-- xxxxx
+- Il comando **ps** visualizza una snapshot dei processi in esecuzione sul sistema
+- Ha 32 parametri opzionali ma i più comuni sono
+
+```bash
+-a: visualizza tutti i processi in esecuzione
+-u: visualizza il nome del proprietario dei processi
+-x: visualizza anche i processi root
+```
+
+```bash
+$ ps aux o ps -aux
+USER         PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+root           1  0.0  0.0 166600 11996 ?        Ss   set14   0:04 /sbin/init splash
+root           2  0.0  0.0      0     0 ?        S    set14   0:00 [kthreadd]
+root           3  0.0  0.0      0     0 ?        I<   set14   0:00 [rcu_gp]
+root           4  0.0  0.0      0     0 ?        I<   set14   0:00 [rcu_par_gp]
+antonio     3329  0.0  0.1 271324 19684 ?        S<sl set14   0:08 /usr/bin/wireplumber
+antonio     3330  0.0  0.1  59836 25776 ?        S<sl set14   0:17 /usr/bin/pipewire-pulse
+antonio     3332  0.0  0.0 325608  9352 ?        SNLl set14   0:03 /usr/bin/gnome-keyring-daemon
+antonio     3334  0.0  0.0   9672  4280 ?        SNs  set14   0:00 /usr/bin/dbus-broker-launch
+antonio     3338  0.0  0.1  30732 28020 ?        SN   set14   0:09 dbus-broker --log 4 
+antonio     3340  0.0  0.0 250744  8516 ?        SNsl set14   0:00 /usr/libexec/gvfsd
+```
 
 ---
 
@@ -2119,7 +2256,28 @@ ps - visualizza i processi di sistema
  
 top - monitor dei processi
 
-- fedwsa
+- Il comando **top** permette di monitorare in realtime lo stato dei processi e del sistema
+
+```bash
+$ top o top -d1 (-d imposta la frequenza di aggiornamento in secondi)
+top - 19:33:42 up 2 days, 11:19,  1 user,  load average: 0,99, 0,79, 0,76
+Tasks: 324 total,   1 running, 323 sleeping,   0 stopped,   0 zombie
+%Cpu(s):  0,8 us,  0,7 sy,  0,1 ni, 98,2 id,  0,2 wa,  0,0 hi,  0,0 si,  0,0 st
+MiB Mem :  15791,6 total,   1786,3 free,   3292,2 used,  10713,1 buff/cache
+MiB Swap:  15792,0 total,  15791,7 free,      0,2 used.   7012,9 avail Mem
+
+    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
+   3554 antonio   15  -5 9759148 449940 140404 S   7,0   2,8  70:34.56 gnome-shell
+   3376 antonio   15  -5 1576484 138616  74300 S   4,0   0,9  34:09.73 Xorg     
+ 127381 antonio   15  -5  801916  81964  50044 S   2,3   0,5   0:09.48 terminator
+    588 root      29   9   86268   6220   5644 S   0,3   0,0   0:37.69 system76-power
+   3715 antonio   25   5  325420  13064   7372 S   0,3   0,1   4:46.58 ibus-daemon
+ 118065 antonio   25   5 1357808  98500  57336 S   0,3   0,6   0:09.93 warpinator
+ 128253 antonio   25   5 1122,0g 177448 130300 S   0,3   1,1   0:28.34 code  
+      1 root      20   0  166600  11996   8436 S   0,0   0,1   0:04.89 systemd 
+      2 root      20   0       0      0      0 S   0,0   0,0   0:00.11 kthreadd 
+      3 root       0 -20       0      0      0 I   0,0   0,0   0:00.00 rcu_gp
+```
 
 ---
 
@@ -2127,7 +2285,16 @@ top - monitor dei processi
  
 kill - inviare un segnale ad un processo (uccidere un processo)
 
-- xxxxx
+- Il comando **kill** server per inviare un segnale ad un processo
+- Il segnale più comune è quello nominato **SIGKILL** che termina e uccide un process
+
+<br>
+
+```bash
+$ kill -9 <process id>  # uccide il processo identificato da id
+
+$ kill -9 132480
+```
 
 ---
 
@@ -2135,7 +2302,17 @@ kill - inviare un segnale ad un processo (uccidere un processo)
  
 free - visualizzare la memoria disponibile
 
-- xxxxx
+- Visualizza lo statod ella memoria RAM indicando la capacità occupata e quella disponibile
+
+<br>
+
+```bash
+$ free -h
+
+               buff/cache condivisi gratuiti totali utilizzati disponibili
+Mem:            15Gi       3,1Gi       1,9Gi       4,2Gi        10Gi       7,0Gi
+Swap:           15Gi       0,0Ki        15Gi
+```
 
 ---
 layout: section
@@ -2149,15 +2326,73 @@ layout: section
  
 sudo - eseguire un comando come un'altro utente
 
-- xxxxx
+- In alcuni casi è necessario eseguire un comando con i privilegi di root
+- Tuttavia in un sistema, a meno che noi siamo root, non conosciamo la password
+- Pertanto l'amministratore può decidere di fornirci i permessi per eseguire alcuni o tutti i comandi come root
+- Per far ciò si usa il comando **sudo**
+
+<br>
+
+```bash
+$ sudo <comando> # esegue comando come root
+
+$ sudo ls -la /root
+drwx------  8 root root  4096 ago 10 17:18 .
+drwxr-xr-x 18 root root  4096 ago 29 11:42 ..
+-rw-------  1 root root 32037 set 16 19:19 .bash_history
+-rw-r--r--  1 root root  3106 ott 15  2021 .bashrc
+drwx------  6 root root  4096 ago  7 15:11 .cache
+drwxr-xr-x  7 root root  4096 ago 24 18:05 .config
+drwx------  3 root root  4096 nov 18  2022 .gnupg
+drwx------  3 root root  4096 lug  3  2022 .launchpadlib
+-rw-------  1 root root    48 ago 10 17:18 .lesshst
+
+```
   
+---
+
+# Linux CLI 
+ 
+Il packet manager APT
+
+- Fin dagli albori, ogni distribuzione di linux fornisce un packet manager più o meno sofisticato
+- Windows non ha mai fornito un packet manager (esiste qualche scimmiottamento in tempi recenti)
+- Le distribuzioni derivate da Debiam incorporano tutte il packet manager `APT`
+- **APT** permette con estrema semplicità, e gestendo le dipendenze per noi,di
+  - cercare
+  - installare
+  - rimuovere
+
+- ogni tipo di software che vogliamo usare su linux
+
+
 ---
 
 # Linux CLI 
  
 apt search - ricerchiamo un programma da installare
 
-- xxxxx
+```bash
+$ apt search <stringa> # cerca nel repository tutti i software e paccketti che includono stringa
+
+$ apt search figlet                                                     
+Ordinamento... Fatto
+Ricerca sul testo... Fatto
+figlet/jammy 2.2.5-3 amd64
+  crea striscioni ASCII con grandi caratteri da testo normale
+
+irssi-scripts/jammy,jammy 20201016 all
+  raccolta di script per irssi
+
+php-text-figlet/jammy,jammy 1.0.2-5 all
+  motore per usare tipi di carattere FIGlet per fare il rendering di testo
+
+presentty/jammy,jammy 0.2.1-1.1 all
+  software per presentazioni basato su console
+
+python3-pyfiglet/jammy,jammy 0.8.0+dfsg-1 all
+  port per Python 3 della specifica FIGlet
+```
 
 ---
 
@@ -2165,8 +2400,27 @@ apt search - ricerchiamo un programma da installare
  
 apt install - installare un software
 
-- xxxxx
+```bash
+$ sudo apt install figlet # installa il paccketto figlet
 
+Lettura elenco dei pacchetti... Fatto
+Generazione albero delle dipendenze... Fatto
+Lettura informazioni sullo stato... Fatto   
+I seguenti pacchetti NUOVI saranno installati:
+  figlet
+0 aggiornati, 1 installati, 0 da rimuovere e 579 non aggiornati.
+È necessario scaricare 133 kB di archivi.
+Dopo quest'operazione, verranno occupati 752 kB di spazio su disco.
+Scaricamento di:1 http://apt.pop-os.org/ubuntu jammy/universe amd64 figlet amd64 2.2.5-3 [133 kB]
+Recuperati 133 kB in 0s (799 kB/s)
+Selezionato il pacchetto figlet non precedentemente selezionato.
+(Lettura del database... 381484 file e directory attualmente installati.)
+Preparativi per estrarre .../figlet_2.2.5-3_amd64.deb...
+Estrazione di figlet (2.2.5-3)...
+Configurazione di figlet (2.2.5-3)...
+update-alternatives: viene usato /usr/bin/figlet-figlet per fornire /usr/bin/figlet
+Elaborazione dei trigger per man-db (2.10.2-1)...
+```
 
 ---
 
@@ -2174,5 +2428,19 @@ apt install - installare un software
  
 apt remove - disinstallare un software
 
-- xxxxx
+```bash
+$ sudo apt remove figlet # rimuove il paccketto figlet
 
+Lettura elenco dei pacchetti... Fatto
+Generazione albero delle dipendenze... Fatto
+Lettura informazioni sullo stato... Fatto   
+I seguenti pacchetti saranno RIMOSSI:
+  figlet
+0 aggiornati, 0 installati, 1 da rimuovere e 579 non aggiornati.
+Dopo quest'operazione, verranno liberati 752 kB di spazio su disco.
+Continuare? [S/n] s
+(Lettura del database... 381556 file e directory attualmente installati.)
+Rimozione di figlet (2.2.5-3)...
+update-alternatives: viene usato /usr/bin/figlet-toilet per fornire /usr/bin/figlet
+Elaborazione dei trigger per man-db (2.10.2-1)...
+```
