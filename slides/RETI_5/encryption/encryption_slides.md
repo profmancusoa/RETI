@@ -12,8 +12,8 @@ lineNumbers: false
 aspectRatio: '16_/9'
 routerMode: 'hash'
 materia: "RETI"
-as: "2022/2023"
-version: '1.0.0'
+as: "2023/2024"
+version: '1.0.1'
 
 ---  
 
@@ -38,6 +38,23 @@ Simmetrica
 - L'Encryption (Cifratura) e Decryption (Decifratura) a chiave simmetrica prevede l'uso di una sola chiave utilizzata sia per la cifratura del testo in chiaro che per la decifratura del chyper text.
 
 <img src="/media/enc01.png" style="width:800px;margin:auto;"/>
+
+--- 
+
+# Encryption e Decryption
+
+Openssl
+
+- Lo svolgimento di queste esercitazioni prevede l'uso del tool OpenSSL sotto Linux
+- Le esercitazioni sono tutte correttamente funzionanti con la seguente version di OpenSSL
+
+<br>
+
+```bash
+openssl version
+OpenSSL 3.0.2 15 Mar 2022 (Library: OpenSSL 3.0.2 15 Mar 2022)
+```
+
 
 
 --- 
@@ -88,7 +105,6 @@ openssl enc -des -e -iter 1000 -a -provider legacy -provider default  -in clear.
 - **-provider default**: abilita il provider di algoritmi di default
 - **-in**: file in chiaro 
 - **-out**: file cifrato 
-
 
 --- 
 
@@ -245,6 +261,7 @@ Consegnare su classroom:
 - il file cifrato e codificato in base64 |cognome|_es1_chyper.txt
 - la chiave in esadecimale |cognome|_es1_key.txt 
 - l'IV in esadecimale |cognome|_es1_iv.txt
+- una lista di tutti i comandi e i passi per riprodurre l'esercitazione
 
 --- 
 
@@ -369,6 +386,11 @@ openssl pkeyutl -encrypt -pubin -inkey bob_pubblica.pem -in clear.txt  | base64 
 - **| base64**: encoding in base64
 - **>**: redirige l'output sul file chyper.txt
 
+
+```bash
+Nota: con una chiave RSA si può fare l'encryption di un blocco di dimensioni pari a:
+max block = (RSA KEY SIZE / 8) - 11 bytes
+```
 
 --- 
 
@@ -592,3 +614,25 @@ Asimmetrica
 
 Consegnare su classroom:
 - tutti i file e le chiavi utilizzati per lo svolgimento dell'esercitazione 
+- una lista di tutti i comandi e i passi per riprodurre l'esercitazione
+
+
+--- 
+
+# Esercizio crypto_03
+
+Asimmetrica e Simmetrica
+
+- Come visto in precedenza RSA non è adatto a cifrare/decrifrare grossi blocchi di dati
+- Pertanto è necessario utilizzare RSA per cifrare una chiave DES, scambiarla in modo sicuro e poi utilizzare questa chiave per coifrare/decifrare un blocco di test generico
+- Lavorando a gruppi di 2 (Studente A e B)
+  - generare una coppia di chiave asimmetriche per ogni studente
+  - A genera una chiave simmetrica DES
+  - A la cifra con RSA in modo che B possa decifrarla e la distribuisce a B su un canale non sicuro
+  - A crypta con DES un file di testo e lo invia a B
+  - B decifra la chiave precedentemente ricevuta da A
+  - B decifra il file con la chiave privata
+
+Consegnare su classroom:
+- tutti i file e le chiavi utilizzati per lo svolgimento dell'esercitazione 
+- una lista di tutti i comandi e i passi per riprodurre l'esercitazione
