@@ -1,3 +1,10 @@
+# 60 Tutorial Packet Tracer
+
+<mark>Qui una serie molto ampia di tutorial per Packet Tracer che insegnano ad usarlo in molti modi diversi</mark>
+
+[Packet tracer Tutorials](https://tutorials.ptnetacad.net/)
+
+
 # Packet Tracer
 
 Cisco Packet Tracer è un *simulatore di rete* professionale fornito gratuitamente da [Cisco System](https://www.cisco.com/).
