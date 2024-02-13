@@ -280,3 +280,12 @@ index.html          100%[===================>]      14  --.-KB/s    in 0.007s
 2024-02-13 11:57:19 (1.85 KB/s) - ‘index.html’ saved [14/14]
 
 ```
+
+
+---
+
+# Ringraziamenti
+
+Grazie
+
+Si ringrazia lo studente Andrea Canale (5INFO 2023/2024) per il contributo a queste slide
