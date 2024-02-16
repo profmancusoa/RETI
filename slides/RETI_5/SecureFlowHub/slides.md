@@ -143,8 +143,101 @@ Nonostante questo il PC sorgente riuscirà a completare il ping correttamente pe
 transition: fade-out
 ---
 
+# Dynamic SNAT
+Esercitazione
+
+Ora invece "nascondiamo" i nostri indirizzi privati usando un ***pool*** di indirizzi specifici. 
+```bash
+  iptables -t nat -A POSTROUTING -o ens5 -j SNAT --to-source 192.168.69.1-192.168.69.69
+```
+
+Ping di PC1 [192.168.1.1]:
+
+<img src="/media/dynamic_SNAT_pc1.png" style="width:100%;margin:auto;"/>
+
+Ping di PC2 [192.168.1.2]:
+
+<img src="/media/dynamic_SNAT_pc2.png" style="width:100%;margin:auto;"/>
+
+---
+transition: fade-out
+---
+
+# Dynamic SNAT
+Esercitazione
+
+Ping di PC1 e PC2:
+
+<img src="/media/dynamic_SNAT_pc1-2.png" style="width:100%;margin:auto;"/>
+
+Questa tipologia di NAT è utile nell'utilizzo interno di una rete ma applicare il NAT dinamico per inviare i pacchetti nella WAN necessiterebbe di un gran numero di indirizzi pubblici, questo porterebbe ad un costo della rete spropositato. 
+
+---
+transition: fade-out
+---
+
+# DNAT
+Destination NAT
+
+Con il DNAT rendiamo visibile il nostro server delle DMZ a tutto l'Internet. <br>
+A differenza di prima ora proveremo a collegarci rispettivamente a un echo server UDP ed uno TCP che risiedono nella DMZ della nostra LAN. 
+
+Situazione iniziale:
+
+<img src="/media/tcp_refused.png" style="width:80%;margin:auto;"/>
+
+Per quanto riguarda il server UDP, non essendoci connessione, non restituisce un errore ma la comunicazione non avviente:
+
+<img src="/media/udp_failed.png" style="width:80%;margin:auto;"/>
+
+---
+transition: fade-out
+---
+
+# DNAT
+Esercitazione
+
+Ora configuriamo il DNAT facendo si che i pacchetti avete protocollo TCP siano reiderizzati al server TCP [192.168.1.1] invece i pacchetti UDP al corrispettivo server [192.168.1.2]. 
+
+```bash
+  iptables -t nat -A PREROUTING -p tcp -d 10.0.0.100 -j DNAT --to-destination 192.168.1.1
+```
+
+<br>
+
+```bash
+  iptables -t nat -A PREROUTING -p udp -d 10.0.0.100 -j DNAT --to-destination 192.168.1.2
+```
+
+-p indica il protocollo del pacchetto
+
+-d la destinazione che assumerà il paccheto una volta reinviato
+
+Così facendo i nostri 2 echo server sono raggiungibili dalla WAN attraverso un solo IP pubblico. 
+---
+transition: fade-out
+---
+
+# DNAT
+Esercitazione
+
+<img src="/media/tcp_works.png" style="width:80%;margin:auto;"/>
+<br>
+<img src="/media/udp_works.png" style="width:80%;margin:auto;"/>
+
+---
+transition: fade-out
+---
+
 # [Man](https://man7.org/linux/man-pages/man8/iptables.8.html)
 Comandi utili per la gestione del NAT tramite iptables
+
+Su certe distro potrebbe non essere presente ```iptables``` ma bastera scrive ```/sbin/iptables```. 
+
+Attivare l'IP forwarding:
+```bash
+  echo 1 > /proc/sys/net/ipv4/ip_forward
+```
 
 Visualizzare le tabelle NAT:
 ```bash
