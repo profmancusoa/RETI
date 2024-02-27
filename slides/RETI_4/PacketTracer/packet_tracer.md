@@ -45,7 +45,7 @@ sudo dpkg -i CiscoPacketTracer_801_Ubuntu_64bit.deb
 5. Eseguire `packettracer` da linea di comando o dal menu
 6. Una volta che l'applicazione è partita, effettuare il login con le seguenti credenziali Netwrok Academy
    1. username: *espedito.mancuso@istitutoagnelli.it* 
-   2. password: *wie5Gai9Hei4chei*
+   2. password: *wie5Gai9Hei4che!i*
 7. Se tutto è andato a buon fine, dovresti vedere una schermata simile a questa 
 
 ![cpt2](media/packett_02.png)
