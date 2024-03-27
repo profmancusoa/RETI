@@ -13,7 +13,7 @@ aspectRatio: '16_/9'
 routerMode: 'hash'
 materia: "RETI"
 as: "2022/2023"
-version: '1.0.0'
+version: '1.1.0'
 
 #https://www.cisco.com/c/en/us/support/docs/routers/1700-series-modular-access-routers/71462-rtr-l2l-ipsec-split.html
 ---  
@@ -97,6 +97,16 @@ IPsec supporta due modalità di funzionamento:
 
 # IPsec VPN
 
+IPsec VPN
+
+- [Qui](https://community.cisco.com/t5/security-knowledge-base/crypto-map-based-ipsec-vpn-fundamentals-negotiation-and/ta-p/3153502) trovi un'ottima descrizione dei principali concetti legati alle VPN IPsec
+
+<img src="/media/vpn_17.png" style="width:500px;margin:auto;"/>
+
+--- 
+
+# IPsec VPN
+
 Remote VPN e Site-to-Site VPN
 
 - Nel resto di questa esercitazione configureremo i due tipi di VPN studiati
@@ -118,6 +128,8 @@ Remote VPN e Site-to-Site VPN
 # IPsec VPN
 
 Remote VPN
+
+- [Esecitazione_01](../vpn_remote_base.pkt) 
 
 <img src="/media/vpn_05.png" style="width:900px;margin:auto;"/>
 
@@ -214,7 +226,7 @@ Router(config)#aaa authentication login VPN-client local
 
 <br>
 
-**#7 abilitare authorizzazione locale per network client per il gruppo VPN-ATS**
+**#7 abilitare autorizzazione locale per network client per il gruppo VPN-ATS**
 
 ```bash
 Router(config)#aaa authorization network VPN-ATS local
@@ -235,11 +247,20 @@ Router(config)#username ats-linus secret password2
 
 Remote VPN
 
-**#9 creare la policy per isakmp (IKE) per stabilire la SA (Phase 1)**
+<img src="/media/vpn_16.png" style="width:500px;margin:auto;"/>
+
+--- 
+
+# IPsec VPN
+
+Remote VPN
+
+**#9 creare la policy per isakmp (internet security association key management protocol policy) (IKE) per stabilire la SA (Phase 1)**
 - si configura il protocollo di encryption
-- il protocollo di hashing per l'integrità
+- il protocollo di hashing per verifica dell'integrità
 - il modello di scambio delle chiavi
 - il metodo di scambio delle chiavi DH-5 (1536 bit)
+- durata del tunnel IKE phase 1
 
 <br>
 
@@ -286,8 +307,8 @@ Router(config)#crypto ipsec transform-set VPNipsec esp-aes esp-sha-hmac
 
 <br>
 
-- abilitiamo il protocollo ESP con encryption AES
-- per l'integrità utilizziamo sha-hmac
+- abilitiamo il protocollo **ESP** con encryption **AES**
+- per l'integrità utilizziamo **sha-hmac**
 
 --- 
 
@@ -300,9 +321,9 @@ Remote VPN
 
 Un dynamic crypto map è un template per la policy IPsec che verrà successivamente popolato con i parametri negoziati durante la fase di instaurazione della SA
 
-- abilitiamo il reverse route injection in modo da poter comunicare con il client
+- abilitiamo il `reverse route injection`  in modo da poter comunicare con il client
 
-Il Reverse route injection (RRI)permette al router di aggiungere delle route statiche per gli host presenti all'altro capo della VPN
+Il Reverse route injection (**RRI**) permette al router di aggiungere delle route statiche per gli host presenti all'altro capo della VPN
 
 <br>
 
@@ -326,12 +347,13 @@ Un crypto map è una configurazione software che ha due scopi principali:
 1. selezionare i pacchetti che necessità del processamento IPsec
 2. definire le policy per questi pacchetti 
 
+<br>
+
 - una crypto map deve essere applicata ad un interfaccia
 
 <br>
 
 ```bash
-Router(config)#
 Router(config)#crypto map VPNstaticmap client configuration address respond 
 Router(config)#crypto map VPNstaticmap client authentication list VPN-client
 Router(config)#crypto map VPNstaticmap isakmp authorization list VPN-ATS
@@ -358,7 +380,9 @@ Router#
 
 <br>
 
-- OK!!! ora il VPN router è in attesa di connessioni da parte dei remote client
+<banner padding="3">
+OK!!! ora il VPN router è in attesa di connessioni da parte dei remote client
+</banner>
 
 --- 
 
@@ -453,21 +477,29 @@ Remote VPN
 
 # IPsec VPN
 
-Remote VPN
-
-- Alcuni utili comandi per verificare lo stato della VPN sono
+Comandi per verificare lo stato della VPN
   
 ```bash
-Router#
 Router#show aaa sessions 
-Router#
-Router#
+ Shows user authentication sessions
+
 Router#show crypto ipsec sa
-Router# 
-Router#show crypto isakmp sa 
-Router# 
+ Shows the settings, number of encaps and decaps, local and remote proxy identities, 
+ and Security Parameter Indexes (SPIs), inbound and outbound, used by current 
+ Security Associations (SAs).
+
+Router#show crypto isakmp sa
+ Shows all current IKE SAs and the status. 
+
 Router#show crypto isakmp  policy 
-Router# 
+ Shows IKE policies
+
+Router#show crypto map
+ Shows the crypto map structure created with:  Name and sequence number of the crypto
+ Peer address.
+ Name of the ACL applied along with the local and remote proxy identities.
+ Values of the IPsec transform-set used.
+ Interface on which the crypto map is binded. 
 ```
 
 --- 
@@ -488,15 +520,17 @@ Remote VPN
 
 Site-to-Site VPN
 
+- [Esercitazione 02](../vpn_site2site_base.pkt)
+
 <img src="/media/vpn_13.png" style="width:900px;margin:auto;"/>
 
-- i VPN Router R1 e R2 sono Cisco c1900
+- i VPN Router Torino e Verona sono Cisco c1900
 
 --- 
 
 # IPsec VPN
 
-Site-to-Site VPN - Configurazione di R1
+Site-to-Site VPN - Configurazione di VPN Router TORINO
 
 **#1 abilitare la licenza per le VPN**
 
@@ -524,7 +558,7 @@ Router#reload
 
 # IPsec VPN
 
-Site-to-Site VPN - Configurazione di R1
+Site-to-Site VPN - Configurazione di VPN Router TORINO
 
 **#3 confermare l'attivazione della licenza per VPN**
 
@@ -545,7 +579,7 @@ data          disable       None          None
 
 # IPsec VPN
 
-Site-to-Site VPN - Configurazione di R1
+Site-to-Site VPN - Configurazione di VPN Router TORINO
 
 **#4 creare la policy per isakmp (IKE) per stabilire la SA (Phase 1)**
 - si configura il protocollo di encryption
@@ -569,9 +603,9 @@ Router(config-isakmp)#
 
 # IPsec VPN
 
-Site-to-Site VPN - Configurazione di R1
+Site-to-Site VPN - Configurazione di VPN Router TORINO
 
-**#5 definire la chiave isakmp**
+**#5 definire la chiave isakmp per il branch router (VERONA)**
 
 ```bash
 R1(config)#
@@ -583,7 +617,7 @@ R1(config)#
 
 # IPsec VPN
 
-Site-to-Site VPN - Configurazione di R1
+Site-to-Site VPN - Configurazione di VPN Router TORINO
 
 **#6 configuriamo la fase 2 di IKE**
 
@@ -598,9 +632,9 @@ R1(config)#
 
 # IPsec VPN
 
-Site-to-Site VPN - Configurazione di R1
+Site-to-Site VPN - Configurazione di VPN Router TORINO
 
-**#7 Definiamo adesso l’ACL che si occuperà di indentificare il traffico VPN (detto, in gergo, interesting traffic):**
+**#7 Definiamo adesso l’ACL che si occuperà di indentificare il traffico VPN (detto, in gergo, INTERESTING TRAFFIC):**
 
 
 ```bash
@@ -612,13 +646,15 @@ R1(config)#
 
 # IPsec VPN
 
-Site-to-Site VPN - Configurazione di R1
+Site-to-Site VPN - Configurazione di VPN Router TORINO
 
 **#8 definiamo la cryptomap**
 
 - definiamo il router peer (remote branch)
 - associamo il transform set
 - indichiamo quali indirizzi sono accettati tramite l'acces slist
+
+<br>
 
 ```bash
 R1(config)#crypto map VPN-MAIN-MAP 10  ipsec-isakmp 
@@ -634,7 +670,7 @@ R1(config-crypto-map)#
 
 # IPsec VPN
 
-Site-to-Site VPN - Configurazione di R1
+Site-to-Site VPN - Configurazione di VPN Router TORINO
 
 **#9 associamo la crypto map all'interfaccia esposta su Internet**
 
@@ -651,7 +687,7 @@ R1(config-if)#end
 
 # IPsec VPN
 
-Site-to-Site VPN - Configurazione di R2
+Site-to-Site VPN - Configurazione di VPN Router VERONA
 
 **#1 abilitare la licenza per le VPN**
 
@@ -679,7 +715,7 @@ Router#reload
 
 # IPsec VPN
 
-Site-to-Site VPN - Configurazione di R2
+Site-to-Site VPN - Configurazione di VPN Router VERONA
 
 **#3 confermare l'attivazione della licenza per VPN**
 
@@ -700,7 +736,7 @@ data          disable       None          None
 
 # IPsec VPN
 
-Site-to-Site VPN - Configurazione di R2
+Site-to-Site VPN - Configurazione di VPN Router VERONA
 
 **#4 creare la policy per isakmp (IKE) per stabilire la SA (Phase 1)**
 - si configura il protocollo di encryption
@@ -724,9 +760,9 @@ Router(config-isakmp)#
 
 # IPsec VPN
 
-Site-to-Site VPN - Configurazione di R2
+Site-to-Site VPN - Configurazione di VPN Router VERONA
 
-**#5 definire la chiave isakmp**
+**#5 definire la chiave isakmp per il main router (TORINO)**
 
 ```bash
 R1(config)#
@@ -738,7 +774,7 @@ R1(config)#
 
 # IPsec VPN
 
-Site-to-Site VPN - Configurazione di R2
+Site-to-Site VPN - Configurazione di VPN Router VERONA
 
 **#6 configuriamo la fase 2 di IKE**
 
@@ -753,7 +789,7 @@ R1(config)#
 
 # IPsec VPN
 
-Site-to-Site VPN - Configurazione di R2
+Site-to-Site VPN - Configurazione di VPN Router VERONA
 
 **#7 Definiamo adesso l’ACL che si occuperà di indentificare il traffico VPN (detto, in gergo, interesting traffic):**
 
@@ -767,7 +803,7 @@ R1(config)#
 
 # IPsec VPN
 
-Site-to-Site VPN - Configurazione di R2
+Site-to-Site VPN - Configurazione di VPN Router VERONA
 
 **#8 definiamo la cryptomap**
 
@@ -788,7 +824,7 @@ R1(config-crypto-map)#
 
 # IPsec VPN
 
-Site-to-Site VPN - Configurazione di R2
+Site-to-Site VPN - Configurazione di VPN Router VERONA
 
 **#9 dobbiamo evitare che il traffico LAN-to-LAN passi attraverso il NAT**
 
@@ -804,7 +840,7 @@ R2(config)#
 
 # IPsec VPN
 
-Site-to-Site VPN - Configurazione di R2
+Site-to-Site VPN - Configurazione di VPN Router VERONA
 
 **#10 associamo la ACl al NAT**
 
@@ -820,7 +856,7 @@ R2(config)#ip nat inside source list 100 interface gigabitEthernet 0/1 overload
 
 # IPsec VPN
 
-Site-to-Site VPN - Configurazione di R2
+Site-to-Site VPN - Configurazione di VPN Router VERONA
 
 **#11 associamo la crypto map all'interfaccia esposta su Internet**
 
@@ -839,7 +875,7 @@ R1(config-if)#end
 
 Site-to-Site VPN
 
-- OK ora verifichiamo che le SA sono correttamente configurate (R1)
+- OK ora verifichiamo che le SA sono correttamente configurate (VPN Router TORINO)
 
 ```bash
 R1#show crypto ipsec sa 
@@ -871,7 +907,7 @@ R1#
 
 Site-to-Site VPN
 
-- OK ora verifichiamo che le SA sono correttamente configurate (R2)
+- OK ora verifichiamo che le SA sono correttamente configurate (VPN Router VERONA)
 
 ```bash
 R2#show crypto ipsec sa 
@@ -938,13 +974,13 @@ Site-to-Site VPN
 **Esercizio:**
 
 - dal PC2 accedere via browser alla home page della intranet aziendale
-- verificare il pacchetto durante il transito di R2
-- com'è fatto il pacchetto all'ingresso di R2-Gi0/0?
-- com'è fatto il pacchetto all'uscita di R2-Gi0/1?
+- verificare il pacchetto durante il transito di VPN Router VERONA
+- com'è fatto il pacchetto all'ingresso di VPN Router VERONA-Gi0/0?
+- com'è fatto il pacchetto all'uscita di VPN Router VERONA-Gi0/1?
  
-- verificare il pacchetto durante il transito di R1
-- com'è fatto il pacchetto all'ingresso di R1-Gi0/0?
-- com'è fatto il pacchetto all'uscita di R1-Gi0/1?
+- verificare il pacchetto durante il transito di VPN Router TORINO
+- com'è fatto il pacchetto all'ingresso di VPN Router TORINO-Gi0/0?
+- com'è fatto il pacchetto all'uscita di VPN Router TORINO-Gi0/1?
 
-<img src="/media/vpn_15.png" style="width:450px;position:relative;right:-27rem;top: -15rem;"/>
+<img src="/media/vpn_15.png" style="width:350px;position:relative;right:-35rem;top: -15rem;"/>
 
