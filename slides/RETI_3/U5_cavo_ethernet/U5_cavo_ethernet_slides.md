@@ -11,7 +11,7 @@ class: 'text-center'
 lineNumbers: false
 aspectRatio: '16_/9'
 routerMode: 'hash'
-version: '1.1.0'
+version: '1.2.0'
 ---  
 
 # SISTEMI & RETI
@@ -101,9 +101,32 @@ version: '1.1.0'
 
 ![/media/Diapositiva20.jpg](/media/Diapositiva20.jpg)
 
---- #slide 21
 
-![/media/Diapositiva21.jpg](/media/Diapositiva21.jpg)
+---
+
+# Cavo UTP Ethernet
+
+- Configuriamo i due PC assegnando due indirizzi IP distinti all'interfaccia ethernet di ciascun PC
+- Per fare cio utilizziamo il network manager via CLI
+
+PC1
+
+```bash
+$ nmcli con add type ethernet ifname <nome interfaccia> con-name 'Conn-Test' ip4  10.10.10.1/24
+$
+$ nmcli con up Conn-Test
+```
+
+<br>
+
+PC2
+
+```bash
+$ nmcli con add type ethernet ifname <nome interfaccia> con-name 'Conn-Test' ip4  10.10.10.2/24
+$
+$ nmcli con up Conn-Test
+```
+
 
 --- #slide 22
 
@@ -111,7 +134,30 @@ version: '1.1.0'
 
 --- #slide 23
 
-![/media/Diapositiva23.jpg](/media/Diapositiva23.jpg)
+# Cavo UTP Ethernet
+
+- Ora dal un PC facciamo ping verso l'altro PC e viceversa
+
+PC1
+
+```bash
+$ ping 10.10.10.2
+```
+
+<br>
+
+PC2
+
+```bash
+$ ping 10.10.10.1
+```
+
+<br>
+<br>
+
+- Se tutto funziona correttamente dal PC1 siamo in gradi di "pingare" il PC2 e viceversa
+- Ciò significa che il nostro cavo è crimpato correttamente e ci fornisce connettività
+
 
 --- #slide 24
 
