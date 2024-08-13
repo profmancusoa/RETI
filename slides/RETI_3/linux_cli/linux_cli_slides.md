@@ -11,8 +11,8 @@ lineNumbers: false
 aspectRatio: '16_/9'
 routerMode: 'hash'
 materia: RETI 3
-as: 2023/2024
-version: '1.0.1'
+as: 2024/2025
+version: '1.1.0'
 ---  
 
 <!-- https://www.linuxjournal.com/content/linux-command-line-interface-introduction-guide#firstlook -->
@@ -33,6 +33,7 @@ Linux CLI
 
 <img src="/media/cli_00.png" width="750" style="margin:auto;position:relative; left: 0px; top: 0px;">
 
+
 ---
 
 # Linux CLI 
@@ -50,6 +51,22 @@ Linux CLI
 # Linux CLI 
 
 <img src="/media/c_03.jpg" width="750" style="margin:auto;position:relative; left: 0px; top: 0px;">
+
+---
+
+# Linux CLI
+
+Materiale Aggiuntivo
+
+- [Linux CLI Commands](/support/3/linux_cli/linux_commands.pdf)
+
+---
+
+&nbsp;
+
+<Cover fs=100px>
+Intro
+</Cover>
 
 ---
 
@@ -117,6 +134,15 @@ Introduzione
 
 ---
 
+&nbsp;
+
+<Cover fs=100px>
+Cenni Storici
+</Cover>
+
+
+---
+
 # Linux CLI 
  
 Breve Storia
@@ -143,6 +169,15 @@ Breve Storia
 # Linux CLI 
  
 <img src="/media/cli_03.png" width="600" style="margin:auto;position:relative; left: 0px; top: -10px;">
+
+---
+
+&nbsp;
+
+<Cover fs=100px>
+Concetti Chiave
+</Cover>
+
 
 ---
 
@@ -448,6 +483,14 @@ ed io sono Babbo Natale
 
 <img src="/media/cli_12.png" width="900" style="margin:auto;position:relative; left: 0px; top: 100px;">
 
+---
+
+&nbsp;
+
+<Cover fs=100px>
+La Fisolofia Unix
+</Cover>
+
 
 
 ---
@@ -465,6 +508,14 @@ Write programs that do one thing and do it well. Write programs to work together
 </Banner>
 
 <img src="/media/cli_13.png" width="250" style="margin:auto;position:relative; left: 0px; top: 10px;">
+
+---
+
+&nbsp;
+
+<Cover fs=100px>
+Le Pipe
+</Cover>
 
 
 ---
@@ -654,10 +705,13 @@ $ ls -l -a - h
 - -h è un parametro che dice a ls di visualizzare un output facilmente leggibile da un umano(stampa la dimensione del file in un formato leggibile dall'uomo)
 
 ---
-layout: section
----
 
-<h1>Indice Comandi</h1>
+&nbsp;
+
+<Cover fs=100px>
+Indice dei Comandi
+</Cover>
+
 
 ---
 
@@ -690,10 +744,12 @@ layout: section
 
 
 ---
-layout: section
----
 
-<h1>Comandi di uso Generale</h1>
+&nbsp;
+
+<Cover fs=100px>
+Comandi di uso generale
+</Cover>
 
 
 ---
@@ -829,12 +885,13 @@ reset - terminal initialization
 ```bash
 $ reset
 ```
-
----
-layout: section
 ---
 
-<h1>FileSystem</h1>
+&nbsp;
+
+<Cover fs=100px>
+Filesystem
+</Cover>
 
 
 ---
@@ -2213,12 +2270,13 @@ drwxrwxr-x   3 antonio backup    4096 set 12 15:24 DIR4
 -rw-rw-r--   1 antonio antonio      9 set 12 15:04 file2
 ```
 
-
----
-layout: section
 ---
 
-<h1>Gestione dei processi</h1>
+&nbsp;
+
+<Cover fs=100px>
+Gestione dei processi
+</Cover>
 
 ---
 
@@ -2313,12 +2371,13 @@ $ free -h
 Mem:            15Gi       3,1Gi       1,9Gi       4,2Gi        10Gi       7,0Gi
 Swap:           15Gi       0,0Ki        15Gi
 ```
-
----
-layout: section
 ---
 
-<h1>Comandi di sistema</h1>
+&nbsp;
+
+<Cover fs=100px>
+Comandi di sistema
+</Cover>
 
 ---
 
@@ -2444,3 +2503,7 @@ Rimozione di figlet (2.2.5-3)...
 update-alternatives: viene usato /usr/bin/figlet-toilet per fornire /usr/bin/figlet
 Elaborazione dei trigger per man-db (2.10.2-1)...
 ```
+
+---
+
+<img src="/media/hh01.webp" style="position:relative;top:-20px;">
