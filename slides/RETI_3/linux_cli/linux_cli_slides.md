@@ -12,7 +12,7 @@ aspectRatio: '16_/9'
 routerMode: 'hash'
 materia: RETI 3
 as: 2024/2025
-version: '1.1.0'
+version: '1.1.1'
 ---  
 
 <!-- https://www.linuxjournal.com/content/linux-command-line-interface-introduction-guide#firstlook -->
@@ -59,6 +59,8 @@ Linux CLI
 Materiale Aggiuntivo
 
 - [Linux CLI Commands](/support/3/linux_cli/linux_commands.pdf)
+- [Introduction to Bash](/support/3/linux_cli/introduction-to-bash-scripting-light.pdf)
+
 
 ---
 
