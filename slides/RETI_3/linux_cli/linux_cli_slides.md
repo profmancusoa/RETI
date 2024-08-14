@@ -12,12 +12,12 @@ aspectRatio: '16_/9'
 routerMode: 'hash'
 materia: RETI 3
 as: 2024/2025
-version: '1.1.1'
+version: '1.1.3'
 ---  
 
 <!-- https://www.linuxjournal.com/content/linux-command-line-interface-introduction-guide#firstlook -->
 
-# RETI 3
+# SISTEMI & RETI 3
 
 Linux CLI
 
@@ -56,10 +56,52 @@ Linux CLI
 
 # Linux CLI
 
-Materiale Aggiuntivo
+Esercitarsi con Linux e Materiale Aggiuntivo
 
+- [The_Complete_Linux_Manual](/support/3/linux_cli/The_Complete_Linux_Manual.pdf)
+- [How_Linux_Works](/support/3/linux_cli/How_Linux_Works.epub)
+- [Learning_Modern_Linux](/support/3/linux_cli/Learning_Modern_Linux.epub)
 - [Linux CLI Commands](/support/3/linux_cli/linux_commands.pdf)
 - [Introduction to Bash](/support/3/linux_cli/introduction-to-bash-scripting-light.pdf)
+- [Linux Journey](https://linuxjourney.com)
+- [Linux Survival](https://linuxsurvival.com)
+- [Linux Interactive Game](https://web.mit.edu/mprat/Public/web/Terminus/Web/main.html)
+- [llthw](https://web.archive.org/web/20130926213426/http://nixsrv.com/llthw)
+- [introduction-to-linux-installation](https://www.codecademy.com/learn/introduction-to-linux-installation)
+- [intro-to-the-command-line](https://www.codecademy.com/learn/intro-to-the-command-line)
+- [learn-the-command-line](https://www.codecademy.com/learn/learn-the-command-line-viewing-and-changing-the-file-system)
+- [learn-the-command-line-redirecting-input-and-output](https://www.codecademy.com/learn/learn-the-command-line-redirecting-input-and-output)
+
+---
+
+# Linux CLI
+
+Esercitarsi con Linux e Materiale Aggiuntivo
+
+- [introduction-to-linux-users-and-permissions](https://www.codecademy.com/learn/introduction-to-linux-users-and-permissions)
+- [introduction-to-linux-bash-scripting](https://www.codecademy.com/learn/introduction-to-linux-bash-scripting)
+- [Linux Fundamentals](https://linux-training.be/linuxfun.pdf?ref=itsfoss.com)
+- [Ultimate Linux Beginner Guide](https://linuxnewbieguide.org/wp-content/uploads/2016/07/The-Ultimate-Linux-Newbie-Guide-eBook-Edition-January-2017.pdf)
+- [Cisco Linux From Scratch](https://www.netacad.com/courses/os-it/ndg-linux-unhatched?ref=itsfoss.com)
+- [Cisco NDG Linux Essentials](https://www.netacad.com/courses/os-it/ndg-linux-essentials)
+- [Cisco NDG Linux 1](https://www.netacad.com/courses/os-it/ndg-linux-I)
+- [Cisco NDG Linux 2](https://www.netacad.com/courses/os-it/ndg-linux-II)
+- [The Linux Command Line](https://sourceforge.net/projects/linuxcommand/files/AWTLCL/21.10/AWTLCL-21.10.pdf/download)
+- [Learning The Shell](https://linuxcommand.org/lc3_learning_the_shell.php)
+- [Bash builtins](https://linuxcommand.org/lc3_man_page_index.php#builtins)
+- [File utilities](https://linuxcommand.org/lc3_man_page_index.php#file)
+
+---
+
+# Linux CLI
+
+Esercitarsi con Linux e Materiale Aggiuntivo
+
+- [Text utilities](https://linuxcommand.org/lc3_man_page_index.php#text)
+- [Shell utilities](https://linuxcommand.org/lc3_man_page_index.php#shell)
+- [Misc commands](https://linuxcommand.org/lc3_man_page_index.php#other)
+- [Intro to Linux](https://tldp.org/LDP/intro-linux/intro-linux.pdf?ref=itsfoss.com)
+- [Learn Linux in 5 Days](https://www.linuxtrainingacademy.com/itsfoss-ll5d/)
 
 
 ---
@@ -92,6 +134,65 @@ Introduzione
 
 # Linux CLI 
  
+Esercitazioni
+
+- Per svolgere le esercitazioni seguenti in modo sicuro e in modo riproducibile (tutti glistudenti hanno lo stesso ambiente) utilizziamo una tecnologia chiamta `Docker` (la vedremo in dettaglio in 5)
+- Quindi le esercitazioni non le svogeremo direttamente sul PC, ma in un ambiente "virtuale" protetto e sicuro
+- In altre parole potremo sperimentare senza problemi e senza timore di "rompere" il PC
+- Qualsiasi cosa avviene nell'ambiente "virtuale" (container) NON ha impatto sul PC in uso
+
+<Banner mt=30px padding=30px>
+<center>
+SPERIMETATE CON TRANQUILLITA'
+</center>
+</Banner>
+
+---
+
+# Linux CLI 
+ 
+Esercitazioni
+
+- Per eseguire ed entare nell'ambiente virtuale eseguite il seguente comando
+
+<br>
+
+```bash
+$ docker run -ti --rm profmancusoa/linux-cli:latest
+
+Unable to find image 'profmancusoa/linux-cli:latest' locally
+latest: Pulling from profmancusoa/linux-cli
+203e9cf21bd2: Pulling fs layer 
+5c69d8c91484: Pulling fs layer 
+d7c0c274ef0a: Pulling fs layer 
+...
+...
+
+antonio# 
+```
+
+---
+
+# Linux CLI 
+ 
+Esercitazione cli_01
+
+- Svolgere la seguente esercitazione (Quinz inclusi) 
+
+<br>
+<center>
+
+[https://linuxjourney.com/lesson/linux-history](https://linuxjourney.com/lesson/linux-history)
+
+</center>
+<br>
+
+- Domande agli studenti sul contenuto dell'esercitazione
+
+---
+
+# Linux CLI 
+ 
 Introduzione
 
 - Gli ambienti desktop sono molto evoluti e permettono all'utente di svolgere qualsiasi funzione necessaria durante l'utilizzo convenzionale del PC con Linux, esattamente come avviene per un utente Windows o Mac
@@ -119,6 +220,26 @@ Introduzione
 - La Linea di Comando di Linux (Command Line Interface, CLI) è un'interfaccia testuale che consente agli utenti di comunicare direttamente con il sistema operativo Linux attraverso comandi testuali. 
 
 <img src="/media/cli_02.png" width="900" style="margin:auto;position:relative; left: 0px; top: 0px;">
+
+---
+
+# Linux CLI 
+ 
+Esercitazione cli_02
+
+- Svolgere la seguente esercitazione (Quinz inclusi) 
+
+<br>
+<center>
+
+[https://linuxjourney.com/lesson/kernel-overview](https://linuxjourney.com/lesson/kernel-overview)
+
+</center>
+<br>
+
+- Domande agli studenti sul contenuto dell'esercitazione
+
+
 
 ---
 
@@ -219,7 +340,7 @@ File System
 <div style="width:50%; position: relative;top: -490px; left:450px;">
 
 ```bash
-❯❯❯ tree -L 1
+❯❯❯ tree -L 1 /
 /
 ├── bin -> usr/bin
 ├── boot
@@ -396,6 +517,25 @@ Il percorse `RELATIVO` alla home del file *README.md* è:
 ---
 
 # Linux CLI 
+ 
+Esercitazione cli_03
+
+- Svolgere la seguente esercitazione (Quinz inclusi) 
+
+<br>
+<center>
+
+[https://linuxjourney.com/lesson/filesystem-hierarchy](https://linuxjourney.com/lesson/filesystem-hierarchy)
+
+</center>
+<br>
+
+- Svolgere solo i primi 4 punti
+- Domande agli studenti sul contenuto dell'esercitazione
+
+---
+
+# Linux CLI 
 
 &nbsp;
 
@@ -428,6 +568,44 @@ Ecco alcuni concetti chiave relativi alla CLI di Linux:
 # Linux CLI 
 
 <img src="/media/cli_11.png" width="950" style="margin:auto;position:relative; left: 0px; top: 50px;">
+
+---
+
+# Linux CLI 
+ 
+Esercitazione cli_04
+
+- Svolgere la seguente esercitazione (Quinz inclusi) 
+
+<br>
+<center>
+
+[https://linuxjourney.com/lesson/users-and-groups](https://linuxjourney.com/lesson/users-and-groups)
+
+</center>
+<br>
+
+- Domande agli studenti sul contenuto dell'esercitazione
+
+
+---
+
+# Linux CLI 
+ 
+Esercitazione cli_05
+
+- Svolgere la seguente esercitazione (Quinz inclusi) 
+
+<br>
+<center>
+
+[https://linuxjourney.com/lesson/file-permissions](https://linuxjourney.com/lesson/file-permissions)
+
+</center>
+<br>
+
+- Svolgere i primi 3 punti
+- Domande agli studenti sul contenuto dell'esercitazione
 
 ---
 
@@ -478,12 +656,6 @@ ciao io sono Linux
 ed io sono Babbo Natale
 ```
 
----
-
-# Linux CLI 
-
-
-<img src="/media/cli_12.png" width="900" style="margin:auto;position:relative; left: 0px; top: 100px;">
 
 ---
 
@@ -493,6 +665,12 @@ ed io sono Babbo Natale
 La Fisolofia Unix
 </Cover>
 
+---
+
+# Linux CLI 
+
+
+<img src="/media/cli_12.png" width="900" style="margin:auto;position:relative; left: 0px; top: 100px;">
 
 
 ---
@@ -1788,6 +1966,24 @@ $ echo ciao > file1
 
 # Linux CLI 
  
+Esercitazione cli_06
+
+- Svolgere la seguente esercitazione (Quinz inclusi) 
+
+<br>
+<center>
+
+[https://linuxjourney.com/lesson/the-shell]https://linuxjourney.com/lesson/the-shell)
+
+</center>
+<br>
+
+- Domande agli studenti sul contenuto dell'esercitazione
+
+---
+
+# Linux CLI 
+ 
 sort - ordinare le linee di un file di testo
 
 - Ordina un file di testo
@@ -2271,6 +2467,45 @@ drwxrwxr-x   3 antonio backup    4096 set 12 15:24 DIR4
 -r-xr-x--x   1 antonio antonio    579 set 12 15:21 file1
 -rw-rw-r--   1 antonio antonio      9 set 12 15:04 file2
 ```
+
+---
+
+# Linux CLI 
+ 
+Esercitazione cli_07
+
+- Svolgere la seguente esercitazione (Quinz inclusi) 
+
+<br>
+<center>
+
+[https://linuxjourney.com/lesson/stdout-standard-out-redirect](https://linuxjourney.com/lesson/stdout-standard-out-redirect)
+
+</center>
+<br>
+
+- Domande agli studenti sul contenuto dell'esercitazione
+
+
+---
+
+# Linux CLI 
+ 
+Esercitazione cli_08
+
+- Svolgere la seguente esercitazione (Quinz inclusi) 
+
+<br>
+<center>
+
+[https://linuxjourney.com/lesson/regular-expressions-regex](https://linuxjourney.com/lesson/regular-expressions-regex)
+
+</center>
+<br>
+
+- Svolgere i punti dal 2 al 8 inclusi
+- Domande agli studenti sul contenuto dell'esercitazione
+
 
 ---
 
