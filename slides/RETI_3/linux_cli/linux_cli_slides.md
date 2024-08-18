@@ -12,7 +12,7 @@ aspectRatio: '16_/9'
 routerMode: 'hash'
 materia: RETI 3
 as: 2024/2025
-version: '1.1.3'
+version: '1.2.0'
 ---  
 
 <!-- https://www.linuxjournal.com/content/linux-command-line-interface-introduction-guide#firstlook -->
@@ -58,6 +58,7 @@ Linux CLI
 
 Esercitarsi con Linux e Materiale Aggiuntivo
 
+- [PWN College - Linux Luminarium](https://pwn.college/linux-luminarium/)
 - [The_Complete_Linux_Manual](/support/3/linux_cli/The_Complete_Linux_Manual.pdf)
 - [How_Linux_Works](/support/3/linux_cli/How_Linux_Works.epub)
 - [Learning_Modern_Linux](/support/3/linux_cli/Learning_Modern_Linux.epub)
@@ -70,7 +71,6 @@ Esercitarsi con Linux e Materiale Aggiuntivo
 - [introduction-to-linux-installation](https://www.codecademy.com/learn/introduction-to-linux-installation)
 - [intro-to-the-command-line](https://www.codecademy.com/learn/intro-to-the-command-line)
 - [learn-the-command-line](https://www.codecademy.com/learn/learn-the-command-line-viewing-and-changing-the-file-system)
-- [learn-the-command-line-redirecting-input-and-output](https://www.codecademy.com/learn/learn-the-command-line-redirecting-input-and-output)
 
 ---
 
@@ -78,6 +78,7 @@ Esercitarsi con Linux e Materiale Aggiuntivo
 
 Esercitarsi con Linux e Materiale Aggiuntivo
 
+- [learn-the-command-line-redirecting-input-and-output](https://www.codecademy.com/learn/learn-the-command-line-redirecting-input-and-output)
 - [introduction-to-linux-users-and-permissions](https://www.codecademy.com/learn/introduction-to-linux-users-and-permissions)
 - [introduction-to-linux-bash-scripting](https://www.codecademy.com/learn/introduction-to-linux-bash-scripting)
 - [Linux Fundamentals](https://linux-training.be/linuxfun.pdf?ref=itsfoss.com)
@@ -102,7 +103,10 @@ Esercitarsi con Linux e Materiale Aggiuntivo
 - [Misc commands](https://linuxcommand.org/lc3_man_page_index.php#other)
 - [Intro to Linux](https://tldp.org/LDP/intro-linux/intro-linux.pdf?ref=itsfoss.com)
 - [Learn Linux in 5 Days](https://www.linuxtrainingacademy.com/itsfoss-ll5d/)
-
+- [Linux Basics for Hacker](/support/3/linux_cli/)
+- [Linux_Command_Line](/support/3/linux_cli/Linux_Command_Line.epub)
+- [Linux_Basics_Hackers](/support/3/linux_cli/Linux_Basics_Hackers.epub)
+- [Essential_Linux_Commands](/support/3/linux_cli/Essential_Linux_Commands.epub)
 
 ---
 
@@ -193,6 +197,58 @@ Esercitazione cli_01
 
 # Linux CLI 
  
+Esercitazioni
+
+- Per esercitarci usiamo anche una piattaforma didattica online che si chiama [PWN COLLEGE](https://pwn.college)
+
+<img src="/media/cli_21.png" width="550" style="margin:auto;position:relative; left: 0px; top: 20px;">
+
+
+---
+
+# Linux CLI 
+ 
+Esercitazioni
+
+- PWN COLLEGE è una piatatforma dedicata all'apprendimento e alla sperimentazione
+- Contiene un vaso curriculum su tutti i principlai temi riguardanti la **cyber security**
+- Linux ovviamente è un argomento fondamentale per affrontare anche i primi esercizi
+- Noi useremo principlamente la sezione dedicata all'apprendimento dei rudimenti della CLI di Linux
+
+<Banner mt=30px padding=30px>
+Invito TUTTI gli studenti a sperimentare ed apprendere tramite il materiale fornito e tramite PWN COLLEGE.<br>
+Anche se all'inizio può risultare ostico, una volta entrati nella mentalità corretta sarà un modo divertente di apprendere e mettere a frutto le proprie capacità
+</Banner>
+
+---
+
+# Linux CLI 
+ 
+Esercitazione cli_02
+
+- Utilizzando l'email istituzionale crere un account su PWN COLLEGE
+- Consegnare su github uno screenshot che fa vedere al docente il tuo user name appena creato su PWN COLLEGE
+- Il file si deve chiamare *|congome|_pwncollege_account.(png!jpg)*
+
+---
+
+# Linux CLI 
+ 
+Esercitazione cli_03
+
+- Svolgere il dojo [Getting Started](https://pwn.college/welcome/)
+- Leggere e visualizzare le due unità `Lectures and Reading`
+- Completare con successo tutte le 10 `Challenges`
+- Domande del docente sui temi trattati e sulle sezioni *Lecturesd and Reading*
+- Consegnare su su github lo screenshoot che dimostra il superamento delle 10 challenges con il seguente nome *|cognome|_dojo_03a.(png|jpg)*
+
+<img src="/media/cli_22.png" width="450" style="margin:auto;position:relative; left: 200px; top: -20px;">
+
+
+---
+
+# Linux CLI 
+ 
 Introduzione
 
 - Gli ambienti desktop sono molto evoluti e permettono all'utente di svolgere qualsiasi funzione necessaria durante l'utilizzo convenzionale del PC con Linux, esattamente come avviene per un utente Windows o Mac
@@ -225,7 +281,7 @@ Introduzione
 
 # Linux CLI 
  
-Esercitazione cli_02
+Esercitazione cli_04
 
 - Svolgere la seguente esercitazione (Quinz inclusi) 
 
@@ -518,7 +574,7 @@ Il percorse `RELATIVO` alla home del file *README.md* è:
 
 # Linux CLI 
  
-Esercitazione cli_03
+Esercitazione cli_05
 
 - Svolgere la seguente esercitazione (Quinz inclusi) 
 
@@ -532,6 +588,26 @@ Esercitazione cli_03
 
 - Svolgere solo i primi 4 punti
 - Domande agli studenti sul contenuto dell'esercitazione
+
+---
+
+# Linux CLI 
+ 
+Esercitazione cli_06
+
+- Svolgere i seguenti moduli del dojo [Linux Luminarium](https://pwn.college/linux-luminarium/)
+  - [Hello Hackers](https://pwn.college/linux-luminarium/hello/)
+  - [Pondering Paths](https://pwn.college/linux-luminarium/paths/)
+  - [Pondering PATH](https://pwn.college/linux-luminarium/path/) 
+- Leggere e visualizzare le due unità `Lectures and Reading`
+- Completare con successo tutte le 15 `Challenges`
+- Domande del docente sui temi trattati e sulle sezioni *Lecturesd and Reading*
+- Consegnare su su github 3 screenshoots che dimostrano il superamento delle 15 challenges con i seguenti nomi:
+  - *|cognome|_dojo_linux_06a.(png|jpg)*
+  - *|cognome|_dojo_linux_06b.(png|jpg)*
+  - *|cognome|_dojo_linux_06c.(png|jpg)*
+
+
 
 ---
 
@@ -573,7 +649,7 @@ Ecco alcuni concetti chiave relativi alla CLI di Linux:
 
 # Linux CLI 
  
-Esercitazione cli_04
+Esercitazione cli_07
 
 - Svolgere la seguente esercitazione (Quinz inclusi) 
 
@@ -592,7 +668,7 @@ Esercitazione cli_04
 
 # Linux CLI 
  
-Esercitazione cli_05
+Esercitazione cli_08
 
 - Svolgere la seguente esercitazione (Quinz inclusi) 
 
@@ -606,6 +682,7 @@ Esercitazione cli_05
 
 - Svolgere i primi 3 punti
 - Domande agli studenti sul contenuto dell'esercitazione
+
 
 ---
 
@@ -848,6 +925,20 @@ $ cat file_ord.txt
 ---
 
 # Linux CLI 
+ 
+Esercitazione cli_09
+
+- Svolgere i seguenti moduli del dojo [Linux Luminarium](https://pwn.college/linux-luminarium/)
+  - [Practicing Piping](https://pwn.college/linux-luminarium/piping/)
+- Leggere e visualizzare le due unità `Lectures and Reading`
+- Completare con successo tutt le 11 le `Challenges`
+- Domande del docente sui temi trattati e sulle sezioni *Lecturesd and Reading*
+- Consegnare su su github uno screenshoot che dimostra il superamento delle 11 challenges con il seguente nome:
+  - *|cognome|_dojo_linux_09a.(png|jpg)*
+
+---
+
+# Linux CLI 
 
 &nbsp;
  
@@ -1065,6 +1156,24 @@ reset - terminal initialization
 ```bash
 $ reset
 ```
+
+---
+
+# Linux CLI 
+ 
+Esercitazione cli_10
+
+- Svolgere i seguenti moduli del dojo [Linux Luminarium](https://pwn.college/linux-luminarium/)
+  - [Comprehending Commands](https://pwn.college/linux-luminarium/commands/)
+  - [Digesting Documentation](https://pwn.college/linux-luminarium/man/)
+- Leggere e visualizzare le due unità `Lectures and Reading`
+- Completare con successo tutte le 19 `Challenges`
+- Domande del docente sui temi trattati e sulle sezioni *Lecturesd and Reading*
+- Consegnare su su github 2 screenshoots che dimostrano il superamento delle 19 challenges con i seguenti nomi:
+  - *|cognome|_dojo_linux_10a.(png|jpg)*
+  - *|cognome|_dojo_linux_10b.(png|jpg)*
+
+
 ---
 
 &nbsp;
@@ -1776,6 +1885,24 @@ $ rm -rf DIR3
 
 # Linux CLI 
  
+Esercitazione cli_11
+
+- Svolgere i seguenti moduli del dojo [Linux Luminarium](https://pwn.college/linux-luminarium/)
+  - [File Globbing](https://pwn.college/linux-luminarium/globbing/)
+  - [Shell Variables](https://pwn.college/linux-luminarium/variables/)
+- Leggere e visualizzare le due unità `Lectures and Reading`
+- Completare con successo tutte le 14 `Challenges`
+- Domande del docente sui temi trattati e sulle sezioni *Lecturesd and Reading*
+- Consegnare su su github 2 screenshoots che dimostrano il superamento delle 14 challenges con i seguenti nomi:
+  - *|cognome|_dojo_linux_11a.(png|jpg)*
+  - *|cognome|_dojo_linux_11b.(png|jpg)*
+
+
+
+---
+
+# Linux CLI 
+ 
 more - visualizzazione file paginata
 
 - more permette di leggere un file di testo una pagina alla volta
@@ -1966,7 +2093,7 @@ $ echo ciao > file1
 
 # Linux CLI 
  
-Esercitazione cli_06
+Esercitazione cli_12
 
 - Svolgere la seguente esercitazione (Quinz inclusi) 
 
@@ -2472,7 +2599,22 @@ drwxrwxr-x   3 antonio backup    4096 set 12 15:24 DIR4
 
 # Linux CLI 
  
-Esercitazione cli_07
+Esercitazione cli_13
+
+- Svolgere i seguenti moduli del dojo [Linux Luminarium](https://pwn.college/linux-luminarium/)
+  - [Perciving Permissions](https://pwn.college/linux-luminarium/permissions/)
+- Leggere e visualizzare le due unità `Lectures and Reading`
+- Completare con successo tutte le 8 `Challenges`
+- Domande del docente sui temi trattati e sulle sezioni *Lecturesd and Reading*
+- Consegnare su su github 1 screenshoots che dimostrano il superamento delle 8 challenges con i seguenti nomi:
+  - *|cognome|_dojo_linux_13a.(png|jpg)*
+
+
+---
+
+# Linux CLI 
+ 
+Esercitazione cli_14
 
 - Svolgere la seguente esercitazione (Quinz inclusi) 
 
@@ -2491,7 +2633,7 @@ Esercitazione cli_07
 
 # Linux CLI 
  
-Esercitazione cli_08
+Esercitazione cli_15
 
 - Svolgere la seguente esercitazione (Quinz inclusi) 
 
@@ -2608,6 +2750,23 @@ $ free -h
 Mem:            15Gi       3,1Gi       1,9Gi       4,2Gi        10Gi       7,0Gi
 Swap:           15Gi       0,0Ki        15Gi
 ```
+
+---
+
+# Linux CLI 
+ 
+Esercitazione cli_16
+
+- Svolgere i seguenti moduli del dojo [Linux Luminarium](https://pwn.college/linux-luminarium/)
+  - [Processes and Jobs](https://pwn.college/linux-luminarium/processes/)
+- Leggere e visualizzare le due unità `Lectures and Reading`
+- Completare con successo tutte le 9 `Challenges`
+- Domande del docente sui temi trattati e sulle sezioni *Lecturesd and Reading*
+- Consegnare su su github 1 screenshoots che dimostrano il superamento delle 9 challenges con i seguenti nomi:
+  - *|cognome|_dojo_linux_16a.(png|jpg)*
+
+
+
 ---
 
 &nbsp;
@@ -2740,6 +2899,22 @@ Rimozione di figlet (2.2.5-3)...
 update-alternatives: viene usato /usr/bin/figlet-toilet per fornire /usr/bin/figlet
 Elaborazione dei trigger per man-db (2.10.2-1)...
 ```
+
+---
+
+# Linux CLI 
+ 
+Esercitazione cli_17
+
+- Svolgere i seguenti moduli del dojo [Linux Luminarium](https://pwn.college/linux-luminarium/)
+  - [Untangling Users](https://pwn.college/linux-luminarium/users/)
+  - [Chaining Commands](https://pwn.college/linux-luminarium/chaining/)
+- Leggere e visualizzare le due unità `Lectures and Reading`
+- Completare con successo tutte le 8 `Challenges`
+- Domande del docente sui temi trattati e sulle sezioni *Lecturesd and Reading*
+- Consegnare su su github 2 screenshoots che dimostrano il superamento delle 8 challenges con i seguenti nomi:
+  - *|cognome|_dojo_linux_17a.(png|jpg)*
+  - *|cognome|_dojo_linux_17b.(png|jpg)*
 
 ---
 
