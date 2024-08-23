@@ -4,15 +4,15 @@ theme: default
 # like them? see https://unsplash.com/collections/94734566/slidev
 # background: https://source.unsplash.com/collection/94734566/1920x1080
 background: /cover.png
-class: 'text-center'
+class: "text-center"
 # https://sli.dev/custom/highlighters.html
 # show line numbers in code blocks
 lineNumbers: false
-aspectRatio: '16_/9'
-routerMode: 'hash'
+aspectRatio: "16_/9"
+routerMode: "hash"
 materia: RETI 3
 as: 2024/2025
-version: '1.2.0'
+version: "1.2.1"
 ---  
 
 <!-- https://www.linuxjournal.com/content/linux-command-line-interface-introduction-guide#firstlook -->
@@ -637,6 +637,13 @@ Ecco alcuni concetti chiave relativi alla CLI di Linux:
 # Linux CLI 
 
 <img src="/media/cli_10.png" width="950" style="margin:auto;position:relative; left: 0px; top: 80px;">
+
+
+---
+
+# Linux CLI 
+
+<img src="/media/c_04.jpg" width="450" style="margin:auto;position:relative; left: 0px; top: -50px;">
 
 
 ---
