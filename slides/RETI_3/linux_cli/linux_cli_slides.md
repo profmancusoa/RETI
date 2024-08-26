@@ -12,7 +12,7 @@ aspectRatio: "16_/9"
 routerMode: "hash"
 materia: RETI 3
 as: 2024/2025
-version: "1.2.1"
+version: "1.2.2"
 ---  
 
 <!-- https://www.linuxjournal.com/content/linux-command-line-interface-introduction-guide#firstlook -->
@@ -107,6 +107,72 @@ Esercitarsi con Linux e Materiale Aggiuntivo
 - [Linux_Command_Line](/support/3/linux_cli/Linux_Command_Line.epub)
 - [Linux_Basics_Hackers](/support/3/linux_cli/Linux_Basics_Hackers.epub)
 - [Essential_Linux_Commands](/support/3/linux_cli/Essential_Linux_Commands.epub)
+
+---
+
+# Linux CLI
+
+Esercitarsi con Linux giocando a Bandit
+
+
+<a href="https://www.youtube.com/playlist?list=PLhruyobnXYz9XE9nXpgyUuaNaJzucdvwE" target="_blank"><img src="/media/cli_23.png" width="950" style="margin:auto;position:relative; left: 0px; top: 20px;"></a>
+
+---
+
+# Linux CLI
+
+Esercitarsi con Linux giocando a Bandit
+
+<div style="border: 0px solid black;width:33%;position:relative; top: 0px; left:0px;">
+
+- [Intro](https://youtu.be/DMG3A9f1EfE)
+- [Livello 00](https://youtu.be/qY2W6ZiYB-o)
+- [Livello 01](https://youtu.be/sPk5g25Uimo)
+- [Livello 02](https://youtu.be/vuzsPh4wIVo)
+- [Livello 03](https://youtu.be/ygYIDn2Fo3Y)
+- [Livello 04](https://youtu.be/0FAEBDzefgY)
+- [Livello 05](https://youtu.be/Wm2J21CXVnM)
+- [Livello 06](https://youtu.be/iGPhRS6of88)
+- [Livello 07](https://youtu.be/Ce1swn03lsg)
+- [Livello 08](https://youtu.be/3b7h2BacgDg)
+- [Livello 09](https://youtu.be/KkMH017YUHU)
+- [Livello 10](https://youtu.be/T2j9bAJihyE)
+
+</div>
+
+<div style="border: 0px solid black;width:33%;position:relative; top: -382px; left: 300px;">
+
+- [Livello 11](https://youtu.be/jGDuTP5q0dk)
+- [Livello 12](https://youtu.be/p-lOinMmFZs)
+- [Livello 13](https://youtu.be/7bl99RA8QMM)
+- [Livello 14](https://youtu.be/rGcG0f5TVcc)
+- [Livello 15](https://youtu.be/MwosasHuQL8)
+- [Livello 16](https://youtu.be/2oRHnQYlvFY)
+- [Livello 17](https://youtu.be/OOV1yaFDoCg)
+- [Livello 18](https://youtu.be/qjOXW1uu9II)
+- [Livello 19](https://youtu.be/QuJVj7Rid9g)
+- [Livello 20](https://youtu.be/DfNtoKDPWDg)
+- [Livello 21](https://youtu.be/XqpeqxM06e0)
+- [Livello 22](https://youtu.be/h8-u-Om5XeE)
+
+</div>
+
+<div style="border: 0px solid black;width:33%;position:relative; top: -765px; left: 600px;">
+
+- [Livello 23](https://youtu.be/ozOIZz-SQuo)
+- [Livello 24](https://youtu.be/gbc9wYRv7p8)
+- [Livello 25](https://youtu.be/R2yCHJuMixs)
+- [Livello 26](https://youtu.be/Fjw_JaLMYss)
+- [Livello 27](https://youtu.be/CHic_Ks-Smk)
+- [Livello 28](https://youtu.be/0sZeXEwx-Cc)
+- [Livello 29](https://youtu.be/9jjzf7ZRlfQ)
+- [Livello 30](https://youtu.be/W0q55XAw0Vs)
+- [Livello 31](https://youtu.be/afayTF3L8mM)
+- [Livello 32](https://youtu.be/tUPJRqLys0Y)
+- [Livello 33](https://youtu.be/a1hDMXQIWTY)
+
+</div>
+
 
 ---
 
