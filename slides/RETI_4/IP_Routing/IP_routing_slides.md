@@ -4,15 +4,14 @@ theme: default
 # like them? see https://unsplash.com/collections/94734566/slidev
 background: https://source.unsplash.com/collection/94734566/1920x1080
 # apply any windi css classes to the current slide
-class: 'text-center'
+class: "text-center"
 # https://sli.dev/custom/highlighters.html
 #highlighter: shiki
 # show line numbers in code blocks
 lineNumbers: false
-aspectRatio: '16_/9'
-routerMode: 'hash'
-version: '1.0.0'
-
+aspectRatio: "16_/9"
+routerMode: "hash"
+version: "1.0.1"
 ---  
 
 <style>
@@ -196,6 +195,7 @@ Enter configuration commands, one per line.  End with CNTL/Z.
 
 R1(config)#int f0/1
 R1(config-if)#ip address <IP address DOTTED QUAD> <IP netmask DOTTED QUAD> 
+R1(config-if)#no shutdown
 R1(config-if)#end
 R1#
 ```
