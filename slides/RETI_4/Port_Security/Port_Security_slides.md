@@ -5,15 +5,14 @@ theme: default
 #background: https://source.unsplash.com/collection/94734566/1920x1080
 background: portsecurity_cover.jpg
 # apply any windi css classes to the current slide
-class: 'text-center'
+class: "text-center"
 # https://sli.dev/custom/highlighters.html
 #highlighter: shiki
 # show line numbers in code blocks
 lineNumbers: false
-aspectRatio: '16_/9'
-routerMode: 'hash'
-version: '1.0.0'
-
+aspectRatio: "16_/9"
+routerMode: "hash"
+version: "1.0.1"
 ---  
 
 <style>
@@ -73,7 +72,7 @@ Proteggiamo la rete da attacchi di livello 2
 Proteggiamo la rete da attacchi di livello 2
 
 - A livello 2 ci sono vari tipi di attacchi dai quali bisogna proteggersi:
-  - **MAC flooding o Switch flooding**: leteralmente inondazione dello switch. L'attaccante invia una serie di pacchetti propriamente creati per satuare la MAC learning table. In questa condizione lo switch entra in una modalità chiamata **fail open** in cui si comporta come un hub. In tal modo l'attaccante può sniffare semplicemente tutto il traffico dello switch in questione, entrando così in possesso di informazioni molto preziose.  
+  - **MAC flooding o Switch flooding**: letteralmente inondazione dello switch. L'attaccante invia una serie di pacchetti propriamente creati per satuare la MAC learning table. In questa condizione lo switch entra in una modalità chiamata **fail open** in cui si comporta come un hub. In tal modo l'attaccante può sniffare semplicemente tutto il traffico dello switch in questione, entrando così in possesso di informazioni molto preziose.  
   - **ARP poisoning**: attacco man-in-the-middle che mira a confondere gli host della rete e a impersonare il default gateway in modo da poter ricevere tutto il traffico di rete.
   - **MAC spoofing**: attacco che mira a cambiare l'identità di una scheda di rete per impersonare una scheda diversa per aggirare controlli di sicurezza.
   
