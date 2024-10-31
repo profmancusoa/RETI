@@ -13,7 +13,7 @@ aspectRatio: "16_/9"
 routerMode: "hash"
 materia: RETI 4
 as: 2024/2025
-version: "1.1.0"
+version: "1.1.1"
 # devo definire:
 # 1- bridge id (mac + priority)
 # 2- costo dei link
