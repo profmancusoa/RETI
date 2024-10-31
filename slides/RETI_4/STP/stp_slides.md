@@ -2,19 +2,18 @@
 theme: default
 # random image from a curated Unsplash collection by Anthony
 # like them? see https://unsplash.com/collections/94734566/slidev
-background: https://source.unsplash.com/collection/94734566/1920x1080
+background: /cover.png
 # apply any windi css classes to the current slide
-class: 'text-center'
+class: "text-center"
 # https://sli.dev/custom/highlighters.html
 #highlighter: shiki
 # show line numbers in code blocks
 lineNumbers: false
-aspectRatio: '16_/9'
-routerMode: 'hash'
+aspectRatio: "16_/9"
+routerMode: "hash"
 materia: RETI 4
-as: 2022/2023
-version: '1.0.0'
-
+as: 2024/2025
+version: "1.1.0"
 # devo definire:
 # 1- bridge id (mac + priority)
 # 2- costo dei link
@@ -29,7 +28,6 @@ version: '1.0.0'
 #     c- lowest port number
 # 3) find designated port (1 per segment) (tutte per il root bridge)
 # 4) block all other ports
-
 
 ---  
 
@@ -122,12 +120,16 @@ Algoritmo di risoluzione
 - Il protocollo di Spanning Tree compie i seguenti passi per determinare lo stato di ogno porta di ogni switch della rete
 
 1. **elezione del root bridge**: siccome ci deve essere un solo switch root per un albero, si determina come root bridge lo switch che ha bridgeID minore di tutti
+
+    ***Da notare che il root bridge ha TUTTE porte di tipo designated***
+
+
 2. **selezione della root port**: per ogni switch, diverso dal root bridge, si identifica una sola porta che è più "conveniente" nell'interconnettere lo switch al root bridge
     
    La maggior "convenienza" si determina in base a:
    1. percorso a minor costo
    2. minor bridgeID ricevuto su una data porta
-   3. minor numero di porta
+   <!-- 3. minor numero di porta -->
 
 --- #slide 1
 
@@ -136,10 +138,11 @@ Algoritmo di risoluzione
 Algoritmo di risoluzione
 
 3. **selezione delle designated port**: per ogni segmento o rete si elegge una sola designated port che ha il compito di connettere il segmento al root bridge. Su un dato segmento è la porta che è più "vicina" al root bridge
-    
-    ***Da notare che il root bridge ha TUTTE porte di tipo designated***
 
-<br>
+La maggior "vicinanza" al root bridge si determina in base a:
+1. percorso più preve verso il root bridge
+2. in caso di parità, si determina in base la minor Bridge ID
+
 
 
 Al termine dei 3 passi
@@ -147,3 +150,203 @@ Al termine dei 3 passi
 <div style="background-color:green; color:white;padding:2rem;font-size: 2rem;line-height:2.5rem;">
 TUTTE LE PORTE CHE NON SONO ROOT O DESIGNATED VENGONO MESSE IN BLOCKING MODE
 </div>
+
+---
+
+# STP
+
+Come funziona STP (Youtube)
+
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/1RPMCnJStec?si=JSE_pmKjovWMesGr" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen style="margin: auto; position:relative;top:50px;"></iframe>
+
+---
+
+# STP
+
+Esempio 1
+
+<img src="/media/stp_01.jpg" width=550 style="margin:auto;position:relative;top:-100px;">
+
+---
+
+# STP
+
+Esempio 1
+
+<img src="/media/stp_02.jpg" width=550 style="margin:auto;position:relative;top:-100px;">
+
+
+---
+
+# STP
+
+Esempio 1
+
+<img src="/media/stp_03.jpg" width=550 style="margin:auto;position:relative;top:-100px;">
+
+---
+
+# STP
+
+Esempio 1
+
+<img src="/media/stp_04.jpg" width=550 style="margin:auto;position:relative;top:-100px;">
+
+
+---
+
+# STP
+
+Esempio 1
+
+<img src="/media/stp_05.jpg" width=550 style="margin:auto;position:relative;top:-100px;">
+
+
+---
+
+# STP
+
+Esempio 1
+
+<img src="/media/stp_06.jpg" width=550 style="margin:auto;position:relative;top:-100px;">
+
+
+---
+
+# STP
+
+Esempio 1
+
+<img src="/media/stp_07.jpg" width=550 style="margin:auto;position:relative;top:-100px;">
+
+---
+
+# STP
+
+Esempio 2
+
+<img src="/media/stp_08.jpg" width=550 style="margin:auto;position:relative;top:-100px;">
+
+
+---
+
+# STP
+
+Esempio 2
+
+<img src="/media/stp_09.jpg" width=550 style="margin:auto;position:relative;top:-100px;">
+
+
+---
+
+# STP
+
+Esempio 2
+
+<img src="/media/stp_10.jpg" width=550 style="margin:auto;position:relative;top:-100px;">
+
+
+---
+
+# STP
+
+Esempio 2
+
+<img src="/media/stp_11.jpg" width=550 style="margin:auto;position:relative;top:-100px;">
+
+
+---
+
+# STP
+
+Esempio 2
+
+<img src="/media/stp_12.jpg" width=550 style="margin:auto;position:relative;top:-100px;">
+
+
+---
+
+# STP
+
+Esempio 2
+
+<img src="/media/stp_13.jpg" width=550 style="margin:auto;position:relative;top:-100px;">
+
+
+
+---
+
+# STP
+
+Esempio 3
+
+<img src="/media/stp_14.jpg" width=550 style="margin:auto;position:relative;top:-100px;">
+
+---
+
+# STP
+
+Esempio 3
+
+<img src="/media/stp_15.jpg" width=550 style="margin:auto;position:relative;top:-100px;">
+
+
+---
+
+# STP
+
+Esempio 3
+
+<img src="/media/stp_16.jpg" width=550 style="margin:auto;position:relative;top:-100px;">
+
+
+
+---
+
+# STP
+
+Esempio 3
+
+<img src="/media/stp_17.jpg" width=550 style="margin:auto;position:relative;top:-100px;">
+
+
+
+---
+
+# STP
+
+Esempio 3
+
+<img src="/media/stp_18.jpg" width=550 style="margin:auto;position:relative;top:-100px;">
+
+
+
+---
+
+# STP
+
+Esempio 3
+
+<img src="/media/stp_19.jpg" width=550 style="margin:auto;position:relative;top:-100px;">
+
+
+
+---
+
+# STP
+
+Esempio 3
+
+<img src="/media/stp_20.jpg" width=550 style="margin:auto;position:relative;top:-100px;">
+
+
+
+---
+
+# STP
+
+Esempio 3
+
+<img src="/media/stp_21.jpg" width=550 style="margin:auto;position:relative;top:-100px;">
+
