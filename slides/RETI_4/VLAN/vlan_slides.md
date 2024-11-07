@@ -12,7 +12,7 @@ class: "text-center"
 lineNumbers: false
 aspectRatio: "16_/9"
 routerMode: "hash"
-version: "1.0.4"
+version: "1.0.5"
 ---  
 
 <style>
@@ -60,6 +60,8 @@ Virtual LAN
 VLAN Overview
 
 <a href="/support/4/vlan.pdf">VLAN: Virtual LAN</a>
+
+<a href="/support/4/vlan_ccna.pdf">VLAN CCNA</a>
 
 <center>
 <img src="/media/vlan_12.png" width="500"/>
