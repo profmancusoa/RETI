@@ -2,17 +2,17 @@
 theme: default
 # random image from a curated Unsplash collection by Anthony
 # like them? see https://unsplash.com/collections/94734566/slidev
-background: https://source.unsplash.com/collection/94734566/1920x1080
+# background: https://source.unsplash.com/collection/94734566/1920x1080
+background: cover.png
 # apply any windi css classes to the current slide
-class: 'text-center'
+class: "text-center"
 # https://sli.dev/custom/highlighters.html
 #highlighter: shiki
 # show line numbers in code blocks
 lineNumbers: false
-aspectRatio: '16_/9'
-routerMode: 'hash'
-version: '1.0.3'
-
+aspectRatio: "16_/9"
+routerMode: "hash"
+version: "1.0.4"
 ---  
 
 <style>
@@ -52,6 +52,42 @@ Virtual LAN
     Premi spazio o <carbon:arrow-right class="inline"/> per la prossima slide
   </span>
 </div>
+
+--- #slide 1
+
+# VLAN   
+
+VLAN Overview
+
+<a href="/support/4/vlan.pdf">VLAN: Virtual LAN</a>
+
+<center>
+<img src="/media/vlan_12.png" width="500"/>
+</center>
+
+
+--- #slide 1
+
+# VLAN   
+
+VLAN Overview
+
+
+<center>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/A9lMH0ye1HU?si=rIvHX87fZ8QmvNXu" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</center>
+
+
+--- #slide 1
+
+# VLAN   
+
+VLAN Overview
+
+
+<center>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/2hUUaG4o3DA?si=U5VA_LSw9oKblwT3" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</center>
 
 --- #slide 1
 
