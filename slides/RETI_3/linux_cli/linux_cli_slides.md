@@ -12,7 +12,7 @@ aspectRatio: "16_/9"
 routerMode: "hash"
 materia: RETI 3
 as: 2024/2025
-version: "1.2.2"
+version: "1.2.3"
 ---  
 
 <!-- https://www.linuxjournal.com/content/linux-command-line-interface-introduction-guide#firstlook -->
@@ -652,7 +652,7 @@ Esercitazione cli_05
 </center>
 <br>
 
-- Svolgere solo i primi 4 punti
+- Svolgere i punti dal 1 al 6 e il punto 9
 - Domande agli studenti sul contenuto dell'esercitazione
 
 ---
