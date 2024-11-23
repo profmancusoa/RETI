@@ -12,7 +12,7 @@ class: "text-center"
 lineNumbers: false
 aspectRatio: "16_/9"
 routerMode: "hash"
-version: "1.0.5"
+version: "1.0.6"
 ---  
 
 <style>
@@ -367,8 +367,8 @@ Esercizio vlan_02
     - PC0: IP = 192.168.10.10/24
     - PC1: IP = 192.168.10.11/24
   - 2 PC collegatisulla VLAN 20 - AMMINISTRAZIONE
-    - PC2: IP = 192.168.10.12/24
-    - PC3: IP = 192.168.10.13/24
+    - PC2: IP = 192.168.20.22/24
+    - PC3: IP = 192.168.20.23/24
   - Fare il ping dal PC0 al PC1 e viceversa(VLAN 10)
   - Fare il ping dal PC2 al PC3 e viceversa(VLAN 20)
   - Fare il ping dal PC0(VLAN 10) al PC3(VLAN 20) Funziona?
