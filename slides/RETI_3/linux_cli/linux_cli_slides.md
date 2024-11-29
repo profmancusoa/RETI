@@ -65,7 +65,7 @@ Esercitarsi con Linux e Materiale Aggiuntivo
 - [Linux CLI Commands](/support/3/linux_cli/linux_commands.pdf)
 - [Introduction to Bash](/support/3/linux_cli/introduction-to-bash-scripting-light.pdf)
 - [Linux Journey](https://linuxjourney.com)
-- [Linux Survival](https://linuxsurvival.com)
+- [Linux Survival](https://https://github.com/Lavalle-Marco/RETI.gitlinuxsurvival.com)
 - [Linux Interactive Game](https://web.mit.edu/mprat/Public/web/Terminus/Web/main.html)
 - [llthw](https://web.archive.org/web/20130926213426/http://nixsrv.com/llthw)
 - [introduction-to-linux-installation](https://www.codecademy.com/learn/introduction-to-linux-installation)
@@ -2812,7 +2812,7 @@ $ kill -9 132480
  
 free - visualizzare la memoria disponibile
 
-- Visualizza lo statod ella memoria RAM indicando la capacità occupata e quella disponibile
+- Visualizza lo stato della memoria RAM indicando la capacità occupata e quella disponibile
 
 <br>
 
