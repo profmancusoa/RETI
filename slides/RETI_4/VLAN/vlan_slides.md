@@ -566,7 +566,7 @@ VLAN Trunking Protocol
 <br />
 <br />
 
-- I VTP client ricevono gli aggiornamenti solo dal VTP serve appartenente allo stesso **DOMINIO**
+- I VTP client ricevono gli aggiornamenti solo dal VTP server appartenente allo stesso **DOMINIO**
 - *In questo modo ogni modifica della configurazione delle VLAN applicata sullo switch server, viene propagata ed applicata a tutti gli switch client.*
   
 <img src="/media/vlan_07.png" class="centro w" />
@@ -666,7 +666,7 @@ Switch#
 %SYS-5-CONFIG_I: Configured from console by console
 ```
 
-- Configurare le porte che interconnettono gli switch client alloswitch server in TRUNK mode
+- Configurare le porte che interconnettono gli switch client allo switch server in TRUNK mode
 
 ---
 
@@ -699,7 +699,7 @@ Configuration last modified by 0.0.0.0 at 0-0-00 00:00:00
 VTP Configuration
 
 - Ora creaimo le VLAN 10,20,30 sullo switch server
-- Dopo pochi istanti le informazioni di configurazione saranno propagate a tutti gli seitch client e le VLAN ricreate in modo automatico
+- Dopo pochi istanti le informazioni di configurazione saranno propagate a tutti gli switch client e le VLAN ricreate in modo automatico
 
 ```bash
 Switch#conf t
@@ -778,7 +778,7 @@ VLAN Name                             Status    Ports
 
 Esercizio vlan_07
  
-- Realizzare la rete rappresentatra in figura
+- Realizzare la rete rappresentata in figura
 - Configurare lo switch al centro come VTP server
 - Configurare tutti gli altri switch come VTP client
 - Creare le VLAN 10,20,30,40,50,60,70,80,90 <br />sul VTP server
