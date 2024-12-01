@@ -103,7 +103,7 @@ IP Dinamico
 <br>
 
 - Un indirizzo IP assegnato in modo automatico può essere sia statico che dinamico
-  - se il sistema di assegnazione assegna in modo permanete l'indirizzo IP al richiedente questo risulta statico in quanto non muta nel tempo 
+  - se il sistema di assegnazione assegna in modo permanente l'indirizzo IP al richiedente questo risulta statico in quanto non muta nel tempo 
   - se il sistema di assegnazione assegna in modo temporaneo l'indirizzo IP al richiedente questo risulta dinamico in quanto muta nel tempo
 
 
