@@ -2812,7 +2812,7 @@ $ kill -9 132480
  
 free - visualizzare la memoria disponibile
 
-- Visualizza lo statod ella memoria RAM indicando la capacità occupata e quella disponibile
+- Visualizza lo stato della memoria RAM indicando la capacità occupata e quella disponibile
 
 <br>
 
