@@ -501,7 +501,7 @@ IP sub interfaces
 
 - Ma il **trunk** è un concetto di livello 2
 - Pertanto dobbiamo trovare ed utilizzare un concetto simile al trunk ma di livello 3
-- Come visto nell'esercitazione 5, ogni VLAN viene collegata al router tramnite un0interfaccia fisica del router (1 cavo per VLAN)
+- Come visto nell'esercitazione 5, ogni VLAN viene collegata al router tramite un'interfaccia fisica del router (1 cavo per VLAN)
 - Questo chiaramente non è scalabile per un numero di VLAN elevate (migliaia di VLAN), in quanto il router dovrebbe avere migliaia di porte
 - Pertanto è stato introdotto il concetto di `IP sub interface`
 
