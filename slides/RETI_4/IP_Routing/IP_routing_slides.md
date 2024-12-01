@@ -68,7 +68,7 @@ IP Subnetting and Routing
 
 - Come visto a lezione, una subnet IP è l'equivalente a livello 3 di una VLAN di livello 2
 - In altre parole la relazione tra VLAN e IP subnet è univoca
-- Gli host in una VLAN hanno indirizzi IP appartenenti ad un unica IP subnet
+- Gli host in una VLAN hanno indirizzi IP appartenenti ad un'unica IP subnet
 - Tutti gli host con indirizzo IP appartenente alla stessa IP subnet devono far parte della stessa VLAN
 
 <br> 
