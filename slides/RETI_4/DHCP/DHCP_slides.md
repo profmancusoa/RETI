@@ -140,7 +140,7 @@ Assegnazione IP automatica
 
 Esercizio APIPA_01
 
-- In packettracer creare un semplice configurazione in cui un PC viene automaticamente configurazto con un indirizzo APIPA
+- In packettracer creare una semplice configurazione in cui un PC viene automaticamente configurazto con un indirizzo APIPA
 - Aggiungere uno sniffer in modo da verificare il traffico generato dall'host e comprendere il meccanismo di assegnazione automatica APIPA
 - Consegnare su github il file *|cognome|_apipa.pkt*
   
