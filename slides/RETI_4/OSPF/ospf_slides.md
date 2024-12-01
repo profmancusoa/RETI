@@ -110,7 +110,7 @@ Esercitazione #1
 
 Esercitazione #1
 
-- Vediamo otra la configurazione OSPF per il Router R1
+- Vediamo ora la configurazione OSPF per il Router R1
 
 ```bash
 router ospf 1
