@@ -72,7 +72,7 @@ IP address assignment - DHCP and APIPA
 
 - Un indirizzo IP può essere assegnato ad una scheda in modo:
   - **MANUALE**: *l'amministratore del sistema configura manualmente l'indirizzo IP per il NIC specifico*
-  - **AUTOMATICO**: *l'indirizzo IP viene confiogurato automaticamente tramite un server o servizio esterno*
+  - **AUTOMATICO**: *l'indirizzo IP viene configurato automaticamente tramite un server o servizio esterno*
 
 - Un indirizzo IP può essere:
   - **STATICO**: assegnato alla scheda in modo permanente
