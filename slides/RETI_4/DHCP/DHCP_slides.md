@@ -180,7 +180,7 @@ Esercizio APIPA_01
 **DHCP DINAMICO**
 - Il server DHCP può allocare in modo temporaneo l'indirizzo IP offerto al client richiedente (in questo caso si definisce un **LEASE TIME**)
 - In tal caso l'indirizzo IP del client sarà di tipo DINAMICO in quanto varierà nel tempo
-- Infattio allo scadere del LEASE TIME, il PC effettua una nuova richiesta DHCP e il server DHCP potrà assegnare un  nuovo indirizzo IP allo stesso client richiedente
+- Infatti allo scadere del LEASE TIME, il PC effettua una nuova richiesta DHCP e il server DHCP potrà assegnare un  nuovo indirizzo IP allo stesso client richiedente
 
 
 --- 
