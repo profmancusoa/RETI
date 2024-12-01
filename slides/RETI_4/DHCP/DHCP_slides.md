@@ -157,9 +157,9 @@ Esercizio APIPA_01
 <br>
 
 1. ***DHCP Discover***: il client invia in broadcast un <br> messaggio UDP *DHCPDISCOVER* con la <br> richiesta di assegnazione di un indirizzo IP  
-2. ***DHCP Offer***: il server associa un indirizzo IP al <br> richiedente ed risponde con un *DHCPOFFER* <br> includendo l'IP disponibile
+2. ***DHCP Offer***: il server associa un indirizzo IP al <br> richiedente e risponde con un *DHCPOFFER* <br> includendo l'IP disponibile
 3. ***DHCP Request***: il client accetta l'offerta <br>  (possono essere multiple) con un messaggio<br>  *DHCPREQUEST* confermando al server<br>  l'accettazione dell'indirizzo IP
-4. ***DHCP Ack***: il server effettivamente alloca l'IP al richiedente e conferma con um messaggio *DHCPACK*
+4. ***DHCP Ack***: il server effettivamente alloca l'IP al richiedente e conferma con un messaggio *DHCPACK*
 
 <img src="/media/dhcp04.png" width="550" class="centro"/>
 
