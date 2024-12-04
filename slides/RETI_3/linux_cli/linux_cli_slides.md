@@ -247,7 +247,7 @@ antonio#
  
 Esercitazione cli_01
 
-- Svolgere la seguente esercitazione (Quinz inclusi) 
+- Svolgere la seguente esercitazione (Quiz inclusi) 
 
 <br>
 <center>
