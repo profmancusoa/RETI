@@ -292,9 +292,9 @@ Anche se all'inizio può risultare ostico, una volta entrati nella mentalità co
  
 Esercitazione cli_02
 
-- Utilizzando l'email istituzionale crere un account su PWN COLLEGE
+- Utilizzando l'email istituzionale creare un account su PWN COLLEGE
 - Consegnare su github uno screenshot che fa vedere al docente il tuo user name appena creato su PWN COLLEGE
-- Il file si deve chiamare *|congome|_pwncollege_account.(png!jpg)*
+- Il file si deve chiamare *|congome|_pwncollege_account.(png|jpg)*
 
 ---
 
