@@ -623,13 +623,11 @@ File System
 
 <div style="width:50%">
 
-Il percorse `RELATIVO` alla home del file *README.md* è:
+Il percorso `RELATIVO` alla home del file *README.md* è:
 
 `./SARP/README.md` o `SARP/README.md`
 
-- **/** (*root directory, radice dell'albero del filesystem*)
-- **home**: sotto directory di /
-- **antonio**: sotto directory di home
+- **.**: directory corrente (antonio)
 -  **SARP**: sotto directory di antonio
 -  **README.md**: file di testo (*foglia dell'albero*)
 </div>
