@@ -810,7 +810,7 @@ ed io sono Babbo Natale
 &nbsp;
 
 <Cover fs=100px>
-La Fisolofia Unix
+La Filosofia Unix
 </Cover>
 
 ---
