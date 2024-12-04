@@ -2,19 +2,18 @@
 theme: default
 # random image from a curated Unsplash collection by Anthony
 # like them? see https://unsplash.com/collections/94734566/slidev
-background: https://source.unsplash.com/collection/94734566/1920x1080
+background: /cover.jpg
 # apply any windi css classes to the current slide
-class: 'text-center'
+class: "text-center"
 # https://sli.dev/custom/highlighters.html
 #highlighter: shiki
 # show line numbers in code blocks
 lineNumbers: false
-aspectRatio: '16_/9'
-routerMode: 'hash'
+aspectRatio: "16_/9"
+routerMode: "hash"
 materia: "RETI"
-as: "2023/2024"
-version: '1.0.1'
-
+as: "2024/2025"
+version: "2.0.0"
 ---  
 
 
@@ -39,6 +38,7 @@ Simmetrica
 
 <img src="/media/enc01.png" style="width:800px;margin:auto;"/>
 
+
 --- 
 
 # Encryption e Decryption
@@ -46,15 +46,16 @@ Simmetrica
 Openssl
 
 - Lo svolgimento di queste esercitazioni prevede l'uso del tool OpenSSL sotto Linux
-- Le esercitazioni sono tutte correttamente funzionanti con la seguente version di OpenSSL
+- Per fornire un ambiente stabile e con la versione corretta della libreria OpsnSSL, le esercitazioni saranno svolte in un ambiente "containerizzato"
+- L'ambiente si attiva con il seguente comando
+
 
 <br>
 
 ```bash
-openssl version
-OpenSSL 3.0.2 15 Mar 2022 (Library: OpenSSL 3.0.2 15 Mar 2022)
-```
+docker run -ti --rm -p 8080:8080 profmancusoa/linux-encryption
 
+```
 
 
 --- 
@@ -279,6 +280,84 @@ Asimmetrica
 
 # Encryption e Decryption
 
+RSA
+
+- Ricordiamo brevemente la teoria del RSA
+
+<br>
+
+```bash
+Dati p e q primi, si calcola 
+
+N = p x q 
+
+V = (p - 1) x (q - 1)
+
+Si sceglie Npriv coprimo con V e < V
+
+Si calcola Npub in modo che (Npub x Npriv) % V = 1
+
+Si definisce:
+
+Kpub = (N, Npub) e Kpriv = (N, Npriv)
+
+```
+
+--- 
+
+# Encryption e Decryption
+
+RSA
+
+```bash
+
+dato 0 < m <N
+    
+     Npub
+c = m      % N
+ 
+     Npriv
+m = c      % N
+
+```
+
+Tuttavia le implementazioni di RSA applicano il meccanismo del [Chinese remainder theorem](https://en.wikipedia.org/wiki/Chinese_remainder_theorem), per decifrare il c
+
+```bash
+
+dp = Npriv % (p - 1)
+
+dq = Npriv % (q - 1)
+
+        -1
+qinv = q   % p
+
+```
+
+--- 
+
+# Encryption e Decryption
+
+RSA
+
+```bash
+
+      dp
+m1 = c   % p
+
+      dq
+m2 = c   % p
+
+h = (qinv x (m1 - m2)) % p
+
+m = m2 + h x q 
+
+```
+
+--- 
+
+# Encryption e Decryption
+
 Asimmetrica
 
 - Anche in questo scenario openssl può esserci utile per generare le chiavi e poi per effettuare l'encryption e decryption
@@ -334,6 +413,147 @@ scp alice_pubblica.pem bob@host:/path/
 scp bob_pubblica.pem alice@host:/path/
 
 ```
+
+--- 
+
+# Encryption e Decryption
+
+Asimmetrica
+
+- Ora che abbiamo generato la chiave pubblica e privata analizzimone il contenuto
+
+```bash
+-----BEGIN PRIVATE KEY-----
+MIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQDRjpSWX/VFA8iZ
+7UXerAv4MNQEPlwkT2rd6JBidnpmPetk7eYx4l0SVxX06MDcbvSY6ci9zkt53646
+...
+...
+aihBYjzVtODvjoKC8clV3OULg16+XpleQU/fKty0BTZ4c8y4/pYK8ycxpSByU/4R
+jcxS2iZbyMYxdleI1luSZA==
+-----END PRIVATE KEY-----
+-----BEGIN PUBLIC KEY-----
+MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA0Y6Ull/1RQPIme1F3qwL
++DDUBD5cJE9q3eiQYnZ6Zj3rZO3mMeJdElcV9OjA3G70mOnIvc5Led+uOkKGeAOK
+vINqHiY+iWc4trzkEGE7WZCe3QHFPhkNWfK2oibr+7GKHvA7A4x9qxd82w6gYXky
+QehkfOXDvhlG0wqt/PYVcyFsoAmSvDGkaOhkRtySoaHg/nMAp2jUzfuE0h55jwIH
+VzC+JWg6VzY9nT7/uf1dw1v0arfoGu3atJBDV/4fkF8feslv6M3XoFs0LaaKLgW6
+vb9Ud2N2ncYx8A+TuYjF4Qv3iuTPjy8x9ywneE7U7jrU1CNzKKMkAUE6NUWiL8Np
+lwIDAQAB
+-----END PUBLIC KEY-----
+
+```
+
+--- 
+
+# Encryption e Decryption
+
+Asimmetrica
+
+- Ma guardiamo meglio
+
+```bash
+openssl rsa -text -noout -in alice_privata.pem
+
+Private-Key: (2048 bit, 2 primes)
+
+modulus: 00:d1:8e:94:96:5f:f5:45:03:c8:99:ed:45:de:ac:
+
+publicExponent: 65537 (0x10001)
+
+privateExponent:28:a9:bf:21:72:db:58:1a:04:da:01:95:b6:40:b2:    
+
+prime1:00:f3:53:ae:1a:71:9d:16:53:3f:dd:d3:67:3a:9a:
+
+prime2: 00:dc:78:a3:da:94:25:64:91:0c:69:75:6b:cf:50:
+
+exponent1: 23:c7:c9:51:40:25:ae:53:bd:8f:7b:f7:b1:09:5f:
+
+exponent2: 35:df:4c:ba:86:64:b4:b4:34:c2:38:2d:05:d5:60:
+
+coefficient: 2d:ee:35:7b:73:70:ea:8c:06:9a:15:80:db:b5:08:
+```
+
+--- 
+
+# Encryption e Decryption
+
+Asimmetrica
+
+#### 1. **Modulus (n) --> N**
+- **Descrizione**: È il prodotto dei due numeri primi generati (prime1 e prime2).
+- **Ruolo**: Componente fondamentale della chiave pubblica e privata. È usato per la crittografia e per la firma.
+
+<br>
+
+#### 2. **Public Exponent (e) --> Npub**
+- **Descrizione**: È un valore intero piccolo e generalmente fissato (ad esempio, 65537 è comune).
+- **Ruolo**: È usato nella chiave pubblica per il processo di crittografia e verifica delle firme digitali.
+
+<br>
+
+#### 3. **Private Exponent (d) --> Npriv**
+- **Descrizione**: È l'inverso moltiplicativo modulo \( \phi(n) \) del Public Exponent \( e \).
+- **Ruolo**: È la componente segreta della chiave privata, usata per decrittare e firmare i messaggi.
+
+<br>
+
+#### 4. **Prime1 --> p**
+- **Descrizione**: È uno dei due numeri primi utilizzati per generare il Modulus \( n \).
+- **Ruolo**: Parte fondamentale del processo di generazione della chiave. Deve essere mantenuto segreto.
+
+
+--- 
+
+# Encryption e Decryption
+
+Asimmetrica
+
+#### 5. **Prime2 --> q**
+- **Descrizione**: È il secondo numero primo usato per calcolare il Modulus \( n \).
+- **Ruolo**: Deve essere diverso da \( p \), ma altrettanto segreto.
+
+<br>
+
+#### 6. **Exponent1 --> dp**
+- **Descrizione**: È il valore \( d \) ridotto modulo \( (p-1) \).
+- **Ruolo**: Ottimizza le operazioni crittografiche come la decifratura e la firma utilizzando \( p \).
+
+<br>
+
+#### 7. **Exponent2 --> dq**
+- **Descrizione**: È il valore \( d \) ridotto modulo \( (q-1) \).
+- **Ruolo**: Come Exponent1, serve per ottimizzare operazioni crittografiche usando \( q \).
+
+<br>
+
+#### 8. **Coefficient --> qinv**
+- **Descrizione**: È l'inverso moltiplicativo di \( q \) modulo \( p \).
+
+--- 
+
+# Encryption e Decryption
+
+- Ora guardiamo la chiave pubblica
+
+```bash
+
+openssl rsa -pubin -text -noout -in alice_pubblica.pem
+Public-Key: (2048 bit)
+
+Modulus:
+    00:d1:8e:94:96:5f:f5:45:03:c8:99:ed:45:de:ac:
+
+Exponent: 65537 (0x10001)
+
+```
+
+- Quindi come si vede nella chiavi privata e pubblica sono solo contenuti i numeri che abbiamo visto nella parte teorica del RSA.
+- L'unica differenza che in una chiave vera tali numeri sono molto grandi
+
+
+**NOTA: Le implementazioni correnti usano convenzionalmente Npub = 65537**
+
+**NOTA2: In realtà prima viene determinato Npub (65537) e poi si calcola Npriv**
 
 --- 
 

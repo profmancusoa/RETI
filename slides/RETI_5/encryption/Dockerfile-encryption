@@ -1,0 +1,24 @@
+FROM debian:12
+WORKDIR /root
+
+RUN apt update && \
+    apt install -y man manpages toilet vim sudo openssl net-tools netcat-openbsd file && \
+    echo "alias ll='ls -la --color'" >> .bashrc && \
+    echo "root:qwe123" | chpasswd && \
+    useradd -ms /bin/bash hacker && \
+    echo "hacker:qwe123" | chpasswd && \
+    echo "hacker ALL=(ALL) ALL" >> /etc/sudoers
+
+
+USER hacker
+WORKDIR /home/hacker
+
+RUN echo "alias ll='ls -la --color'" >> .bashrc && \
+    echo "echo 'Welcome to ' | toilet -t --gay" >> .bashrc && \
+    echo "echo 'Linux OpenSSL' | toilet -t --gay" >> .bashrc && \
+    echo "echo $'\n'" >> .bashrc && \
+    echo 'echo -e "\e[1;5;32mDocker Image da utilizzare solo per l'"'"'esercitazione del prof Mancuso\e[0m"' >> .bashrc && \
+    echo "echo $'\n'" >> .bashrc
+
+CMD ["/bin/bash"]
+
