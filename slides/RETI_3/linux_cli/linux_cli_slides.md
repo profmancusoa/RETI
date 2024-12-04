@@ -722,7 +722,7 @@ Ecco alcuni concetti chiave relativi alla CLI di Linux:
  
 Esercitazione cli_07
 
-- Svolgere la seguente esercitazione (Quinz inclusi) 
+- Svolgere la seguente esercitazione (Quiz inclusi) 
 
 <br>
 <center>
