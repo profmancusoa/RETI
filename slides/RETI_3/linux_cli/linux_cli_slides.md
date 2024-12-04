@@ -784,7 +784,7 @@ In shell moderne come *zsh* e *fish* il tab può anche completare i comandi e il
  
 Ecco alcuni concetti chiave relativi alla CLI di Linux:
 
-**Redirezione**: Puoi redirigere l'output di un comando su file file utilizzando i simboli > o >> 
+**Redirezione**: Puoi redirigere l'output di un comando su file utilizzando i simboli > o >> 
 
 ```bash
 $ echo "ciao io sono Linux"
