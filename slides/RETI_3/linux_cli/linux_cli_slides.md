@@ -276,10 +276,10 @@ Esercitazioni
  
 Esercitazioni
 
-- PWN COLLEGE è una piatatforma dedicata all'apprendimento e alla sperimentazione
-- Contiene un vaso curriculum su tutti i principlai temi riguardanti la **cyber security**
+- PWN COLLEGE è una piattaforma dedicata all'apprendimento e alla sperimentazione
+- Contiene un vasto curriculum su tutti i principali temi riguardanti la **cyber security**
 - Linux ovviamente è un argomento fondamentale per affrontare anche i primi esercizi
-- Noi useremo principlamente la sezione dedicata all'apprendimento dei rudimenti della CLI di Linux
+- Noi useremo principalmente la sezione dedicata all'apprendimento dei rudimenti della CLI di Linux
 
 <Banner mt=30px padding=30px>
 Invito TUTTI gli studenti a sperimentare ed apprendere tramite il materiale fornito e tramite PWN COLLEGE.<br>
