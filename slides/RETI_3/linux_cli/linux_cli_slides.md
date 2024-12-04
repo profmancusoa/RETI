@@ -305,8 +305,8 @@ Esercitazione cli_03
 - Svolgere il dojo [Getting Started](https://pwn.college/welcome/)
 - Leggere e visualizzare le due unità `Lectures and Reading`
 - Completare con successo tutte le 10 `Challenges`
-- Domande del docente sui temi trattati e sulle sezioni *Lecturesd and Reading*
-- Consegnare su su github lo screenshoot che dimostra il superamento delle 10 challenges con il seguente nome *|cognome|_dojo_03a.(png|jpg)*
+- Domande del docente sui temi trattati e sulle sezioni *Lectures and Reading*
+- Consegnare su github lo screenshot che dimostra il superamento delle 10 challenges con il seguente nome *|cognome|_dojo_03a.(png|jpg)*
 
 <img src="/media/cli_22.png" width="450" style="margin:auto;position:relative; left: 200px; top: -20px;">
 
