@@ -206,14 +206,14 @@ Introduzione
  
 Esercitazioni
 
-- Per svolgere le esercitazioni seguenti in modo sicuro e in modo riproducibile (tutti glistudenti hanno lo stesso ambiente) utilizziamo una tecnologia chiamta `Docker` (la vedremo in dettaglio in 5)
+- Per svolgere le esercitazioni seguenti in modo sicuro e in modo riproducibile (tutti gli studenti hanno lo stesso ambiente) utilizziamo una tecnologia chiamta `Docker` (la vedremo in dettaglio in 5)
 - Quindi le esercitazioni non le svogeremo direttamente sul PC, ma in un ambiente "virtuale" protetto e sicuro
 - In altre parole potremo sperimentare senza problemi e senza timore di "rompere" il PC
 - Qualsiasi cosa avviene nell'ambiente "virtuale" (container) NON ha impatto sul PC in uso
 
 <Banner mt=30px padding=30px>
 <center>
-SPERIMETATE CON TRANQUILLITA'
+SPERIMENTATE CON TRANQUILLITA'
 </center>
 </Banner>
 
