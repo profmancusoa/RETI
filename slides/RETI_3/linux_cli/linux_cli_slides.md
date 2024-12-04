@@ -574,7 +574,7 @@ File System
 
 <div style="width:50%">
 
-Il percorse `ASSOLUTO` del file *README.md* è:
+Il percorso `ASSOLUTO` del file *README.md* è:
 
 `/home/antonio/SARP/README.md`
 
