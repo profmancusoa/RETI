@@ -223,7 +223,7 @@ SPERIMENTATE CON TRANQUILLITA'
  
 Esercitazioni
 
-- Per eseguire ed entare nell'ambiente virtuale eseguite il seguente comando
+- Per eseguire ed entrare nell'ambiente virtuale eseguite il seguente comando
 
 <br>
 
