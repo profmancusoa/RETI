@@ -349,7 +349,7 @@ Introduzione
  
 Esercitazione cli_04
 
-- Svolgere la seguente esercitazione (Quinz inclusi) 
+- Svolgere la seguente esercitazione (Quiz inclusi) 
 
 <br>
 <center>
