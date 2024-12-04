@@ -640,7 +640,7 @@ Il percorso `RELATIVO` alla home del file *README.md* è:
  
 Esercitazione cli_05
 
-- Svolgere la seguente esercitazione (Quinz inclusi) 
+- Svolgere la seguente esercitazione (Quiz inclusi) 
 
 <br>
 <center>
