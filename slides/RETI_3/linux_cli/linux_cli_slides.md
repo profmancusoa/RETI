@@ -12,7 +12,7 @@ aspectRatio: "16_/9"
 routerMode: "hash"
 materia: RETI 3
 as: 2024/2025
-version: "1.2.3"
+version: "1.2.4"
 ---  
 
 <!-- https://www.linuxjournal.com/content/linux-command-line-interface-introduction-guide#firstlook -->
@@ -1964,7 +1964,7 @@ Esercitazione cli_11
 - Leggere e visualizzare le due unità `Lectures and Reading`
 - Completare con successo tutte le 14 `Challenges`
 - Domande del docente sui temi trattati e sulle sezioni *Lecturesd and Reading*
-- Consegnare su su github 2 screenshoots che dimostrano il superamento delle 14 challenges con i seguenti nomi:
+- Consegnare su su github 2 screenshots che dimostrano il superamento delle 14 challenges con i seguenti nomi:
   - *|cognome|_dojo_linux_11a.(png|jpg)*
   - *|cognome|_dojo_linux_11b.(png|jpg)*
 
@@ -2677,7 +2677,7 @@ Esercitazione cli_13
 - Leggere e visualizzare le due unità `Lectures and Reading`
 - Completare con successo tutte le 8 `Challenges`
 - Domande del docente sui temi trattati e sulle sezioni *Lecturesd and Reading*
-- Consegnare su su github 1 screenshoots che dimostrano il superamento delle 8 challenges con i seguenti nomi:
+- Consegnare su su github 1 screenshots che dimostrano il superamento delle 8 challenges con i seguenti nomi:
   - *|cognome|_dojo_linux_13a.(png|jpg)*
 
 
@@ -2833,7 +2833,7 @@ Esercitazione cli_16
 - Leggere e visualizzare le due unità `Lectures and Reading`
 - Completare con successo tutte le 9 `Challenges`
 - Domande del docente sui temi trattati e sulle sezioni *Lecturesd and Reading*
-- Consegnare su su github 1 screenshoots che dimostrano il superamento delle 9 challenges con i seguenti nomi:
+- Consegnare su su github 1 screenshots che dimostrano il superamento delle 9 challenges con i seguenti nomi:
   - *|cognome|_dojo_linux_16a.(png|jpg)*
 
 
@@ -2983,7 +2983,7 @@ Esercitazione cli_17
 - Leggere e visualizzare le due unità `Lectures and Reading`
 - Completare con successo tutte le 8 `Challenges`
 - Domande del docente sui temi trattati e sulle sezioni *Lecturesd and Reading*
-- Consegnare su su github 2 screenshoots che dimostrano il superamento delle 8 challenges con i seguenti nomi:
+- Consegnare su su github 2 screenshots che dimostrano il superamento delle 8 challenges con i seguenti nomi:
   - *|cognome|_dojo_linux_17a.(png|jpg)*
   - *|cognome|_dojo_linux_17b.(png|jpg)*
 
