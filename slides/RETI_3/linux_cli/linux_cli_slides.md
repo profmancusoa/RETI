@@ -206,14 +206,14 @@ Introduzione
  
 Esercitazioni
 
-- Per svolgere le esercitazioni seguenti in modo sicuro e in modo riproducibile (tutti glistudenti hanno lo stesso ambiente) utilizziamo una tecnologia chiamta `Docker` (la vedremo in dettaglio in 5)
+- Per svolgere le esercitazioni seguenti in modo sicuro e in modo riproducibile (tutti gli studenti hanno lo stesso ambiente) utilizziamo una tecnologia chiamta `Docker` (la vedremo in dettaglio in 5)
 - Quindi le esercitazioni non le svogeremo direttamente sul PC, ma in un ambiente "virtuale" protetto e sicuro
 - In altre parole potremo sperimentare senza problemi e senza timore di "rompere" il PC
 - Qualsiasi cosa avviene nell'ambiente "virtuale" (container) NON ha impatto sul PC in uso
 
 <Banner mt=30px padding=30px>
 <center>
-SPERIMETATE CON TRANQUILLITA'
+SPERIMENTATE CON TRANQUILLITA'
 </center>
 </Banner>
 
@@ -223,7 +223,7 @@ SPERIMETATE CON TRANQUILLITA'
  
 Esercitazioni
 
-- Per eseguire ed entare nell'ambiente virtuale eseguite il seguente comando
+- Per eseguire ed entrare nell'ambiente virtuale eseguite il seguente comando
 
 <br>
 
@@ -247,7 +247,7 @@ antonio#
  
 Esercitazione cli_01
 
-- Svolgere la seguente esercitazione (Quinz inclusi) 
+- Svolgere la seguente esercitazione (Quiz inclusi) 
 
 <br>
 <center>
@@ -276,10 +276,10 @@ Esercitazioni
  
 Esercitazioni
 
-- PWN COLLEGE è una piatatforma dedicata all'apprendimento e alla sperimentazione
-- Contiene un vaso curriculum su tutti i principlai temi riguardanti la **cyber security**
+- PWN COLLEGE è una piattaforma dedicata all'apprendimento e alla sperimentazione
+- Contiene un vasto curriculum su tutti i principali temi riguardanti la **cyber security**
 - Linux ovviamente è un argomento fondamentale per affrontare anche i primi esercizi
-- Noi useremo principlamente la sezione dedicata all'apprendimento dei rudimenti della CLI di Linux
+- Noi useremo principalmente la sezione dedicata all'apprendimento dei rudimenti della CLI di Linux
 
 <Banner mt=30px padding=30px>
 Invito TUTTI gli studenti a sperimentare ed apprendere tramite il materiale fornito e tramite PWN COLLEGE.<br>
@@ -292,9 +292,9 @@ Anche se all'inizio può risultare ostico, una volta entrati nella mentalità co
  
 Esercitazione cli_02
 
-- Utilizzando l'email istituzionale crere un account su PWN COLLEGE
+- Utilizzando l'email istituzionale creare un account su PWN COLLEGE
 - Consegnare su github uno screenshot che fa vedere al docente il tuo user name appena creato su PWN COLLEGE
-- Il file si deve chiamare *|congome|_pwncollege_account.(png!jpg)*
+- Il file si deve chiamare *|congome|_pwncollege_account.(png|jpg)*
 
 ---
 
@@ -305,8 +305,8 @@ Esercitazione cli_03
 - Svolgere il dojo [Getting Started](https://pwn.college/welcome/)
 - Leggere e visualizzare le due unità `Lectures and Reading`
 - Completare con successo tutte le 10 `Challenges`
-- Domande del docente sui temi trattati e sulle sezioni *Lecturesd and Reading*
-- Consegnare su su github lo screenshoot che dimostra il superamento delle 10 challenges con il seguente nome *|cognome|_dojo_03a.(png|jpg)*
+- Domande del docente sui temi trattati e sulle sezioni *Lectures and Reading*
+- Consegnare su github lo screenshot che dimostra il superamento delle 10 challenges con il seguente nome *|cognome|_dojo_03a.(png|jpg)*
 
 <img src="/media/cli_22.png" width="450" style="margin:auto;position:relative; left: 200px; top: -20px;">
 
@@ -349,7 +349,7 @@ Introduzione
  
 Esercitazione cli_04
 
-- Svolgere la seguente esercitazione (Quinz inclusi) 
+- Svolgere la seguente esercitazione (Quiz inclusi) 
 
 <br>
 <center>
@@ -574,7 +574,7 @@ File System
 
 <div style="width:50%">
 
-Il percorse `ASSOLUTO` del file *README.md* è:
+Il percorso `ASSOLUTO` del file *README.md* è:
 
 `/home/antonio/SARP/README.md`
 
@@ -623,13 +623,11 @@ File System
 
 <div style="width:50%">
 
-Il percorse `RELATIVO` alla home del file *README.md* è:
+Il percorso `RELATIVO` alla home del file *README.md* è:
 
 `./SARP/README.md` o `SARP/README.md`
 
-- **/** (*root directory, radice dell'albero del filesystem*)
-- **home**: sotto directory di /
-- **antonio**: sotto directory di home
+- **.**: directory corrente (antonio)
 -  **SARP**: sotto directory di antonio
 -  **README.md**: file di testo (*foglia dell'albero*)
 </div>
@@ -642,7 +640,7 @@ Il percorse `RELATIVO` alla home del file *README.md* è:
  
 Esercitazione cli_05
 
-- Svolgere la seguente esercitazione (Quinz inclusi) 
+- Svolgere la seguente esercitazione (Quiz inclusi) 
 
 <br>
 <center>
@@ -667,8 +665,8 @@ Esercitazione cli_06
   - [Pondering PATH](https://pwn.college/linux-luminarium/path/) 
 - Leggere e visualizzare le due unità `Lectures and Reading`
 - Completare con successo tutte le 15 `Challenges`
-- Domande del docente sui temi trattati e sulle sezioni *Lecturesd and Reading*
-- Consegnare su su github 3 screenshoots che dimostrano il superamento delle 15 challenges con i seguenti nomi:
+- Domande del docente sui temi trattati e sulle sezioni *Lectures and Reading*
+- Consegnare su github 3 screenshots che dimostrano il superamento delle 15 challenges con i seguenti nomi:
   - *|cognome|_dojo_linux_06a.(png|jpg)*
   - *|cognome|_dojo_linux_06b.(png|jpg)*
   - *|cognome|_dojo_linux_06c.(png|jpg)*
@@ -724,7 +722,7 @@ Ecco alcuni concetti chiave relativi alla CLI di Linux:
  
 Esercitazione cli_07
 
-- Svolgere la seguente esercitazione (Quinz inclusi) 
+- Svolgere la seguente esercitazione (Quiz inclusi) 
 
 <br>
 <center>
@@ -743,7 +741,7 @@ Esercitazione cli_07
  
 Esercitazione cli_08
 
-- Svolgere la seguente esercitazione (Quinz inclusi) 
+- Svolgere la seguente esercitazione (Quiz inclusi) 
 
 <br>
 <center>
@@ -786,7 +784,7 @@ In shell moderne come *zsh* e *fish* il tab può anche completare i comandi e il
  
 Ecco alcuni concetti chiave relativi alla CLI di Linux:
 
-**Redirezione**: Puoi redirigere l'output di un comando su file file utilizzando i simboli > o >> 
+**Redirezione**: Puoi redirigere l'output di un comando su file utilizzando i simboli > o >> 
 
 ```bash
 $ echo "ciao io sono Linux"
@@ -812,7 +810,7 @@ ed io sono Babbo Natale
 &nbsp;
 
 <Cover fs=100px>
-La Fisolofia Unix
+La Filosofia Unix
 </Cover>
 
 ---
@@ -880,7 +878,7 @@ $ cat file.txt
 
 &nbsp;
 
-**Domanda**: Qual'è il comando che mi permette di ottenere una lista di numeri univoci ordinati in senso crescete partendo da file.txt?
+**Domanda**: Qual'è il comando che mi permette di ottenere una lista di numeri univoci ordinati in senso crescente partendo da file.txt?
 **Risposta**: NON ESISTE
 
 Ma niente paura, possiamo creare noi stessi questo comando a partire da comandi esistenti e quindi risolvere il problema. Una volta appreso questo concetto, si dimostrerà un meccanismo incredibilmente potente
@@ -1004,9 +1002,9 @@ Esercitazione cli_09
 - Svolgere i seguenti moduli del dojo [Linux Luminarium](https://pwn.college/linux-luminarium/)
   - [Practicing Piping](https://pwn.college/linux-luminarium/piping/)
 - Leggere e visualizzare le due unità `Lectures and Reading`
-- Completare con successo tutt le 11 le `Challenges`
-- Domande del docente sui temi trattati e sulle sezioni *Lecturesd and Reading*
-- Consegnare su su github uno screenshoot che dimostra il superamento delle 11 challenges con il seguente nome:
+- Completare con successo tutte le 11 `Challenges`
+- Domande del docente sui temi trattati e sulle sezioni *Lectures and Reading*
+- Consegnare su su github uno screenshot che dimostra il superamento delle 11 challenges con il seguente nome:
   - *|cognome|_dojo_linux_09a.(png|jpg)*
 
 ---
@@ -1214,7 +1212,7 @@ clear - clear the terminal screen
  ```
 <br>
 
-Si può anche utilizzare uno shortcuts da tastiera che è `CTRL + L`
+Si può anche utilizzare uno shortcut da tastiera, che è `CTRL + L`
 
 ---
 
@@ -1241,8 +1239,8 @@ Esercitazione cli_10
   - [Digesting Documentation](https://pwn.college/linux-luminarium/man/)
 - Leggere e visualizzare le due unità `Lectures and Reading`
 - Completare con successo tutte le 19 `Challenges`
-- Domande del docente sui temi trattati e sulle sezioni *Lecturesd and Reading*
-- Consegnare su su github 2 screenshoots che dimostrano il superamento delle 19 challenges con i seguenti nomi:
+- Domande del docente sui temi trattati e sulle sezioni *Lectures and Reading*
+- Consegnare su github 2 screenshots che dimostrano il superamento delle 19 challenges con i seguenti nomi:
   - *|cognome|_dojo_linux_10a.(png|jpg)*
   - *|cognome|_dojo_linux_10b.(png|jpg)*
 
@@ -2812,7 +2810,7 @@ $ kill -9 132480
  
 free - visualizzare la memoria disponibile
 
-- Visualizza lo statod ella memoria RAM indicando la capacità occupata e quella disponibile
+- Visualizza lo stato della memoria RAM indicando la capacità occupata e quella disponibile
 
 <br>
 
