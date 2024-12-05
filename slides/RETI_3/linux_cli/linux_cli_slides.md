@@ -878,7 +878,7 @@ $ cat file.txt
 
 &nbsp;
 
-**Domanda**: Qual'è il comando che mi permette di ottenere una lista di numeri univoci ordinati in senso crescete partendo da file.txt?
+**Domanda**: Qual'è il comando che mi permette di ottenere una lista di numeri univoci ordinati in senso crescente partendo da file.txt?
 **Risposta**: NON ESISTE
 
 Ma niente paura, possiamo creare noi stessi questo comando a partire da comandi esistenti e quindi risolvere il problema. Una volta appreso questo concetto, si dimostrerà un meccanismo incredibilmente potente
