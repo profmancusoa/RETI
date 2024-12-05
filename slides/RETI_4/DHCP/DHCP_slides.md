@@ -72,7 +72,7 @@ IP address assignment - DHCP and APIPA
 
 - Un indirizzo IP può essere assegnato ad una scheda in modo:
   - **MANUALE**: *l'amministratore del sistema configura manualmente l'indirizzo IP per il NIC specifico*
-  - **AUTOMATICO**: *l'indirizzo IP viene confiogurato automaticamente tramite un server o servizio esterno*
+  - **AUTOMATICO**: *l'indirizzo IP viene configurato automaticamente tramite un server o servizio esterno*
 
 - Un indirizzo IP può essere:
   - **STATICO**: assegnato alla scheda in modo permanente
@@ -103,7 +103,7 @@ IP Dinamico
 <br>
 
 - Un indirizzo IP assegnato in modo automatico può essere sia statico che dinamico
-  - se il sistema di assegnazione assegna in modo permanete l'indirizzo IP al richiedente questo risulta statico in quanto non muta nel tempo 
+  - se il sistema di assegnazione assegna in modo permanente l'indirizzo IP al richiedente questo risulta statico in quanto non muta nel tempo 
   - se il sistema di assegnazione assegna in modo temporaneo l'indirizzo IP al richiedente questo risulta dinamico in quanto muta nel tempo
 
 
@@ -140,7 +140,7 @@ Assegnazione IP automatica
 
 Esercizio APIPA_01
 
-- In packettracer creare un semplice configurazione in cui un PC viene automaticamente configurazto con un indirizzo APIPA
+- In packettracer creare una semplice configurazione in cui un PC viene automaticamente configurazto con un indirizzo APIPA
 - Aggiungere uno sniffer in modo da verificare il traffico generato dall'host e comprendere il meccanismo di assegnazione automatica APIPA
 - Consegnare su github il file *|cognome|_apipa.pkt*
   
@@ -157,9 +157,9 @@ Esercizio APIPA_01
 <br>
 
 1. ***DHCP Discover***: il client invia in broadcast un <br> messaggio UDP *DHCPDISCOVER* con la <br> richiesta di assegnazione di un indirizzo IP  
-2. ***DHCP Offer***: il server associa un indirizzo IP al <br> richiedente ed risponde con un *DHCPOFFER* <br> includendo l'IP disponibile
+2. ***DHCP Offer***: il server associa un indirizzo IP al <br> richiedente e risponde con un *DHCPOFFER* <br> includendo l'IP disponibile
 3. ***DHCP Request***: il client accetta l'offerta <br>  (possono essere multiple) con un messaggio<br>  *DHCPREQUEST* confermando al server<br>  l'accettazione dell'indirizzo IP
-4. ***DHCP Ack***: il server effettivamente alloca l'IP al richiedente e conferma con um messaggio *DHCPACK*
+4. ***DHCP Ack***: il server effettivamente alloca l'IP al richiedente e conferma con un messaggio *DHCPACK*
 
 <img src="/media/dhcp04.png" width="550" class="centro"/>
 
@@ -180,7 +180,7 @@ Esercizio APIPA_01
 **DHCP DINAMICO**
 - Il server DHCP può allocare in modo temporaneo l'indirizzo IP offerto al client richiedente (in questo caso si definisce un **LEASE TIME**)
 - In tal caso l'indirizzo IP del client sarà di tipo DINAMICO in quanto varierà nel tempo
-- Infattio allo scadere del LEASE TIME, il PC effettua una nuova richiesta DHCP e il server DHCP potrà assegnare un  nuovo indirizzo IP allo stesso client richiedente
+- Infatti allo scadere del LEASE TIME, il PC effettua una nuova richiesta DHCP e il server DHCP potrà assegnare un  nuovo indirizzo IP allo stesso client richiedente
 
 
 --- 

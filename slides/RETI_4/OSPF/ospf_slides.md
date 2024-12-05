@@ -47,8 +47,8 @@ Esercitazione #1
 
 Esercitazione #1
 
-- Il subnetting non viene spiegato in quanto a questo punto dell'anno tutti gli studenti sono in grado di creare il piano di indoirzzamenti di una rete usando il subnetting VLSM
-- La configurazione degli indirizzi IP su tutte le interfacce non viene riporatata in quanto non parte di questa lezione
+- Il subnetting non viene spiegato in quanto a questo punto dell'anno tutti gli studenti sono in grado di creare il piano di indirizzamenti di una rete usando il subnetting VLSM
+- La configurazione degli indirizzi IP su tutte le interfacce non viene riportata in quanto non parte di questa lezione
 - I comandi principali per la configurazione di OSPF sono:
 
 ```bash
@@ -74,7 +74,7 @@ R# show ip ospf
 Esercitazione #1
 
 - Cisco IOS in molti comandi richiede l'inserimento di una **WILD CARD BITS**
-- La WILD CARD BITS è una machera a 32 bit che indica al router quali bit dell'indirizzo a cui si applica devono essere presi inconsiderazione
+- La WILD CARD BITS è una maschera a 32 bit che indica al router quali bit dell'indirizzo a cui si applica devono essere presi in considerazione
 - Se un bit nella WILD CARD è a 0 allora il corrispondente bit nell'indirizzo verrà preso in considerazione
 - Se un bit  nella WILD CARD è a 1 allora il corrispondente bit nell'indirizzo NON verrà preso in considerazione
 - In altre parole la WILD CARD MASK è l'opposto della NETMASK
@@ -110,7 +110,7 @@ Esercitazione #1
 
 Esercitazione #1
 
-- Vediamo otra la configurazione OSPF per il Router R1
+- Vediamo ora la configurazione OSPF per il Router R1
 
 ```bash
 router ospf 1
