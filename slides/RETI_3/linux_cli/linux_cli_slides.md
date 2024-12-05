@@ -1239,8 +1239,8 @@ Esercitazione cli_10
   - [Digesting Documentation](https://pwn.college/linux-luminarium/man/)
 - Leggere e visualizzare le due unità `Lectures and Reading`
 - Completare con successo tutte le 19 `Challenges`
-- Domande del docente sui temi trattati e sulle sezioni *Lecturesd and Reading*
-- Consegnare su su github 2 screenshoots che dimostrano il superamento delle 19 challenges con i seguenti nomi:
+- Domande del docente sui temi trattati e sulle sezioni *Lectures and Reading*
+- Consegnare su github 2 screenshots che dimostrano il superamento delle 19 challenges con i seguenti nomi:
   - *|cognome|_dojo_linux_10a.(png|jpg)*
   - *|cognome|_dojo_linux_10b.(png|jpg)*
 
