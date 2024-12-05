@@ -1212,7 +1212,7 @@ clear - clear the terminal screen
  ```
 <br>
 
-Si può anche utilizzare uno shortcuts da tastiera che è `CTRL + L`
+Si può anche utilizzare uno shortcut da tastiera, che è `CTRL + L`
 
 ---
 
