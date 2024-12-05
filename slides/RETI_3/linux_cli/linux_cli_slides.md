@@ -1002,9 +1002,9 @@ Esercitazione cli_09
 - Svolgere i seguenti moduli del dojo [Linux Luminarium](https://pwn.college/linux-luminarium/)
   - [Practicing Piping](https://pwn.college/linux-luminarium/piping/)
 - Leggere e visualizzare le due unità `Lectures and Reading`
-- Completare con successo tutt le 11 le `Challenges`
-- Domande del docente sui temi trattati e sulle sezioni *Lecturesd and Reading*
-- Consegnare su su github uno screenshoot che dimostra il superamento delle 11 challenges con il seguente nome:
+- Completare con successo tutte le 11 `Challenges`
+- Domande del docente sui temi trattati e sulle sezioni *Lectures and Reading*
+- Consegnare su su github uno screenshot che dimostra il superamento delle 11 challenges con il seguente nome:
   - *|cognome|_dojo_linux_09a.(png|jpg)*
 
 ---
