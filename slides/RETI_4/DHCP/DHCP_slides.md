@@ -455,7 +455,7 @@ subnet 172.18.0.0 netmask 255.255.0.0 {
 
 # Linux DHCP Server
 
-- Per terminare la configurazione è necessari oindicare al servizio DHCP su quale interfaccia attivarsi
+- Per terminare la configurazione è necessario indicare al servizio DHCP su quale interfaccia attivarsi
 
 4- Editare il file ***/etc/default/isc-dhcp-server***
 
