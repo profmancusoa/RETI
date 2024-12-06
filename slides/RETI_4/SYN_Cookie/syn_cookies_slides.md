@@ -109,7 +109,7 @@ TCP security
     - il destination IP address
     - il TCP Timestamp
 
-- Da notare che il SYN Cookie viola il principio di TCP in qui il numero di sequenza debba essere randomico e incrementare di 1 alla volta.
+- Da notare che il SYN Cookie viola il principio di TCP in cui il numero di sequenza debba essere randomico e incrementare di 1 alla volta.
 
 ---
 
