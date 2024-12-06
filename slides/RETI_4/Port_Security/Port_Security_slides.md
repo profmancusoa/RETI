@@ -153,7 +153,7 @@ Cambiamo identità alla NIC card
 
 Cambiamo identità alla NIC card
 
-- Per cambiare il MAC addrss (spoofing) dobbiamo:
+- Per cambiare il MAC address (spoofing) dobbiamo:
   1. fare lo shutdown dell'interfaccia
   2. cambiare l'indirizzo MAC (hardware) di tipo ether(net)
   3. riattivare l'interfaccia
