@@ -78,7 +78,7 @@ TCP security
 
 - Quindi è necessario poter correlare un pacchetto ACK con il suo corrispondente pacchetto SYN ma senza utilizzare code
 - Il SYN Cookie si basa sul fatto che il numero di sequenza del destinatario non è più casuale ma basato sul numero di sequenza nel primo pacchetto SYN inviato al server 
-- In questo modo, al ricevimento di un pacchetto SYN, si invia un SYN-ACK con il numero di sequenza calcolato sulla base del primo pacchetto inviato (hash di socket + suqence number)
+- In questo modo, al ricevimento di un pacchetto SYN, si invia un SYN-ACK con il numero di sequenza calcolato sulla base del primo pacchetto inviato (hash di socket + sequence number)
 - Il server quindi aspetta che arrivi il pacchetto ACK dal mittente senza che la connessione sia instaurata e le risorse allocate
 - Appena arriva la ACK, si ricalcola l'hash e si verifica se corrisponde a quella iniziale del pacchetto SYN. 
 - In caso affermativo il pacchetto viene considerato valido e si crea la entry nella coda SYN, di fatto instaurando la connessione TCP
