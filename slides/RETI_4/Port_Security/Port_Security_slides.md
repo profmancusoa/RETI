@@ -329,7 +329,7 @@ Proteggiamo la rete da attacchi di livello 2
 8. Modificare il MAC address del PC1
 9. Fare il ping dal PC1 al PC2 ed osservare il comportamento
       - il ping funziona ancora? PC1 può ancora raggiungere PC2?
-      - cose è successo nella console dello switch?
+      - cosa è successo nella console dello switch?
       - qual'è lo stato della porta 0/1? 
 
 ```bash
