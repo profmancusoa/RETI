@@ -66,7 +66,7 @@ TCP security
 - Per mitigare questo attacco è stato inventato da Daniel J. Bernstein nel 1991 il `SYN Cookie`
 - L'idea che sta alla base di questo meccanismo di protezione e di non gestire la coda SYN del server in modo convenzionale
 - In altre parole è necessario fare in modo che questa coda non si saturi mai, altrimenti il server non potrà accettare nuove connessioni
-- Quindi al ricevimento di un pacchetto SYN, questo non verrà messo subito nella coda, ma si apsetta il ricevimento del pacchetto ACK per inserirlo nella coda (connessione lecita)
+- Quindi al ricevimento di un pacchetto SYN, questo non verrà messo subito nella coda, ma si aspetta il ricevimento del pacchetto ACK per inserirlo nella coda (connessione lecita)
 - Se al contrario il pacchetto ACK non arriverà mai (SYN flood attack) il pacchetto verrà scartato permettendo al server di accettare nuove connessioni
 
 
