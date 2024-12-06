@@ -38,7 +38,7 @@ TCP security
 - Il destinatario risponde con una SYN-ACK, ma il mittente non risponderà mai con una ACK per terminare il three-way handshake 
 - In questo modo la connessione TCP non sarà mai realmente stabilita, ma verrà occupato un posto, finchè non scatterà un timeout, nella coda SYN
 - Quindi è così possibile saturare la coda backlog del server in modo che non accetti nuove connessioni.
-- Per essere maggiormente efficace quest'attacco viene svolto in concimitanza di un `IP spoofing`
+- Per essere maggiormente efficace quest'attacco viene svolto in concomitanza di un `IP spoofing`
 
 ---
 
