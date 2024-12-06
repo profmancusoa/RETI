@@ -374,7 +374,7 @@ Proteggiamo la rete da attacchi di livello 2
 
 - Lo switch vedendo arrivare un frame da un MAC non valido (0090.0CB5.5B40) applica la policy impostata in fase di configurazione (shutdown)
 - Quindi mette la porta in modalità **shutdown** e pertanto non può transitare più nessun frame attraverso questa porta.
-- In questo modo lo switch ha rilevato un **possibile** attacco ed ha reagito bloccando ogni ulteriore possibilità di attacco.
+- In questo modo lo switch ha rilevato un **possibile** attacco e ha reagito bloccando ogni ulteriore possibilità di attacco.
 
 --- #slide 1
 
