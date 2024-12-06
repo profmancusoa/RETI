@@ -397,7 +397,7 @@ Proteggiamo la rete da attacchi di livello 2
 
 **Esercizio #02:**
 
-13. Anche se il MAC del PC1 è ora corretto, lo switch mantiene la porta in shutdown perchè si apsetta che venga ripristinata manualmente dal network engineer
+13. Anche se il MAC del PC1 è ora corretto, lo switch mantiene la porta in shutdown perchè si aspetta che venga ripristinata manualmente dal network engineer
 ```bash
 Switch# conf t
 Switch(config)# interface fastEthernet 0/1
