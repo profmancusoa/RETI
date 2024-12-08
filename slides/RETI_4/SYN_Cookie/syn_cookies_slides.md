@@ -38,7 +38,7 @@ TCP security
 - Il destinatario risponde con una SYN-ACK, ma il mittente non risponderà mai con una ACK per terminare il three-way handshake 
 - In questo modo la connessione TCP non sarà mai realmente stabilita, ma verrà occupato un posto, finchè non scatterà un timeout, nella coda SYN
 - Quindi è così possibile saturare la coda backlog del server in modo che non accetti nuove connessioni.
-- Per essere maggiormente efficace quest'attacco viene svolto in concimitanza di un `IP spoofing`
+- Per essere maggiormente efficace quest'attacco viene svolto in concomitanza di un `IP spoofing`
 
 ---
 
@@ -66,7 +66,7 @@ TCP security
 - Per mitigare questo attacco è stato inventato da Daniel J. Bernstein nel 1991 il `SYN Cookie`
 - L'idea che sta alla base di questo meccanismo di protezione e di non gestire la coda SYN del server in modo convenzionale
 - In altre parole è necessario fare in modo che questa coda non si saturi mai, altrimenti il server non potrà accettare nuove connessioni
-- Quindi al ricevimento di un pacchetto SYN, questo non verrà messo subito nella coda, ma si apsetta il ricevimento del pacchetto ACK per inserirlo nella coda (connessione lecita)
+- Quindi al ricevimento di un pacchetto SYN, questo non verrà messo subito nella coda, ma si aspetta il ricevimento del pacchetto ACK per inserirlo nella coda (connessione lecita)
 - Se al contrario il pacchetto ACK non arriverà mai (SYN flood attack) il pacchetto verrà scartato permettendo al server di accettare nuove connessioni
 
 
@@ -78,7 +78,7 @@ TCP security
 
 - Quindi è necessario poter correlare un pacchetto ACK con il suo corrispondente pacchetto SYN ma senza utilizzare code
 - Il SYN Cookie si basa sul fatto che il numero di sequenza del destinatario non è più casuale ma basato sul numero di sequenza nel primo pacchetto SYN inviato al server 
-- In questo modo, al ricevimento di un pacchetto SYN, si invia un SYN-ACK con il numero di sequenza calcolato sulla base del primo pacchetto inviato (hash di socket + suqence number)
+- In questo modo, al ricevimento di un pacchetto SYN, si invia un SYN-ACK con il numero di sequenza calcolato sulla base del primo pacchetto inviato (hash di socket + sequence number)
 - Il server quindi aspetta che arrivi il pacchetto ACK dal mittente senza che la connessione sia instaurata e le risorse allocate
 - Appena arriva la ACK, si ricalcola l'hash e si verifica se corrisponde a quella iniziale del pacchetto SYN. 
 - In caso affermativo il pacchetto viene considerato valido e si crea la entry nella coda SYN, di fatto instaurando la connessione TCP
@@ -109,7 +109,7 @@ TCP security
     - il destination IP address
     - il TCP Timestamp
 
-- Da notare che il SYN Cookie viola il principio di TCP in qui il numero di sequenza debba essere randomico e incrementare di 1 alla volta.
+- Da notare che il SYN Cookie viola il principio di TCP in cui il numero di sequenza debba essere randomico e incrementare di 1 alla volta.
 
 ---
 

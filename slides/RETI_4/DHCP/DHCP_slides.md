@@ -447,7 +447,7 @@ subnet 172.18.0.0 netmask 255.255.0.0 {
 - *max-lease-time*: è il tempo massimo in secondi per cui viene concesso un indirizzo IP in caso il client effettui una richiesta con una durata superiore
 - *authoritative*: indica che la risposta di questo DHCP è **autoritativa** e che deve avere la precedenza rispetto ad altri messaggi sulla LAN (potrei avere più di un DHCP server)
 - *subnet*: sezione che specifica la configurazione per una specifica subnet (IP e Netmask)
-  - *range*: indica il range di indirizzi IP che possono essere asegnati
+  - *range*: indica il range di indirizzi IP che possono essere assegnati
   - *routers*: indica il default gateway della LAN
   - *domain-name-server*: indica una lista di DNS raggiungibili dalla LAN
   - *domain-name*: l'eventuale nome di dominio della LAN
@@ -455,7 +455,7 @@ subnet 172.18.0.0 netmask 255.255.0.0 {
 
 # Linux DHCP Server
 
-- Per terminare la configurazione è necessari oindicare al servizio DHCP su quale interfaccia attivarsi
+- Per terminare la configurazione è necessario indicare al servizio DHCP su quale interfaccia attivarsi
 
 4- Editare il file ***/etc/default/isc-dhcp-server***
 

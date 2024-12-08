@@ -153,7 +153,7 @@ Cambiamo identità alla NIC card
 
 Cambiamo identità alla NIC card
 
-- Per cambiare il MAC addrss (spoofing) dobbiamo:
+- Per cambiare il MAC address (spoofing) dobbiamo:
   1. fare lo shutdown dell'interfaccia
   2. cambiare l'indirizzo MAC (hardware) di tipo ether(net)
   3. riattivare l'interfaccia
@@ -329,7 +329,7 @@ Proteggiamo la rete da attacchi di livello 2
 8. Modificare il MAC address del PC1
 9. Fare il ping dal PC1 al PC2 ed osservare il comportamento
       - il ping funziona ancora? PC1 può ancora raggiungere PC2?
-      - cose è successo nella console dello switch?
+      - cosa è successo nella console dello switch?
       - qual'è lo stato della porta 0/1? 
 
 ```bash
@@ -374,7 +374,7 @@ Proteggiamo la rete da attacchi di livello 2
 
 - Lo switch vedendo arrivare un frame da un MAC non valido (0090.0CB5.5B40) applica la policy impostata in fase di configurazione (shutdown)
 - Quindi mette la porta in modalità **shutdown** e pertanto non può transitare più nessun frame attraverso questa porta.
-- In questo modo lo switch ha rilevato un **possibile** attacco ed ha reagito bloccando ogni ulteriore possibilità di attacco.
+- In questo modo lo switch ha rilevato un **possibile** attacco e ha reagito bloccando ogni ulteriore possibilità di attacco.
 
 --- #slide 1
 
@@ -397,7 +397,7 @@ Proteggiamo la rete da attacchi di livello 2
 
 **Esercizio #02:**
 
-13. Anche se il MAC del PC1 è ora corretto, lo switch mantiene la porta in shutdown perchè si apsetta che venga ripristinata manualmente dal network engineer
+13. Anche se il MAC del PC1 è ora corretto, lo switch mantiene la porta in shutdown perchè si aspetta che venga ripristinata manualmente dal network engineer
 ```bash
 Switch# conf t
 Switch(config)# interface fastEthernet 0/1
