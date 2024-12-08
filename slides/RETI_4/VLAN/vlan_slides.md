@@ -12,7 +12,7 @@ class: "text-center"
 lineNumbers: false
 aspectRatio: "16_/9"
 routerMode: "hash"
-version: "1.0.6"
+version: "1.0.7"
 ---  
 
 <style>
@@ -713,7 +713,7 @@ Switch(config)#vlan 30
 Switch(config-vlan)#name VLAN30
 Switch(config-vlan)#end
 Switch#
-%SYS-5-CONFIG_I: Configured from console by consol
+%SYS-5-CONFIG_I: Configured from console by console
 ```
 
 ---
