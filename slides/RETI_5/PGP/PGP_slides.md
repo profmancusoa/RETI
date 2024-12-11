@@ -2,25 +2,24 @@
 theme: default
 # random image from a curated Unsplash collection by Anthony
 # like them? see https://unsplash.com/collections/94734566/slidev
-background: https://source.unsplash.com/collection/94734566/1920x1080
+background: /cover.jpg
 # apply any windi css classes to the current slide
-class: 'text-center'
+class: "text-center"
 # https://sli.dev/custom/highlighters.html
 #highlighter: shiki
 # show line numbers in code blocks
 lineNumbers: false
-aspectRatio: '16_/9'
-routerMode: 'hash'
+aspectRatio: "16_/9"
+routerMode: "hash"
 materia: "RETI"
-as: "2022/2023"
-version: '1.0.2'
-
+as: "2024/2025"
+version: "1.1.0"
 ---  
 
 
 # SISTEMI & RETI
 
-Firma Digitale e Encryption
+Firma Digitale, Encryption e Posta Sicura
 
 <div class="pt-12">
   <span class="px-2 py-1">
@@ -72,14 +71,15 @@ Identità, Autenticità e Integrità
 
 ---
 
-# Firma Digitale
+# Posta Sicura
 
 PEC
 
-- La ***Posta Elettronica Certificata (PEC)*** è il sistema che consente di inviare e-mail con valore legale equiparato ad una raccomandata con ricevuta di ritorno, come stabilito dalla normativa (DPR 11 Febbraio 2005 n.68).
-- Rispetto alla Posta Elettronica ordinaria, la PEC presenta delle caratteristiche aggiuntive che forniscono agli utenti la certezza a valore legale dell’invio e della consegna delle e-mail al destinatario:
-  - ha lo stesso valore legale della raccomandata con ricevuta di ritorno con attestazione dell'orario esatto di spedizione
-  - grazie ai protocolli di sicurezza utilizzati, è in grado di garantire la certezza del contenuto non rendendo possibile nessun tipo di modifica nè al messaggio nè agli eventuali allegati
+- La ***Posta Elettronica Certificata (PEC)***  è un sistema di posta elettronica che consente di inviare e-mail con valore legale come stabilito dalla normativa (DPR 11 Febbraio 2005 n.68).
+- Viene utilizzata in Italia per garantire la tracciabilità e la validità legale delle comunicazioni elettroniche.
+- Rispetto alla Posta Elettronica ordinaria, la PEC presenta delle caratteristiche aggiuntive che forniscono agli utenti la certezza e il valore legale dell’invio e della consegna delle e-mail al destinatario:
+  - ha lo stesso valore legale della raccomandata con ricevuta di ritorno
+  - grazie ai protocolli di sicurezza utilizzati, è in grado di garantire la certezza del contenuto non rendendo possibile nessun tipo di modifica nè al messaggio nè agli eventuali allegati (confidenzialità, integrità e autenticità)
 
 <br>
 
@@ -87,7 +87,128 @@ PEC
 
 ---
 
-# Firma Digitale
+# Posta Sicura
+
+PEC
+
+- Quali sono i principali vantaggi della PEC?
+  - **Valore legale**: ha lo stesso valore di una raccomandata con ricevuta di ritorno.
+  - **Tracciabilità**: puoi dimostrare l'invio e la ricezione di un messaggio.
+  - **Risparmio di tempo e denaro**: non è necessario recarsi fisicamente in un ufficio postale.
+  - **Sicurezza e integrità**: i messaggi sono protetti da crittografia e non possono essere modificati.
+
+- A cosa serve la PEC?
+  - Comunicazioni con la Pubblica Amministrazione (INPS, Agenzia delle Entrate, ecc.).
+  - Invio di documenti ufficiali (dichiarazioni, contratti, reclami, ecc.).
+  - Comunicazioni obbligatorie delle imprese (fatture elettroniche, convocazioni di assemblee, ecc.).
+  - Comunicazioni di avvocati e professionisti con i tribunali.
+
+---
+
+# Posta Sicura
+
+PEC
+
+- Chi ha bisogno di una PEC?
+  - **Imprese e società**: obbligate ad avere una PEC per iscriversi al Registro delle Imprese.
+  - **Liberi professionisti**: come avvocati, commercialisti, medici, ecc., obbligati a usare la PEC.
+  - **Privati cittadini**: non sono obbligati, ma possono usarla per comunicare con la Pubblica Amministrazione.
+
+<img src="/media/pec.png" style="width:250px;margin:50px auto;"/>
+
+---
+
+# Posta Sicura
+
+PEC
+
+- Come si attiva una PEC?
+  - Scegli un gestore PEC: alcuni esempi sono Aruba, Poste Italiane, LegalMail, Register.it, ecc.
+  - Registrati: crea un account e fornisci i tuoi dati personali.
+  - Paga un abbonamento annuale: il costo di una PEC varia in base al gestore (di solito da 5 a 30 euro l'anno per i privati).
+  - Accedi alla tua casella PEC: riceverai le credenziali per accedere al tuo account PEC, come una normale email.
+
+
+<img src="/media/pec2.jpg" style="width:350px;margin:0px auto;"/>
+
+---
+
+# Posta Sicura
+
+PEC
+
+- Quali sono i limiti della PEC?
+  - Non funziona con email normali: se invii un messaggio PEC a una normale email (es. Gmail), non avrai una ricevuta di consegna, perché il gestore della normale email non è certificato.
+  - Validità solo in Italia: la PEC ha valore legale solo in Italia, non è riconosciuta all'estero.
+  - Costi: la PEC ha un costo (a differenza delle email gratuite).
+
+- Differenze tra una PEC e una email normale
+
+<img src="/media/pec3.png" style="width:550px;margin:0px auto;"/>
+
+---
+
+# Posta Sicura
+
+PEC
+
+- Il funzionamento tecnico della PEC (Posta Elettronica Certificata) si basa su una serie di protocolli e strumenti crittografici che garantiscono la sicurezza, l'integrità e la tracciabilità delle comunicazioni. 
+- La crittografia, in particolare quella a chiave asimmetrica, svolge un ruolo cruciale in questo processo.
+
+**Architettura tecnica della PEC**
+
+- L'architettura della PEC si basa su quattro soggetti principali:
+  - **Mittente**: la persona o l'ente che invia la PEC.
+  - **Gestore PEC mittente**: il server che si occupa di elaborare, certificare e inviare la PEC.
+  - **Gestore PEC destinatario**: il server che riceve la PEC, la verifica e la consegna al destinatario.
+  - **Destinatario**: la persona o l'ente che riceve la PEC.
+
+- Ogni gestore di PEC è obbligato a rispettare le normative italiane (DPR 68/2005) e deve essere accreditato presso l'AgID (Agenzia per l'Italia Digitale). Tutti i messaggi sono tracciati e conservati dai gestori.
+
+
+---
+
+# Posta Sicura
+
+PEC
+
+Il funzionamento della PEC è simile a quello di un'email tradizionale, ma con alcune caratteristiche aggiuntive:
+
+- **Invio del messaggio**
+  - Quando invii una PEC, il messaggio viene confezionato in una busta di trasporto (un file contenente il messaggio, gli allegati e i metadati).
+  - La busta viene firmata digitalmente dal gestore PEC mittente (con la sua chiave privata) per garantire l'integrità e l'autenticità del contenuto.
+
+---
+
+# Posta Sicura
+
+PEC
+
+
+- **Server del Gestore PEC**
+  - Il messaggio viene inviato al gestore PEC del mittente, che verifica l'integrità del messaggio e genera una ricevuta di accettazione.
+  - La busta viene inviata attraverso un canale crittografato con il protocollo TLS (Transport Layer Security), che protegge la comunicazione tra i server PEC.
+  - Questa ricevuta è il primo elemento che attesta l'invio del messaggio. 
+  - È come la ricevuta che rilascia l'ufficio postale quando invii una raccomandata.
+
+---
+
+# Posta Sicura
+
+PEC
+
+- **Trasferimento al destinatario**
+  - Il gestore PEC del mittente invia il messaggio al gestore PEC del destinatario.
+  - Il gestore PEC del destinatario controlla la validità e l'integrità della "busta virtuale" (con la chiave pubblica del gestore del mittente) e, se tutto è corretto, la consegna nella casella PEC del destinatario.
+
+- **Ricezione del messaggio**
+  - Una volta consegnato il messaggio al destinatario, il gestore PEC genera una ricevuta di consegna e la invia al gestore del mittente.
+  - Il gestore del mittente invia la ricevuta di consegna al mittente, completando il ciclo di comunicazione.
+  - La ricevuta di consegna contiene la prova che il messaggio è stato recapitato con successo.
+
+---
+
+# Posta Sicura
 
 PEC
 
@@ -186,10 +307,12 @@ Firma Digitale e Encryption
 
 Firma Digitale e Encryption
 
+- Per lo svolgimento delle esercitazioni utilizzare il docker `profmancusoa/linux-encryption` 
 - Generiamo le chiavi PGP
 - Seguire le istruzione a schermo
 
-<img src="/media/gpg_01.png" style="width:500px;margin:auto;"/>
+<br>
+<img src="/media/gpg_01.png" style="width:450px;margin:auto;"/>
 
 
 ---
@@ -258,7 +381,7 @@ Firma Digitale e Encryption
 Esercizio GPG_01
 
 - Creare la propria coppia di chiavi utilizzando GPG
-- Inviare la propria chiave pubblica a tutti i compagni e al docente utilizzando l'account istitutzionale
+
 
 
 ---
@@ -348,6 +471,15 @@ Firma Digitale e Encryption
 
 # GPG
 
+Esercizio GPG_02
+
+- Importare in Thunderbird la propria chiave GPG generata nell'esercitazione 01
+
+
+---
+
+# GPG
+
 Firma Digitale e Encryption
 
 - Tuttavia per poter comunicare è necessario che i nostri interlocutori conoscano la nostra chiave pubblica
@@ -409,6 +541,25 @@ Firma Digitale e Encryption
 
 # GPG
 
+Esercizio GPG_03
+
+
+- Inviare la propria chiave pubblica a tutti i compagni di classe 
+- Utilizzare il gruppo 5informatica@istitutoagnelli.it
+
+---
+
+# GPG
+
+Esercizio GPG_04
+
+- Una volta ricevute tutte le chiavi pubbliche dei compagni, importarle in Thunderbird
+
+
+---
+
+# GPG
+
 Firma Digitale e Encryption
 
 - Bene ora finalmente possiamo inviare un mail cifrato e firmato digitalmente
@@ -445,6 +596,17 @@ Firma Digitale e Encryption
 Firma Digitale e Encryption
 
 <img src="/media/gpg_26.png" style="width:900px;margin:auto;"/>
+
+---
+
+# GPG
+
+Esercizio GPG_05
+
+- In gruppi di 3 scambiarsi un email sicura
+- Ogni studente scambia un email con ognundo degli altri due membri del gruppo
+- Verificare l'autenticità delle email ricevute
+
 
 ---
 
@@ -738,7 +900,7 @@ Firma Digitale e Encryption con GMAIL
 
 # GPG
 
-Esercizio GPG_02
+Esercizio GPG_06
 
 - Lavorando a coppie (studente A e B)
 - Lo studente A configura Thunderbird per inviare e ricevere email sicure con il docente
@@ -752,7 +914,7 @@ Esercizio GPG_02
 
 # GPG
 
-Esercizio GPG_03
+Esercizio GPG_07
 
 - Lo studente A e B dell'esercizio 2 si scambiano di posizione
 - Lo studente A configura Thunderbird per inviare e ricevere email sicure con il docente
