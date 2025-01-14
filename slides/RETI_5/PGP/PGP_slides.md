@@ -13,7 +13,7 @@ aspectRatio: "16_/9"
 routerMode: "hash"
 materia: "RETI"
 as: "2024/2025"
-version: "1.1.0"
+version: "1.1.1"
 ---  
 
 
@@ -325,6 +325,10 @@ Firma Digitale e Encryption
 
 <br>
 <img src="/media/gpg_02.png" style="width:800px;margin:auto;"/>
+
+<Banner padding=30px mt=30px>
+  Al fine di completare correttamente le esercitazioni seguenti, utilizzare un account di email personale
+</Banner>
 
 ---
 
