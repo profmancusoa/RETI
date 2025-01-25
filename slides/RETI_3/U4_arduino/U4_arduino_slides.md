@@ -13,7 +13,7 @@ aspectRatio: "16_/9"
 routerMode: "hash"
 materia: "RETI"
 as: "2024/2025"
-version: "2.0.1"
+version: "2.0.2"
 ---
 
 # SISTEMI & RETI
