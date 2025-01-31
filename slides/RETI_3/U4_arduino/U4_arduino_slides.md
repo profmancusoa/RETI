@@ -13,7 +13,7 @@ aspectRatio: "16_/9"
 routerMode: "hash"
 materia: "RETI"
 as: "2024/2025"
-version: "2.0.2"
+version: "2.0.3"
 ---
 
 # SISTEMI & RETI
@@ -655,7 +655,6 @@ Pull-Up & Pull-Down
 
 - Si richiede di realizzare un deviatore tramite due pulsanti. Questo deviatore deve permettere l'accensione e lo spegnimento di 3 led in base alla seguente logica:
   se almeno uno dei due interruttori è acceso allora i 3 led sono accesi.
-- Le richieste progettuali prevedono che i pulsanti siano gestiti in interrupt e non in polling.
 - Si richiede di consegnare un link di tinkercad, che include:
   - circuito con Arduino uno
   - codice di controllo funzionante (deve almeno compilare correttamente)
