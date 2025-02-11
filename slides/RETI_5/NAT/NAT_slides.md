@@ -2,21 +2,20 @@
 theme: default
 # random image from a curated Unsplash collection by Anthony
 # like them? see https://unsplash.com/collections/94734566/slidev
-background: https://source.unsplash.com/collection/94734566/1920x1080
+# background: https://source.unsplash.com/collection/94734566/1920x1080
+background: cover.webp
 # apply any windi css classes to the current slide
-class: 'text-center'
+class: "text-center"
 # https://sli.dev/custom/highlighters.html
 #highlighter: shiki
 # show line numbers in code blocks
 lineNumbers: false
-aspectRatio: '16_/9'
-routerMode: 'hash'
+aspectRatio: "16_/9"
+routerMode: "hash"
 materia: "RETI"
-as: "2023/2024"
-version: '1.0.0'
-
----  
-
+as: "2024/2025"
+version: "1.0.1"
+---
 
 # SISTEMI & RETI
 
@@ -28,22 +27,21 @@ Network Address Translation
   </span>
 </div>
 
---- 
+---
 
 # NAT
 
 Network Address Translation
 
-- Il `NAT` è un meccanismo che permette di modificare l'indirizzo IP dei pacchetti in transito attraverso apparati di rete - come router o firewall 
+- Il `NAT` è un meccanismo che permette di modificare l'indirizzo IP dei pacchetti in transito attraverso apparati di rete - come router o firewall
 - Il meccanismo del NAT è diventato fondamentale nel momento in cui gli indirizzi IP del protocollo IPv4 hanno cominciato a scarseggiare
--  Il NAT è stato quindi utilizzato per poter nascondere dietro un unico indirizzo pubblico decine e decine di indirizzi privati (e quindi altrettanti device).
-  
+- Il NAT è stato quindi utilizzato per poter nascondere dietro un unico indirizzo pubblico decine e decine di indirizzi privati (e quindi altrettanti device).
+
 <br>
 
 <img src="/media/NAT_01.jpg" style="width:500px;margin:auto; margin-top: 20px;"/>
 
-
---- 
+---
 
 # NAT
 
@@ -56,7 +54,7 @@ Definizioni degi indirizzi NAT
 
 <img src="/media/NAT_02.jpg" style="width:450px;margin:auto; margin-top:20px;"/>
 
---- 
+---
 
 # NAT
 
@@ -64,8 +62,7 @@ Definizioni degi indirizzi NAT
 
 <img src="/media/NAT_03.jpg" style="width:700px;margin:auto; margin-top:-100px;"/>
 
-
---- 
+---
 
 # NAT
 
@@ -79,7 +76,7 @@ Tipi di NAT
 
 3. `NAT many-to-many` Il NAT many-to-many o `DINAMICO` associa gli indirizzi IP della LAN a più indirizzi IP pubblici (`pool`). Le associazioni saranno dinamiche, nel senso che ogni host interno che accede a Internet sarà traslato nel primo IP pubblico disponibile all'interno del pool
 
---- 
+---
 
 # NAT
 
@@ -89,7 +86,7 @@ Tipi di NAT
 
 <img src="/media/NAT_06.png" style="width:700px;margin:auto; margin-top:20px;"/>
 
---- 
+---
 
 # NAT
 
@@ -99,7 +96,7 @@ Tipi di NAT
 
 <img src="/media/NAT_04.png" style="width:700px;margin:auto; margin-top:20px;"/>
 
---- 
+---
 
 # NAT
 
@@ -109,8 +106,7 @@ Tipi di NAT
 
 <img src="/media/NAT_05.png" style="width:700px;margin:auto; margin-top:20px;"/>
 
-
---- 
+---
 
 # NAT
 
@@ -126,7 +122,7 @@ Router(config-if)#ip nat inside
 
 <br><br>
 
-- Per impostare un'interfaccia come `NAT Inside`
+- Per impostare un'interfaccia come `NAT Outside`
 
 <br>
 
@@ -134,7 +130,7 @@ Router(config-if)#ip nat inside
 Router(config-if)#ip nat outside
 ```
 
---- 
+---
 
 # NAT
 
@@ -157,7 +153,7 @@ Router(config)#ip nat inside source static <IP_locale> <IP_globale>
 
 <img src="/media/NAT_07.png" style="width:600px;margin:auto;"/>
 
---- 
+---
 
 # NAT
 
@@ -180,15 +176,13 @@ Router(config)#ip nat outside source static <IP_locale> <IP_globale>
 
 <img src="/media/NAT_08.png" style="width:600px;margin:auto;"/>
 
-
-
---- 
+---
 
 # NAT
 
 Configurazione many-to-1
 
-- Per configurare il `NAT Overload` è necessario definire una **ACL** che definisce quali host o quale sottorete saranno processati dal NAT 
+- Per configurare il `NAT Overload` è necessario definire una **ACL** che definisce quali host o quale sottorete saranno processati dal NAT
 
 <br>
 
@@ -201,8 +195,7 @@ Router(config)#ip nat inside source list <numero_ACL> interface <interfaccia> ov
 
 <img src="/media/NAT_04.png" style="width:500px;margin:auto;"/>
 
-
---- 
+---
 
 # NAT
 
@@ -227,7 +220,7 @@ Router(config)#ip nat inside source list <numero_ACL> pool <nome_pool>
 
 # Carrier Grade NAT
 
-- Il NAT di livello carrier (CGN o CGNAT), noto anche come NAT su larga scala (LSN), è un tipo di traduzione degli indirizzi di rete (NAT) utilizzato dagli ISP nella progettazione di reti IPv4. 
+- Il NAT di livello carrier (CGN o CGNAT), noto anche come NAT su larga scala (LSN), è un tipo di traduzione degli indirizzi di rete (NAT) utilizzato dagli ISP nella progettazione di reti IPv4.
 - Con CGNAT, i siti finali, in particolare le reti residenziali, sono configurati con indirizzi di rete privati ​permettendo un immenso risparmio di indirizzi IP.
 - Questo meccanismo consente la condivisione di piccoli pool di indirizzi pubblici tra molti utenti finali . Ciò ripete essenzialmente la tradizionale funzione NAT presso la sede del cliente a livello di ISP.
 
@@ -257,9 +250,9 @@ RFC 6598 - IANA-Reserved IPv4 Prefix for Shared Address Space
 - Qui il NAT trasforma indirizzi privatti (es: 192.168.x.x) in un indirizzo CGN
 - Ciò è necessario alttrimenti gli indirizzi privati residenziali dovrebbero essere univoci
 - Al contrario in tal modo ciò che è univoco è l'indirizzo CGN assegnato ad ogni route casalingo
-- Il secondo NATT avviene nella rete del ISP che traduce (many-to-many) gli indirizzi CGN in indirizzi pubblici di proprietà del ISP stesso
-  
-<img src="/media/NAT_16.png" style="width:500px;margin:auto; margin-top:-30px;"/>
+- Il secondo NAT avviene nella rete del ISP che traduce (many-to-many) gli indirizzi CGN in indirizzi pubblici di proprietà del ISP stesso
+
+<img src="/media/NAT_16.png" style="width:450px;margin:auto; margin-top:-30px;margin-left:230px;"/>
 
 ---
 
@@ -269,16 +262,13 @@ RFC 6598 - IANA-Reserved IPv4 Prefix for Shared Address Space
 
 <img src="/media/NAT_17.png" style="width:900px;margin:auto; margin-top:0px;"/>
 
-
 ---
 
 # Carrier Grade NAT
 
-
 <img src="/media/NAT_18.png" style="width:900px;margin:auto; margin-top:0px;"/>
 
-
---- 
+---
 
 # NAT
 
@@ -287,13 +277,13 @@ Esercitazione_01 - 1-to-1
 - [Eserciatzione_01 - NAT 1-to-1](../01_nat-one2one_studente.pkt)
 - Partendo dalla rete rappresenttatta nella figura, si richiede di configurare il router R1 in modo che permetta al PC1 di raggiungere Intetrnet e di potersi collegare al Web Server di Google
 - Si suggerisce di verificare la corretttezza della configurazione di tutti gli host e apparati presenti nella rete
-- Consegnare su github il file |cognome|_01_nat-one2one.pkt
+- Consegnare su github il file |cognome|\_01_nat-one2one.pkt
 
 <br>
 
 <img src="/media/NAT_09.png" style="width:900px;margin:auto;"/>
 
---- 
+---
 
 # NAT
 
@@ -302,14 +292,13 @@ Esercitazione_02 many-to-1
 - [Esercitatzione_02 - NAT many-to-1](../02_nat-many2one_studente.pkt)
 - Partendo dalla rete rappresenttatta nella figura, si richiede di configurare il router R1 in modo che permetta a tutta la subnett 192.168.1.0/24 di raggiungere Intetrnet e di potersi collegare al Web Server di Google
 - Si suggerisce di verificare la corretttezza della configurazione di tutti gli host e apparati presenti nella rete
-- Consegnare su github il file |cognome|_02_nat-many2one.pkt
-
+- Consegnare su github il file |cognome|\_02_nat-many2one.pkt
 
 <br>
 
 <img src="/media/NAT_09.png" style="width:900px;margin:auto;"/>
 
---- 
+---
 
 # NAT
 
@@ -318,13 +307,13 @@ Esercitazione_03 many-to-1
 - [Esercitazione_03 NAT many-to-1 filtered](../03_nat-many2one-filtered_studente.pkt)
 - Partendo dalla rete rappresenttatta nella figura, si richiede di configurare il router R1 in modo che permetta a tutta la subnett 192.168.1.0/24, tranne il PC3, di raggiungere Intetrnet e di potersi collegare al Web Server di Google
 - Si suggerisce di verificare la corretttezza della configurazione di tutti gli host e apparati presenti nella rete
-- Consegnare su github il file |cognome|_03_nat-many2one-filtered.pkt
-  
+- Consegnare su github il file |cognome|\_03_nat-many2one-filtered.pkt
+
 <br>
 
 <img src="/media/NAT_10.png" style="width:900px;margin:auto;"/>
 
---- 
+---
 
 # NAT
 
@@ -333,30 +322,29 @@ Esercitazione_04 many-to-many
 - [Esercitazione_04 NAT many-to-many](../04_nat-many2many_studente.pkt)
 - Partendo dalla rete rappresenttatta nella figura, si richiede di configurare il router R1 in modo che permetta a tutta la subnett 192.168.1.0/24 di raggiungere Intetrnet tramite un pool di ip pubblici e di potersi collegare al Web Server di Google.
 - Si suggerisce di verificare la corretttezza della configurazione di tutti gli host e apparati presenti nella rete
-- Consegnare su github il file |cognome|_04_nat-many2many.pkt
+- Consegnare su github il file |cognome|\_04_nat-many2many.pkt
 
 <br>
 
 <img src="/media/NAT_11.png" style="width:900px;margin:auto;"/>
 
-
 ---
 
 # NAT
 
- PAT
+Port Forwarding
 
- - Il [Port Address Translation](../05_nat-static-PAT.pkt) è utile quando vogliamo accedere ad un servizio su un server che ha un indirizzo privato
- - Per accedere al servizio abbiamo bisogno di un router che espone un `VIP` (**Virtual IP address**)
- - In tal modo i client accederanno al servizio attraverso l'indirizzo VIP, il quale subirà un Por tForwarding verso il vero server intterno alla LAN o DMZ
-  
+- Il [Port Forwarding](../05_nat-static-PAT.pkt) è utile quando vogliamo accedere ad un servizio su un server che ha un indirizzo privato
+- Per accedere al servizio abbiamo bisogno di un router che espone un `VIP` (**Virtual IP address**)
+- In tal modo i client accederanno al servizio attraverso l'indirizzo VIP, il quale subirà un Por tForwarding verso il vero server intterno alla LAN o DMZ
+
 <img src="/media/NAT_12.png" style="width:900px;margin:auto;"/>
 
 ---
 
 # NAT
 
- PAT
+Port Forwarding
 
 <img src="/media/NAT_13.png" style="width:800px;margin:auto;"/>
 
@@ -364,7 +352,7 @@ Esercitazione_04 many-to-many
 
 # NAT
 
- PAT
+Port Forwarding
 
 <img src="/media/NAT_14.png" style="width:900px;margin:auto;"/>
 
@@ -372,7 +360,7 @@ Esercitazione_04 many-to-many
 
 # NAT
 
- PAT
+Port Forwarding
 
 ```bash
 !
@@ -388,9 +376,9 @@ interface GigabitEthernet9/0
  duplex auto
  speed auto
 !
-ip nat inside source static tcp 192.168.100.1 80 200.100.50.25 80 
+ip nat inside source static tcp 192.168.100.1 80 200.100.50.25 80
 ip classless
-ip route 0.0.0.0 0.0.0.0 200.100.50.24 
+ip route 0.0.0.0 0.0.0.0 200.100.50.24
 !
 ip flow-export version 9
 !
