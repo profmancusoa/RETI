@@ -1,0 +1,11 @@
+services:
+  packettracer:
+    image: profmancusoa/packettracer:8.2.1
+    environment:
+      DISPLAY: $DISPLAY
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - /dev/shm:/dev/shm
+      - /home/mancusoa/pt:/root/pt
+    devices:
+      - /dev/dri:/dev/dri
