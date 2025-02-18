@@ -73,6 +73,7 @@ services:
       - /home/mancusoa/pt:/root/pt
     devices:
       - /dev/dri:/dev/dri
+    entrypoint: ["packettracer"]
 ```
 
 - sostituisci /home/mancusoa/pt con una directory del tuo sistema dove packettracer può scrivere
