@@ -81,7 +81,7 @@ services:
 - Esegui packet tracer con il seguente comando
 
 ```bash
-# docker compose up
+# xhost + && docker compose up
 ```
 
 **Happy Networking!!**
