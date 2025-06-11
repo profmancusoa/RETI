@@ -12,7 +12,7 @@ aspectRatio: "16_/9"
 routerMode: "hash"
 materia: RETI 3
 as: 2024/2025
-version: "1.2.4"
+version: "1.2.5"
 ---  
 
 <!-- https://www.linuxjournal.com/content/linux-command-line-interface-introduction-guide#firstlook -->
@@ -103,7 +103,6 @@ Esercitarsi con Linux e Materiale Aggiuntivo
 - [Misc commands](https://linuxcommand.org/lc3_man_page_index.php#other)
 - [Intro to Linux](https://tldp.org/LDP/intro-linux/intro-linux.pdf?ref=itsfoss.com)
 - [Learn Linux in 5 Days](https://www.linuxtrainingacademy.com/itsfoss-ll5d/)
-- [Linux Basics for Hacker](/support/3/linux_cli/)
 - [Linux_Command_Line](/support/3/linux_cli/Linux_Command_Line.epub)
 - [Linux_Basics_Hackers](/support/3/linux_cli/Linux_Basics_Hackers.epub)
 - [Essential_Linux_Commands](/support/3/linux_cli/Essential_Linux_Commands.epub)
