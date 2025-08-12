@@ -11,8 +11,12 @@ class: "text-center"
 lineNumbers: false
 aspectRatio: "16_/9"
 routerMode: "hash"
-version: "1.0.1"
----  
+materia: "RETI"
+as: "2025/2026"
+version: "1.1.0"
+--- 
+
+
 
 <style>
   .alto {
@@ -581,3 +585,166 @@ Esercizio Routing_06
 
 
 <img src="/media/ip_21.png" class="alto" />
+
+
+---
+
+# IP Subnetting e Routing
+
+Layer 3 Switch
+
+**Concetti Generali**
+
+- Un **Layer 3 Switch** (L3 Switch) è un dispositivo di rete che combina funzioni di switch Ethernet (livello 2: MAC address) e di router (livello 3: IP address).
+- Progettato per gestire traffico tra VLAN diverse alla massima velocità (Inter VLAN Routing).
+- Supporta il routing interno fra subnet/IP VLAN senza dover ricorrere al classico router (ROAS).
+- Operazione wirespeed (commutazione hardware) con capacità di routing IP.
+
+<br>
+
+<center>  
+  <img src="/media/L3.png" width="350" alt="Layer 3 Switch"/>  
+</center>
+
+---
+
+# IP Subnetting e Routing
+
+Layer 3 Switch
+
+**Vantaggi**
+
+<div class="grid grid-cols-2 gap-4">
+<div>
+
+- Prestazioni elevate grazie alla commutazione hardware (wire speed).
+- Minor latenza rispetto a un router tradizionale (ROAS).
+- Maggiore scalabilità: supporta decine o centinaia di VLAN senza limiti fisici di porte.
+- Configurazione centralizzata: l'inter-VLAN routing è gestito dallo switch.
+- Ideale per reti aziendali, campus, multi-VLAN / subnet.
+
+</div>
+
+<div>
+
+  <img src="/media/L3_1.png" width="350" alt="Layer 3 Switch"/>  
+
+</div>
+
+</div>
+
+---
+
+# IP Subnetting e Routing
+
+Layer 3 Switch
+
+**Svantaggi**
+
+- Costi generalmente superiori rispetto a switch Layer 2 e router entry-level.
+- Richiede competenze specifiche per la configurazione (routing, ACL, policy).
+- Routing avanzato limitato rispetto ai router di fascia alta (es: VPN avanzati, NAT complessi).
+- Sovradimensionato in ambienti piccoli o semplici.
+
+
+---
+
+# IP Subnetting e Routing
+
+Layer 3 Switch
+
+**Layer 3 Switch vs. Router on a Stick (ROAS)**
+
+<br>
+
+| Caratteristica         | Layer 3 Switch             | ROAS (Router on a Stick)           |
+|-----------------------|----------------------------|----------------------------------|
+| Prestazioni            | Alte (hardware switching)  | Limitate (porta singola router)  |
+| Scalabilità VLAN       | Molto alta                 | Bassa (una porta per router)     |
+| Complessità           | Media                      | Bassa                           |
+| Costi                 | Alti                       | Bassi                           |
+| Routing avanzato      | Parziale                   | Completo (se router avanzato)   |
+
+
+---
+
+# IP Subnetting e Routing
+
+Switch Virtual Interface (SVI)
+
+
+- Un **Switch Virtual Interface (SVI)** è un'interfaccia logica di livello 3 (Layer 3) su uno switch multilayer o Layer 3 Switch
+- Rappresenta un collegamento virtuale tra una VLAN di livello 2 e la funzionalità di routing del dispositivo.
+
+<br>
+<center>
+ <img src="/media/L3_2.png" width="650" alt="Layer 3 Switch"/>  
+</center>
+
+
+---
+
+# IP Subnetting e Routing
+
+Switch Virtual Interface (SVI)
+
+<center>
+ <img src="/media/svi.jpg" width="490" alt="Layer 3 Switch"/>  
+</center>
+
+
+---
+
+# IP Subnetting e Routing
+
+Switch Virtual Interface (SVI)
+
+
+In pratica:
+
+- Una SVI è un'interfaccia virtuale associata a una VLAN specifica.
+- Fornisce un indirizzo IP e una subnet mask che agisce come gateway predefinito per tutti i dispositivi appartenenti a quella VLAN.
+- Permette di effettuare il routing tra VLAN diverse all’interno dello stesso switch, senza bisogno di utilizzare un router esterno (come nel caso della configurazione ROAS).
+- Su uno switch Layer 3, si possono creare più SVI, una per ogni VLAN da instradare.
+- Evita di dover creare tante interfacce fisiche quanti sono le VLAN, essendo un'interfaccia virtuale, mantenendo scalabilità e semplicità.
+
+In sostanza, l’SVI collega la parte di commutazione Layer 2 dello switch con il motore di routing Layer 3, permettendo comunicazione e instradamento inter-VLAN più veloce e integrato.
+
+---
+
+# IP Subnetting e Routing
+
+Switch Virtual Interface (SVI)
+
+**Vantaggi principali delle SVI:**
+
+- Permette un routing più veloce rispetto a soluzioni basate su router esterni (ad esempio router on a stick).
+- Riduce la necessità di connessioni fisiche multiple tra switch e router.
+- Consente il bilanciamento del carico e una latenza inferiore perché tutto il traffico rimane all’interno dello switch.
+- Supporta VLAN multiple con una sola interfaccia fisica condivisa internamente.
+
+Questa tecnologia è fondamentale nelle reti moderne per gestire reti VLAN complesse con elevata efficienza e scalabilità.
+
+---
+
+# IP Subnetting e Routing
+
+Esercizio Routing_07
+
+- In questa esercitazione usiamo <br> il potentissimo emulatore di rete GNS3
+- Abilitiamo il routing tra 2 vlan usando un L3 Switch 
+- Configura normalmente le VLAN sullo switch
+- Configura i PC in modo appropriato attraverso <br> il comado `ip <IP> <NETMASK> <GATEWAY>`
+- prova a pingare dai PC della VLAN 10 a quelli della VLAN 20
+- Configura le SVI in questo modo
+
+<br>
+
+```bash
+ip routing
+ip interface vlan <VLAN ID>
+  ip address <IP> <NETMASK>
+  no shutdown
+```
+
+<img src="/media/L3_3.png" class="alto" />
