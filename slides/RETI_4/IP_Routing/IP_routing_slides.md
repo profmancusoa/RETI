@@ -13,7 +13,7 @@ aspectRatio: "16_/9"
 routerMode: "hash"
 materia: "RETI"
 as: "2025/2026"
-version: "1.1.0"
+version: "1.1.1"
 --- 
 
 
@@ -665,6 +665,27 @@ Layer 3 Switch
 | Costi                 | Alti                       | Bassi                           |
 | Routing avanzato      | Parziale                   | Completo (se router avanzato)   |
 
+---
+
+# IP Subnetting e Routing
+
+Switch Virtual Interface (SVI)
+
+<center>
+ <img src="/media/svi.jpg" width="490" alt="Layer 3 Switch"/>  
+</center>
+
+---
+
+# IP Subnetting e Routing
+
+Switch Virtual Interface (SVI)
+
+<br>
+<center>
+ <img src="/media/l3.gif" width="600" alt="Layer 3 Switch"/>  
+</center>
+
 
 ---
 
@@ -679,17 +700,6 @@ Switch Virtual Interface (SVI)
 <br>
 <center>
  <img src="/media/L3_2.png" width="650" alt="Layer 3 Switch"/>  
-</center>
-
-
----
-
-# IP Subnetting e Routing
-
-Switch Virtual Interface (SVI)
-
-<center>
- <img src="/media/svi.jpg" width="490" alt="Layer 3 Switch"/>  
 </center>
 
 
@@ -724,6 +734,7 @@ Switch Virtual Interface (SVI)
 - Supporta VLAN multiple con una sola interfaccia fisica condivisa internamente.
 
 Questa tecnologia è fondamentale nelle reti moderne per gestire reti VLAN complesse con elevata efficienza e scalabilità.
+
 
 ---
 
