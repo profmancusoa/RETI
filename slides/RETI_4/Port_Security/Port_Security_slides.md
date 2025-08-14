@@ -12,8 +12,10 @@ class: "text-center"
 lineNumbers: false
 aspectRatio: "16_/9"
 routerMode: "hash"
+as: "2025/2026"
 version: "1.0.1"
 ---  
+
 
 <style>
   .alto {
@@ -401,6 +403,7 @@ Proteggiamo la rete da attacchi di livello 2
 ```bash
 Switch# conf t
 Switch(config)# interface fastEthernet 0/1
+Switch(config-if)# shutdown
 Switch(config-if)# no shutdown
 Switch(config-if)# end
 ```
@@ -409,6 +412,7 @@ Switch(config-if)# end
        - il ping funziona ancora? PC1 può ancora raggiungere PC2?
        - qual'è lo stato della porta 0/1? 
 
+- Consegna su github il file *|cognome|_port_security.pkt*
 
 --- #slide 1
 
