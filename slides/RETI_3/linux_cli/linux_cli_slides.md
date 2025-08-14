@@ -11,8 +11,8 @@ lineNumbers: false
 aspectRatio: "16_/9"
 routerMode: "hash"
 materia: RETI 3
-as: 2024/2025
-version: "1.2.5"
+as: 2025/2026
+version: "1.2.6"
 ---  
 
 <!-- https://www.linuxjournal.com/content/linux-command-line-interface-introduction-guide#firstlook -->
@@ -98,6 +98,7 @@ Esercitarsi con Linux e Materiale Aggiuntivo
 
 Esercitarsi con Linux e Materiale Aggiuntivo
 
+- [You Sucks at Programming](https://ysap.sh)
 - [Text utilities](https://linuxcommand.org/lc3_man_page_index.php#text)
 - [Shell utilities](https://linuxcommand.org/lc3_man_page_index.php#shell)
 - [Misc commands](https://linuxcommand.org/lc3_man_page_index.php#other)
