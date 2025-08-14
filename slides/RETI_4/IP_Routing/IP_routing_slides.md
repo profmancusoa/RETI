@@ -13,7 +13,7 @@ aspectRatio: "16_/9"
 routerMode: "hash"
 materia: "RETI"
 as: "2025/2026"
-version: "1.1.1"
+version: "1.1.2"
 --- 
 
 
@@ -555,9 +555,9 @@ IP sub interfaces
 R1>enable
 R1#configure terminal
 Enter configuration commands, one per line.  End with CNTL/Z.
-R1(config)#interface fastethernet 0/0.100
-R1(config-subif)#encapsulation dot1Q 100
-R1(config-subif)#ip address 172.16.100.1 255.255.255.0
+R1(config)#interface fastethernet 0/0.10
+R1(config-subif)#encapsulation dot1Q 10
+R1(config-subif)#ip address 192.168.10.1 255.255.255.0
 R1(config-subif)#no shutdown
 R1(config-subif)#exit
 R1(config)#exit
