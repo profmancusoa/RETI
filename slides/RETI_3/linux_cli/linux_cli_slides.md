@@ -12,7 +12,7 @@ aspectRatio: "16_/9"
 routerMode: "hash"
 materia: RETI 3
 as: 2025/2026
-version: "1.2.6"
+version: "1.2.7"
 ---  
 
 <!-- https://www.linuxjournal.com/content/linux-command-line-interface-introduction-guide#firstlook -->
@@ -59,6 +59,7 @@ Linux CLI
 Esercitarsi con Linux e Materiale Aggiuntivo
 
 - [PWN College - Linux Luminarium](https://pwn.college/linux-luminarium/)
+- [GameShell: un'avventura interattiva per imparare la CLI di Linux](https://github.com/phyver/GameShell)
 - [The_Complete_Linux_Manual](/support/3/linux_cli/The_Complete_Linux_Manual.pdf)
 - [How_Linux_Works](/support/3/linux_cli/How_Linux_Works.epub)
 - [Learning_Modern_Linux](/support/3/linux_cli/Learning_Modern_Linux.epub)
@@ -70,7 +71,6 @@ Esercitarsi con Linux e Materiale Aggiuntivo
 - [llthw](https://web.archive.org/web/20130926213426/http://nixsrv.com/llthw)
 - [introduction-to-linux-installation](https://www.codecademy.com/learn/introduction-to-linux-installation)
 - [intro-to-the-command-line](https://www.codecademy.com/learn/intro-to-the-command-line)
-- [learn-the-command-line](https://www.codecademy.com/learn/learn-the-command-line-viewing-and-changing-the-file-system)
 
 ---
 
@@ -78,6 +78,7 @@ Esercitarsi con Linux e Materiale Aggiuntivo
 
 Esercitarsi con Linux e Materiale Aggiuntivo
 
+- [learn-the-command-line](https://www.codecademy.com/learn/learn-the-command-line-viewing-and-changing-the-file-system)
 - [learn-the-command-line-redirecting-input-and-output](https://www.codecademy.com/learn/learn-the-command-line-redirecting-input-and-output)
 - [introduction-to-linux-users-and-permissions](https://www.codecademy.com/learn/introduction-to-linux-users-and-permissions)
 - [introduction-to-linux-bash-scripting](https://www.codecademy.com/learn/introduction-to-linux-bash-scripting)
@@ -90,7 +91,6 @@ Esercitarsi con Linux e Materiale Aggiuntivo
 - [The Linux Command Line](https://sourceforge.net/projects/linuxcommand/files/AWTLCL/21.10/AWTLCL-21.10.pdf/download)
 - [Learning The Shell](https://linuxcommand.org/lc3_learning_the_shell.php)
 - [Bash builtins](https://linuxcommand.org/lc3_man_page_index.php#builtins)
-- [File utilities](https://linuxcommand.org/lc3_man_page_index.php#file)
 
 ---
 
@@ -98,6 +98,7 @@ Esercitarsi con Linux e Materiale Aggiuntivo
 
 Esercitarsi con Linux e Materiale Aggiuntivo
 
+- [File utilities](https://linuxcommand.org/lc3_man_page_index.php#file)
 - [You Sucks at Programming](https://ysap.sh)
 - [Text utilities](https://linuxcommand.org/lc3_man_page_index.php#text)
 - [Shell utilities](https://linuxcommand.org/lc3_man_page_index.php#shell)
@@ -2986,6 +2987,97 @@ Esercitazione cli_17
 - Consegnare su su github 2 screenshots che dimostrano il superamento delle 8 challenges con i seguenti nomi:
   - *|cognome|_dojo_linux_17a.(png|jpg)*
   - *|cognome|_dojo_linux_17b.(png|jpg)*
+
+---
+
+# Linux CLI 
+ 
+Esercitazione cli_18 - cli_63
+
+- GameShell: un'avventura interattiva per imparare la CLI di Linux
+
+<img src="/media/cli_24.png" width="500" style="position:relative;top:10px;right:-100px;">
+
+
+---
+
+# Linux CLI 
+ 
+Esercitazione cli_18 - cli_63
+
+- Per installare il gioco esegui questo comando
+
+```bash
+docker run --name gsh -it -e DISPLAY=${DISPLAY} -v /tmp/.X11-unix:/tmp/.X11-unix profmancusoa/gameshell
+```
+
+<br>
+
+- In base a come è installato docker, precedi il comando con `sudo`
+
+- Da dentro la shel del container esegui: 
+
+```bash
+bash gameshell.sh
+```
+
+<img src="/media/cli_25.png" width="350" style="position:relative;top:-80px;right:-400px;">
+
+
+---
+
+# Linux CLI 
+ 
+Esercitazione cli_18 - cli_63
+
+- Quando hai terminato la tua sessione di gioco esegui
+
+```bash
+gsh exit
+
+exit
+```
+
+<br>
+
+- Dalla seconda volta che giochi, per riprendere dall'ultimo livello a cui sei arrivato, esegui:
+
+```bash
+docker start gsh
+
+docker exec -it gsh bash
+
+./gameshell-save.sh 
+```
+
+---
+
+# Linux CLI 
+ 
+Esercitazione cli_18 - cli_63
+
+- Lo scopo del gioco è completare 45 missioni
+- Per ogni missione visualizza gli obiettivi con
+
+```bash
+gsh goal
+```
+<img src="/media/cli_26.png" width="500" style="position:relative;top:30px;right:0px;">
+
+---
+
+# Linux CLI 
+ 
+Esercitazione cli_18 - cli_63
+
+- Quando hai completato il livello, verifica e passa al livello successivo con
+
+```bash
+gsh check
+```
+
+
+<img src="/media/cli_27.png" width="500" style="position:relative;top:30px;right:0px;">
 
 ---
 

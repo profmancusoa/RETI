@@ -1,6 +1,6 @@
 services:
   packettracer:
-    image: profmancusoa/packettracer:8.2.1
+    image: profmancusoa/packettracer:8.2.2
     environment:
       DISPLAY: $DISPLAY
     volumes:
@@ -9,3 +9,4 @@ services:
       - /home/mancusoa/pt:/root/pt
     devices:
       - /dev/dri:/dev/dri
+    entrypoint: ["packettracer"]
