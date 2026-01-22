@@ -14,7 +14,7 @@ aspectRatio: "16_/9"
 routerMode: "hash"
 materia: "RETI"
 as: "2025/2026"
-version: "1.0.0"
+version: "1.1.0"
 ---
 
 # SISTEMI & RETI
@@ -778,3 +778,34 @@ Extended IP access list POLICY-SERVER2
 Router(config)#int Ethernet 0/0/0
 Router(config-if)#ip access-group POLICY-SERVER2 out
 ```
+
+---
+
+# Esercitazione 03
+
+### Scenario
+
+- scarica il file [acl_estese_02](/support/5/acl_estese_es_02.pkt) e consegna la soluzione su github *|cognome|_acl_estese_es_02.pkt*
+
+<img src="/media/acl_07.png" style="position: relative;top:-0px;right:-150px; width:550px;">
+
+
+---
+
+# Esercitazione 03
+
+### Scenario
+
+- Facendo riferimento alla rete in figura, implementare tramite le ACL estese named, la seguente policy di sicurezza:
+  1. LAN1 può accedere alla rete LAB1 ma non alla rete LAB2
+  2. LAN2 può accedere sia a LAB1 che LAB2
+  3. LAN3 può accedere alla rete LAB2 ma non alla rete LAB1
+  4. LAB1 non può accedere a LAB2
+  5. LAN1-PC2 non può accedere alla porta 3306 di LAB1-SRV3
+  6. LAN3-PC1 non può accedere alla porta 11299 di LAB2-SRV2
+  7. LAN 1 non può fare il PC in LAN 3
+  8. LAN2-PC1 non può fare il ping a LAB1-PC1
+  9. LAN2-PC2 non può fare il ping a LAB2-PC2
+  10. LAN2-PC1 non può accedere a HTTP di LAB1-WS1 e HTTPS di LAB2-WS2
+  11. LAN-PC2 non può accedere a HTTP di LAB2-WS2 e HTTPS di LAB1-WS1
+  
