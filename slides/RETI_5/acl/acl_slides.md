@@ -14,7 +14,7 @@ aspectRatio: "16_/9"
 routerMode: "hash"
 materia: "RETI"
 as: "2025/2026"
-version: "1.1.1"
+version: "1.1.2"
 ---
 
 # SISTEMI & RETI
@@ -807,5 +807,5 @@ Router(config-if)#ip access-group POLICY-SERVER2 out
   8. LAN2-PC1 non può fare il ping a LAB1-PC1
   9. LAN2-PC2 non può fare il ping a LAB2-PC2
   10. LAN2-PC1 non può accedere a HTTP di LAB1-WS1 e HTTPS di LAB2-WS2
-  11. LAN-PC2 non può accedere a HTTP di LAB2-WS2 e HTTPS di LAB1-WS1
+  11. LAN2-PC2 non può accedere a HTTP di LAB2-WS2 e HTTPS di LAB1-WS1
   
