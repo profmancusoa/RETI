@@ -14,7 +14,7 @@ aspectRatio: "16_/9"
 routerMode: "hash"
 materia: "RETI"
 as: "2025/2026"
-version: "1.1.0"
+version: "1.1.1"
 ---
 
 # SISTEMI & RETI
@@ -803,7 +803,7 @@ Router(config-if)#ip access-group POLICY-SERVER2 out
   4. LAB1 non può accedere a LAB2
   5. LAN1-PC2 non può accedere alla porta 3306 di LAB1-SRV3
   6. LAN3-PC1 non può accedere alla porta 11299 di LAB2-SRV2
-  7. LAN 1 non può fare il PC in LAN 3
+  7. LAN 1 non può fare il ping in LAN 3
   8. LAN2-PC1 non può fare il ping a LAB1-PC1
   9. LAN2-PC2 non può fare il ping a LAB2-PC2
   10. LAN2-PC1 non può accedere a HTTP di LAB1-WS1 e HTTPS di LAB2-WS2
