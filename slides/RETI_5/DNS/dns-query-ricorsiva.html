@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>DNS: la query ricorsiva passo per passo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme: light;
+  --desk:#C9D1DE; --paper:#F7F8FB; --card:#FFFFFF; --ink:#111C33; --muted:#4A5670; --line:#D3DAE5;
+  --navy:#0F1E45; --navy-2:#1B2D5E; --navy-line:#3A4C7E; --navy-ink:#FFFFFF; --navy-muted:#B9C4DD;
+  --cy:#0B7FA3; --cy-bg:#DCF1F8; --cy-ink:#065068; --cy-hi:#7FD8F0;
+  --am:#C46F1C; --am-bg:#FCEAD5; --am-ink:#7E420C; --am-hi:#FFC27A;
+  --vi:#5B4BC4; --vi-bg:#ECE9FB; --vi-ink:#3A2E8F;
+  --chip:#ECEFF4; --chip-ink:#2E3A52; --code:#F1F4F8;
+  --display:"Space Grotesk", "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --sans:"IBM Plex Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --mono:"IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  box-sizing:border-box;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme: dark;
+    --desk:#05080F; --paper:#0F1626; --card:#162036; --ink:#E6EBF5; --muted:#A6B2CA; --line:#26324B;
+    --navy:#08112A; --navy-2:#13214A; --navy-line:#2E4070;
+    --cy:#5CC6E6; --cy-bg:#0F3140; --cy-ink:#BDEBF8;
+    --am:#F2A65A; --am-bg:#3A2610; --am-ink:#FBD9B5;
+    --vi:#A79BF0; --vi-bg:#262052; --vi-ink:#DCD6FF;
+    --chip:#202C45; --chip-ink:#CED6E6; --code:#121B2E;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme: dark;
+  --desk:#05080F; --paper:#0F1626; --card:#162036; --ink:#E6EBF5; --muted:#A6B2CA; --line:#26324B;
+  --navy:#08112A; --navy-2:#13214A; --navy-line:#2E4070;
+  --cy:#5CC6E6; --cy-bg:#0F3140; --cy-ink:#BDEBF8;
+  --am:#F2A65A; --am-bg:#3A2610; --am-ink:#FBD9B5;
+  --vi:#A79BF0; --vi-bg:#262052; --vi-ink:#DCD6FF;
+  --chip:#202C45; --chip-ink:#CED6E6; --code:#121B2E;
+}
+*,*::before,*::after{box-sizing:inherit}
+html,body{margin:0;height:100%}
+body{background:var(--desk);color:var(--ink);font-family:var(--sans)}
+
+.viewport{width:100%;height:100%;overflow:hidden;position:relative}
+.stage{width:1600px;height:900px;position:absolute;left:50%;top:50%;transform-origin:center center;transform:translate(-50%,-50%) scale(var(--s,1));display:grid;grid-template-columns:420px minmax(0,1fr);background:var(--paper);border-radius:10px;overflow:hidden}
+
+.side{background:var(--navy);color:var(--navy-ink);padding:48px 40px 40px;display:flex;flex-direction:column;gap:20px}
+.kicker{font-family:var(--mono);font-size:14px;color:var(--cy-hi);margin:0}
+.side h1{font-family:var(--display);font-weight:700;font-size:58px;line-height:1;letter-spacing:-0.02em;margin:0}
+.side h1 span{display:block;color:var(--am-hi)}
+.side .lead{margin:0;font-size:16px;line-height:1.55;color:var(--navy-muted)}
+.side .lead code{font-family:var(--mono);color:var(--navy-ink);font-size:15px}
+.steps{list-style:none;margin:auto 0 0;padding:0;display:flex;flex-direction:column;gap:6px}
+.steps button{all:unset;box-sizing:border-box;width:100%;cursor:pointer;display:flex;align-items:center;gap:12px;padding:7px 10px;border-radius:10px;border:1px solid transparent;color:var(--navy-muted);font-size:14.5px;line-height:1.25}
+.steps button .n{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;flex:none;font:500 13px var(--mono);border:1px solid var(--navy-line);color:var(--navy-muted)}
+.steps button:hover{background:var(--navy-2)}
+.steps button:focus-visible{outline:2px solid var(--cy-hi);outline-offset:1px}
+.steps button.on{background:var(--navy-2);border-color:var(--navy-line);color:var(--navy-ink)}
+.steps button.on .n{background:var(--am-hi);border-color:var(--am-hi);color:#0F1E45}
+.steps button.done .n{border-color:var(--cy-hi);color:var(--cy-hi)}
+
+.main{padding:40px 44px;display:flex;flex-direction:column;gap:20px;min-width:0}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 22px}
+.ph{display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin:0 0 6px}
+.ph h2{font-family:var(--display);font-size:22px;font-weight:700;margin:0}
+.legend{display:flex;gap:18px;font-size:14px;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:7px}
+.legend i{display:inline-block;width:22px;height:3px;border-radius:2px}
+.legend .q i{background:var(--cy)} .legend .r i{background:var(--vi)}
+
+.dia{width:100%;height:auto;display:block}
+.dia .link{stroke:var(--line);stroke-width:1.6;stroke-dasharray:6 6;fill:none}
+.dia .node rect.box{fill:var(--card);stroke:var(--line);stroke-width:1.5;transition:fill .2s,stroke .2s}
+.dia .node .disc{stroke-width:2}
+.dia .node.c .disc{fill:var(--cy-bg);stroke:var(--cy)} .dia .node.c .ic{stroke:var(--cy-ink)}
+.dia .node.a .disc{fill:var(--am-bg);stroke:var(--am)} .dia .node.a .ic{stroke:var(--am-ink)}
+.dia .ic{fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.dia .t1{font:700 19px var(--display);fill:var(--ink)}
+.dia .t2{font:400 14px var(--mono);fill:var(--muted)}
+.dia .node.on rect.box{stroke-width:2.5}
+.dia .node.c.on rect.box{fill:var(--cy-bg);stroke:var(--cy)}
+.dia .node.a.on rect.box{fill:var(--am-bg);stroke:var(--am)}
+.dia .cache-box{fill:var(--chip);stroke:var(--line)}
+.dia .cache-box.hit{fill:var(--vi-bg);stroke:var(--vi)}
+.dia #cache{font:500 14px var(--mono);fill:var(--chip-ink)}
+.dia #cache.hit{fill:var(--vi-ink)}
+.dia #act{stroke-width:3.2;stroke-linecap:round;fill:none}
+.dia #pkt{stroke:var(--card);stroke-width:2.5}
+
+.detail{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px;flex:1;min-height:0}
+.dl{display:flex;flex-direction:column;gap:10px;min-height:0}
+#tt{font-family:var(--display);font-size:27px;font-weight:700;line-height:1.15;margin:0;letter-spacing:-0.01em}
+#kind{align-self:flex-start;font:500 13.5px var(--mono);padding:3px 11px;border-radius:999px}
+#kind.q{background:var(--cy-bg);color:var(--cy-ink)}
+#kind.r{background:var(--vi-bg);color:var(--vi-ink)}
+#kind.n{background:var(--chip);color:var(--chip-ink)}
+#dd{margin:0;font-size:16.5px;line-height:1.6}
+.nav{margin-top:auto;display:flex;gap:10px;align-items:center}
+.nav button{font:500 15px var(--sans);color:var(--ink);background:transparent;border:1px solid var(--line);border-radius:999px;padding:9px 18px;cursor:pointer}
+.nav button.primary{background:var(--navy);border-color:var(--navy);color:var(--navy-ink)}
+.nav button:focus-visible{outline:2px solid var(--cy);outline-offset:2px}
+.nav small{font-size:13px;color:var(--muted);margin-left:6px}
+.dr{display:flex;flex-direction:column;gap:8px;min-height:0}
+.dr .lab{font:500 13px var(--mono);color:var(--muted)}
+pre#pk{margin:0;background:var(--code);border-radius:10px;padding:16px 18px;font:400 15px/1.65 var(--mono);color:var(--ink);white-space:pre-wrap;word-break:break-word;flex:1}
+.foot{margin:0;font-size:13px;color:var(--muted)}
+.foot code{font-family:var(--mono)}
+
+@media (max-width:760px){
+  html,body{height:auto}
+  .viewport{height:auto;overflow:visible}
+  .stage{position:static;transform:none;width:auto;height:auto;grid-template-columns:minmax(0,1fr);border-radius:0}
+  .side{padding:28px 20px}
+  .side h1{font-size:42px}
+  .steps{margin-top:8px}
+  .main{padding:20px 14px}
+  .ph{flex-direction:column}
+  .detail{grid-template-columns:minmax(0,1fr)}
+  #tt{font-size:22px}
+}
+@media (prefers-reduced-motion: reduce){ .dia .node rect.box{transition:none} }
+</style>
+</head>
+<body>
+<div class="viewport">
+<main class="stage" id="stage">
+
+<aside class="side">
+  <p class="kicker">Sistemi e Reti · protocollo DNS</p>
+  <h1>La query<span>ricorsiva</span></h1>
+  <p class="lead">Come un resolver trova l’indirizzo IP di <code>www.agnelli.it</code> partendo dalla radice dell’albero DNS.</p>
+  <ol class="steps" id="steps" aria-label="Passi della risoluzione"></ol>
+</aside>
+
+<div class="main">
+  <section class="panel">
+    <div class="ph">
+      <h2>Chi parla con chi</h2>
+      <div class="legend"><span class="q"><i></i>query</span><span class="r"><i></i>risposta</span></div>
+    </div>
+    <svg class="dia" viewBox="0 0 1080 430" role="img" aria-labelledby="dt dd2">
+      <title id="dt">Flusso della query DNS ricorsiva</title>
+      <desc id="dd2">Il client interroga il resolver, che interroga in modo iterativo il root server, il server del TLD .it e il server autoritativo di agnelli.it.</desc>
+      <defs>
+        <marker id="mq" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" style="stroke:var(--cy)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker>
+        <marker id="mr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" style="stroke:var(--vi)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker>
+      </defs>
+
+      <line class="link" x1="240" y1="221" x2="340" y2="221"/>
+      <line class="link" x1="560" y1="206" x2="800" y2="66"/>
+      <line class="link" x1="560" y1="221" x2="800" y2="221"/>
+      <line class="link" x1="560" y1="236" x2="800" y2="376"/>
+
+      <g class="node c" id="n-client">
+        <rect class="box" x="30" y="181" width="210" height="80" rx="14"/>
+        <circle class="disc" cx="76" cy="221" r="26"/>
+        <g class="ic" transform="translate(63 208)"><rect x="4" y="5" width="16" height="11" rx="1.5" transform="scale(1.1)"/><path d="M2 19h20" transform="scale(1.1)"/></g>
+        <text class="t1" x="114" y="214">Client</text>
+        <text class="t2" x="114" y="238">stub resolver</text>
+      </g>
+      <g class="node c" id="n-res">
+        <rect class="box" x="340" y="181" width="220" height="80" rx="14"/>
+        <circle class="disc" cx="386" cy="221" r="26"/>
+        <g class="ic" transform="translate(373 208)"><circle cx="11" cy="11" r="6" transform="scale(1.1)"/><path d="m20 20-4.5-4.5" transform="scale(1.1)"/></g>
+        <text class="t1" x="424" y="214">Resolver</text>
+        <text class="t2" x="424" y="238">ricorsivo</text>
+      </g>
+      <rect class="cache-box" id="cachebox" x="340" y="288" width="220" height="40" rx="20"/>
+      <text id="cache" x="450" y="313" text-anchor="middle">cache: vuota</text>
+
+      <g class="node a" id="n-root">
+        <rect class="box" x="800" y="26" width="250" height="80" rx="14"/>
+        <circle class="disc" cx="846" cy="66" r="26"/>
+        <g class="ic" transform="translate(833 53)"><g transform="scale(1.1)"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a14 14 0 0 1 0 18a14 14 0 0 1 0-18z"/></g></g>
+        <text class="t1" x="884" y="59">Root server</text>
+        <text class="t2" x="884" y="83">zona .</text>
+      </g>
+      <g class="node a" id="n-tld">
+        <rect class="box" x="800" y="181" width="250" height="80" rx="14"/>
+        <circle class="disc" cx="846" cy="221" r="26"/>
+        <g class="ic" transform="translate(833 208)"><g transform="scale(1.1)"><path d="M3 3h8l10 10-8 8L3 11z"/><circle cx="7.5" cy="7.5" r="1.5"/></g></g>
+        <text class="t1" x="884" y="214">TLD .it</text>
+        <text class="t2" x="884" y="238">a.dns.it</text>
+      </g>
+      <g class="node a" id="n-auth">
+        <rect class="box" x="800" y="336" width="250" height="80" rx="14"/>
+        <circle class="disc" cx="846" cy="376" r="26"/>
+        <g class="ic" transform="translate(833 363)"><g transform="scale(1.1)"><ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v12c0 1.7 3.1 3 7 3s7-1.3 7-3V6"/><path d="M5 12c0 1.7 3.1 3 7 3s7-1.3 7-3"/></g></g>
+        <text class="t1" x="884" y="369">agnelli.it</text>
+        <text class="t2" x="884" y="393">autoritativo</text>
+      </g>
+
+      <line id="act" x1="0" y1="0" x2="0" y2="0"/>
+      <circle id="pkt" r="8" cx="-20" cy="-20"/>
+    </svg>
+  </section>
+
+  <section class="panel detail" aria-live="polite">
+    <div class="dl">
+      <p id="tt"></p>
+      <span id="kind"></span>
+      <p id="dd"></p>
+      <div class="nav">
+        <button type="button" id="prev">Indietro</button>
+        <button type="button" id="next" class="primary">Avanti</button>
+        <small>oppure frecce ← →</small>
+      </div>
+    </div>
+    <div class="dr">
+      <span class="lab">pacchetto DNS</span>
+      <pre id="pk"></pre>
+    </div>
+  </section>
+
+  <p class="foot">Nomi dei name server di agnelli.it e indirizzi IP sono d’esempio (range di documentazione 192.0.2.0/24, RFC 5737). I valori reali si verificano con <code>dig +trace www.agnelli.it</code>.</p>
+</div>
+</main>
+</div>
+
+<script>
+(function(){
+  var L={cr:[244,212,334,212],rc:[334,232,244,232],ro:[566,198,794,62],or:[794,80,566,216],rt:[566,214,794,214],tr:[794,232,566,232],ra:[566,226,794,366],ar:[794,384,566,242]};
+  var S=[
+    {l:'cr',k:'q',n:['client','res'],s:'Il client chiede al resolver',t:'1. Il client chiede al resolver',m:'query ricorsiva',d:'Lo stub resolver del sistema operativo invia una query su UDP porta 53 con il flag RD=1 (recursion desired): delega al resolver tutto il lavoro e si aspetta una risposta definitiva, non un rimando.',p:'QUESTION: www.agnelli.it. IN A\nflag: RD=1'},
+    {l:null,k:'n',n:['res'],s:'Controllo della cache',t:'2. Controllo della cache',m:'nessun messaggio',d:'Il resolver cerca il nome nella propria cache: cache miss. Deve partire dalla radice. Gli indirizzi dei root server li conosce già, perché sono scritti nel file root hints.',p:'cache lookup: www.agnelli.it → MISS',c:'cache: miss'},
+    {l:'ro',k:'q',n:['res','root'],s:'Query a un root server',t:'3. Query a un root server',m:'query iterativa',d:'Da qui in poi le query sono iterative: il resolver chiede e ogni server risponde solo con ciò che sa. I root server hanno 13 nomi (da a. a m.root-servers.net) e sono raggiunti in anycast.',p:'QUESTION: www.agnelli.it. IN A\nflag: RD=0'},
+    {l:'or',k:'r',n:['res','root'],s:'Referral verso .it',t:'4. Referral verso .it',m:'referral',d:'Il root non ha la risposta, ma sa chi gestisce .it: restituisce un referral, cioè record NS nella sezione AUTHORITY e i relativi indirizzi (glue record) nella sezione ADDITIONAL.',p:'ANSWER:     (vuota)\nAUTHORITY:  it. NS a.dns.it.\nADDITIONAL: a.dns.it. A <indirizzo>'},
+    {l:'rt',k:'q',n:['res','tld'],s:'Query al TLD .it',t:'5. Query al TLD .it',m:'query iterativa',d:'Il resolver pone la stessa identica domanda al server autoritativo della zona .it, usando l’indirizzo ricevuto nel glue.',p:'QUESTION: www.agnelli.it. IN A\nflag: RD=0'},
+    {l:'tr',k:'r',n:['res','tld'],s:'Referral verso agnelli.it',t:'6. Referral verso agnelli.it',m:'referral',d:'Il server del TLD conosce la delega di agnelli.it, registrata tramite il registrar, e rimanda ai name server autoritativi del dominio.',p:'ANSWER:     (vuota)\nAUTHORITY:  agnelli.it. NS ns1.agnelli.it.\nADDITIONAL: ns1.agnelli.it. A 192.0.2.53'},
+    {l:'ra',k:'q',n:['res','auth'],s:'Query all’autoritativo',t:'7. Query all’autoritativo',m:'query iterativa',d:'Terzo salto: il resolver interroga il name server che ospita la zona agnelli.it.',p:'QUESTION: www.agnelli.it. IN A\nflag: RD=0'},
+    {l:'ar',k:'r',n:['res','auth'],s:'Risposta autoritativa',t:'8. Risposta autoritativa',m:'risposta',d:'Il record esiste nella zona: la risposta ha il flag AA=1 (authoritative answer) e un TTL che indica per quanti secondi può essere conservata in cache.',p:'ANSWER: www.agnelli.it. 3600 IN A 192.0.2.10\nflag: AA=1'},
+    {l:'rc',k:'r',n:['client','res'],s:'Risposta al client e caching',t:'9. Risposta al client e caching',m:'risposta finale',d:'Il resolver memorizza il record (e anche i referral ricevuti) per la durata del TTL, poi risponde al client con RA=1. Una nuova richiesta uguale sarà servita dalla cache senza contattare root, TLD e autoritativo.',p:'ANSWER: www.agnelli.it. 3600 IN A 192.0.2.10\nflag: RA=1  AA=0',c:'cache: www.agnelli.it · TTL 3600',h:true}
+  ];
+  var i=0, stepsEl=document.getElementById('steps'), raf=null;
+  var reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+  S.forEach(function(s,j){
+    var li=document.createElement('li'),b=document.createElement('button');
+    b.type='button';
+    var n=document.createElement('span');n.className='n';n.textContent=j+1;
+    var t=document.createElement('span');t.textContent=s.s;
+    b.appendChild(n);b.appendChild(t);
+    b.onclick=function(){i=j;draw();};
+    li.appendChild(b);stepsEl.appendChild(li);
+  });
+  function v(name){return getComputedStyle(document.documentElement).getPropertyValue(name).trim();}
+  function animate(c,col){
+    var p=document.getElementById('pkt');
+    if(raf)cancelAnimationFrame(raf);
+    p.setAttribute('fill',col);
+    if(reduce){p.setAttribute('cx',c[2]);p.setAttribute('cy',c[3]);return;}
+    var t0=null,dur=650;
+    function f(ts){
+      if(!t0)t0=ts;
+      var k=Math.min((ts-t0)/dur,1),e=1-Math.pow(1-k,3);
+      p.setAttribute('cx',c[0]+(c[2]-c[0])*e);p.setAttribute('cy',c[1]+(c[3]-c[1])*e);
+      if(k<1)raf=requestAnimationFrame(f);
+    }
+    raf=requestAnimationFrame(f);
+  }
+  function draw(){
+    var s=S[i],a=document.getElementById('act'),p=document.getElementById('pkt');
+    ['client','res','root','tld','auth'].forEach(function(n){
+      var g=document.getElementById('n-'+n),base=(n==='client'||n==='res')?'node c':'node a';
+      g.setAttribute('class',s.n.indexOf(n)>=0?base+' on':base);
+    });
+    if(s.l){
+      var c=L[s.l],col=v(s.k==='q'?'--cy':'--vi');
+      a.setAttribute('x1',c[0]);a.setAttribute('y1',c[1]);a.setAttribute('x2',c[2]);a.setAttribute('y2',c[3]);
+      a.style.stroke=col;a.setAttribute('marker-end','url(#'+(s.k==='q'?'mq':'mr')+')');a.style.opacity=1;p.style.opacity=1;
+      animate(c,col);
+    }else{a.style.opacity=0;p.style.opacity=0;}
+    var ce=document.getElementById('cache'),cb=document.getElementById('cachebox');
+    ce.textContent=s.c||'cache: vuota';
+    ce.setAttribute('class',s.h?'hit':'');cb.setAttribute('class',s.h?'cache-box hit':'cache-box');
+    document.getElementById('tt').textContent=s.t;
+    var k=document.getElementById('kind');k.textContent=s.m;k.className=s.k;
+    document.getElementById('dd').textContent=s.d;
+    document.getElementById('pk').textContent=s.p;
+    Array.prototype.forEach.call(stepsEl.querySelectorAll('button'),function(b,j){
+      b.className=j===i?'on':(j<i?'done':'');
+      if(j===i)b.setAttribute('aria-current','step');else b.removeAttribute('aria-current');
+    });
+    document.getElementById('next').textContent=i===S.length-1?'Ricomincia':'Avanti';
+  }
+  function next(){i=(i+1)%S.length;draw();}
+  function prev(){i=(i-1+S.length)%S.length;draw();}
+  document.getElementById('next').onclick=next;
+  document.getElementById('prev').onclick=prev;
+  document.addEventListener('keydown',function(e){
+    if(e.key==='ArrowRight'||e.key==='PageDown')next();
+    if(e.key==='ArrowLeft'||e.key==='PageUp')prev();
+  });
+
+  var stage=document.getElementById('stage'),narrow=window.matchMedia('(max-width:760px)');
+  function fit(){
+    if(narrow.matches){stage.style.removeProperty('--s');return;}
+    var s=Math.min((window.innerWidth-24)/1600,(window.innerHeight-24)/900);
+    stage.style.setProperty('--s',Math.max(s,0.2).toFixed(4));
+  }
+  window.addEventListener('resize',fit);
+  if(narrow.addEventListener)narrow.addEventListener('change',fit);
+  if(window.matchMedia){var mq=matchMedia('(prefers-color-scheme: dark)');if(mq.addEventListener)mq.addEventListener('change',draw);}
+  fit();draw();
+})();
+</script>
+</body>
+</html>

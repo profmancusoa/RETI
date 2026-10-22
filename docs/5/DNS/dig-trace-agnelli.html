@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Leggere dig +trace: www.agnelli.it</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme: light;
+  --desk:#C9D1DE; --paper:#F7F8FB; --card:#FFFFFF; --ink:#111C33; --muted:#4A5670; --line:#D3DAE5;
+  --navy:#0F1E45; --navy-2:#1B2D5E; --navy-line:#3A4C7E; --navy-ink:#FFFFFF; --navy-muted:#B9C4DD;
+  --cy:#0B7FA3; --cy-bg:#DCF1F8; --cy-ink:#065068; --cy-hi:#7FD8F0;
+  --am:#C46F1C; --am-bg:#FCEAD5; --am-ink:#7E420C; --am-hi:#FFC27A;
+  --vi:#5B4BC4; --vi-bg:#ECE9FB; --vi-ink:#3A2E8F;
+  --chip:#ECEFF4; --chip-ink:#2E3A52;
+  --term:#0B1533; --term-hl:#1B2D5E; --term-ink:#E6EBF5; --term-dim:#7F8BA8;
+  --display:"Space Grotesk", "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --sans:"IBM Plex Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --mono:"IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  box-sizing:border-box;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme: dark;
+    --desk:#05080F; --paper:#0F1626; --card:#162036; --ink:#E6EBF5; --muted:#A6B2CA; --line:#26324B;
+    --navy:#08112A; --navy-2:#13214A; --navy-line:#2E4070;
+    --cy:#5CC6E6; --cy-bg:#0F3140; --cy-ink:#BDEBF8;
+    --am:#F2A65A; --am-bg:#3A2610; --am-ink:#FBD9B5;
+    --vi:#A79BF0; --vi-bg:#262052; --vi-ink:#DCD6FF;
+    --chip:#202C45; --chip-ink:#CED6E6;
+    --term:#070D20; --term-hl:#16244A;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme: dark;
+  --desk:#05080F; --paper:#0F1626; --card:#162036; --ink:#E6EBF5; --muted:#A6B2CA; --line:#26324B;
+  --navy:#08112A; --navy-2:#13214A; --navy-line:#2E4070;
+  --cy:#5CC6E6; --cy-bg:#0F3140; --cy-ink:#BDEBF8;
+  --am:#F2A65A; --am-bg:#3A2610; --am-ink:#FBD9B5;
+  --vi:#A79BF0; --vi-bg:#262052; --vi-ink:#DCD6FF;
+  --chip:#202C45; --chip-ink:#CED6E6;
+  --term:#070D20; --term-hl:#16244A;
+}
+*,*::before,*::after{box-sizing:inherit}
+html,body{margin:0;height:100%}
+body{background:var(--desk);color:var(--ink);font-family:var(--sans)}
+
+.viewport{width:100%;height:100%;overflow:hidden;position:relative}
+.stage{width:1600px;height:900px;position:absolute;left:50%;top:50%;transform-origin:center center;transform:translate(-50%,-50%) scale(var(--s,1));display:grid;grid-template-columns:400px minmax(0,1fr);background:var(--paper);border-radius:10px;overflow:hidden}
+
+.side{background:var(--navy);color:var(--navy-ink);padding:48px 38px 40px;display:flex;flex-direction:column;gap:20px}
+.kicker{font-family:var(--mono);font-size:14px;color:var(--cy-hi);margin:0}
+.side h1{font-family:var(--display);font-weight:700;font-size:56px;line-height:1.02;letter-spacing:-0.02em;margin:0}
+.side h1 span{display:block;color:var(--am-hi);font-family:var(--mono);font-weight:500;font-size:46px;letter-spacing:0;margin-top:6px}
+.side .lead{margin:0;font-size:16px;line-height:1.55;color:var(--navy-muted)}
+.side .lead code{font-family:var(--mono);color:var(--navy-ink);font-size:15px}
+.steps{list-style:none;margin:auto 0 0;padding:0;display:flex;flex-direction:column;gap:6px}
+.steps button{all:unset;box-sizing:border-box;width:100%;cursor:pointer;display:flex;align-items:center;gap:12px;padding:8px 10px;border-radius:10px;border:1px solid transparent;color:var(--navy-muted);font-size:15px;line-height:1.25}
+.steps button .n{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;flex:none;font:500 13px var(--mono);border:1px solid var(--navy-line);color:var(--navy-muted)}
+.steps button:hover{background:var(--navy-2)}
+.steps button:focus-visible{outline:2px solid var(--cy-hi);outline-offset:1px}
+.steps button.on{background:var(--navy-2);border-color:var(--navy-line);color:var(--navy-ink)}
+.steps button.on .n{background:var(--am-hi);border-color:var(--am-hi);color:#0F1E45}
+.steps button.done .n{border-color:var(--cy-hi);color:var(--cy-hi)}
+
+.main{padding:36px 40px;display:flex;flex-direction:column;gap:18px;min-width:0}
+.top{display:grid;grid-template-columns:690px minmax(0,1fr);gap:20px;flex:1;min-height:0}
+
+.term{background:var(--term);border-radius:14px;padding:16px 18px 14px;display:flex;flex-direction:column;gap:8px;min-height:0}
+.term .bar{display:flex;align-items:center;gap:7px;margin:0 0 4px}
+.term .bar i{width:11px;height:11px;border-radius:50%;background:#3A4C7E;display:block}
+.term .bar span{margin-left:10px;font:400 12.5px var(--mono);color:var(--term-dim)}
+.cmd{font:500 15px var(--mono);color:var(--term-ink);padding:6px 10px;border-radius:8px;transition:background .2s,opacity .2s}
+.cmd b{color:var(--cy-hi);font-weight:500}
+.blk{font:400 13.5px/1.55 var(--mono);color:var(--term-ink);padding:7px 10px;border-radius:8px;white-space:pre;transition:background .2s,opacity .2s}
+.blk .rc{color:var(--term-dim)}
+.blk .who{color:var(--am-hi);font-weight:500}
+.blk .ans{color:var(--cy-hi);font-weight:500}
+.blk .gap{color:var(--term-dim);font-style:italic}
+.term.focus .cmd,.term.focus .blk{opacity:.38}
+.term .cmd.hl,.term .blk.hl{opacity:1;background:var(--term-hl)}
+.term .note{margin-top:auto;font:400 12px/1.45 var(--sans);color:var(--term-dim)}
+
+.explain{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px 24px;display:flex;flex-direction:column;gap:12px;min-height:0}
+#tt{font-family:var(--display);font-size:27px;font-weight:700;line-height:1.15;margin:0;letter-spacing:-0.01em}
+#who{align-self:flex-start;font:500 13.5px var(--mono);padding:4px 12px;border-radius:999px;background:var(--am-bg);color:var(--am-ink)}
+#who[hidden]{display:none}
+#dd{margin:0;font-size:16.5px;line-height:1.6}
+#dd p{margin:0 0 10px}
+#dd code{font-family:var(--mono);font-size:15px;background:var(--chip);color:var(--chip-ink);padding:1px 6px;border-radius:5px}
+.facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:auto}
+.fact{background:var(--chip);border-radius:10px;padding:10px 12px}
+.fact small{display:block;font-size:12.5px;color:var(--muted);margin-bottom:2px}
+.fact b{font:700 18px var(--display);color:var(--ink)}
+.nav{display:flex;gap:10px;align-items:center}
+.nav button{font:500 15px var(--sans);color:var(--ink);background:transparent;border:1px solid var(--line);border-radius:999px;padding:9px 18px;cursor:pointer}
+.nav button.primary{background:var(--navy);border-color:var(--navy);color:var(--navy-ink)}
+.nav button:focus-visible{outline:2px solid var(--cy);outline-offset:2px}
+.nav small{font-size:13px;color:var(--muted);margin-left:6px}
+
+.anat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 22px;display:grid;grid-template-columns:200px minmax(0,1fr);gap:22px;align-items:center}
+.anat h2{margin:0;font-family:var(--display);font-size:20px;font-weight:700;line-height:1.2}
+.anat h2 small{display:block;font:400 13.5px var(--sans);color:var(--muted);margin-top:4px}
+.rec{display:grid;grid-template-columns:1.6fr .7fr .55fr .55fr 1.4fr;gap:10px}
+.tok{border-radius:10px;padding:10px 12px;display:flex;flex-direction:column;gap:4px}
+.tok code{font:500 18px var(--mono)}
+.tok span{font-size:13px;line-height:1.35}
+.tok.n{background:var(--cy-bg);color:var(--cy-ink)}
+.tok.t{background:var(--am-bg);color:var(--am-ink)}
+.tok.c{background:var(--chip);color:var(--chip-ink)}
+.tok.y{background:var(--vi-bg);color:var(--vi-ink)}
+.tok.v{background:var(--cy-bg);color:var(--cy-ink)}
+
+@media (max-width:760px){
+  html,body{height:auto}
+  .viewport{height:auto;overflow:visible}
+  .stage{position:static;transform:none;width:auto;height:auto;grid-template-columns:minmax(0,1fr);border-radius:0}
+  .side{padding:28px 20px}
+  .side h1{font-size:40px}
+  .side h1 span{font-size:32px}
+  .main{padding:18px 12px}
+  .top,.anat{grid-template-columns:minmax(0,1fr)}
+  .term{overflow-x:auto}
+  .rec{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .facts{grid-template-columns:minmax(0,1fr)}
+}
+@media (prefers-reduced-motion: reduce){ .cmd,.blk{transition:none} }
+</style>
+</head>
+<body>
+<div class="viewport">
+<main class="stage" id="stage">
+
+<aside class="side">
+  <p class="kicker">Sistemi e Reti · protocollo DNS</p>
+  <h1>Leggere<span>dig +trace</span></h1>
+  <p class="lead">Un comando vero, una risposta vera: ecco come il DNS ha trovato l’indirizzo di <code>www.agnelli.it</code>, un server alla volta.</p>
+  <ol class="steps" id="steps" aria-label="Parti dell’output"></ol>
+</aside>
+
+<div class="main">
+  <div class="top">
+    <section class="term" id="term" aria-label="Output del comando dig">
+      <div class="bar" aria-hidden="true"><i></i><i></i><i></i><span>terminale</span></div>
+      <div class="cmd" data-b="0">$ dig <b>+trace</b> www.agnelli.it</div>
+<div class="blk" data-b="1">.     394920  IN  NS  a.root-servers.net.
+.     394920  IN  NS  b.root-servers.net.
+<span class="gap">      … 13 server in tutto, da a. a m.root-servers.net</span>
+<span class="rc">;; Received 885 bytes from 192.168.1.1#53(</span><span class="who">192.168.1.1</span><span class="rc">) in 11 ms</span></div>
+<div class="blk" data-b="2">it.   172800  IN  NS  a.dns.it.
+it.   172800  IN  NS  dns.nic.it.
+it.   172800  IN  NS  m.dns.it.
+it.   172800  IN  NS  nameserver.cnr.it.
+it.   172800  IN  NS  r.dns.it.
+it.   172800  IN  NS  v.dns.it.
+<span class="rc">;; Received 789 bytes from 192.36.148.17#53(</span><span class="who">i.root-servers.net</span><span class="rc">) in 25 ms</span></div>
+<div class="blk" data-b="3">agnelli.it.   3600  IN  NS  ns113.ovh.net.
+agnelli.it.   3600  IN  NS  dns113.ovh.net.
+<span class="rc">;; Received 474 bytes from 194.119.192.34#53(</span><span class="who">nameserver.cnr.it</span><span class="rc">) in 23 ms</span></div>
+<div class="blk" data-b="4"><span class="ans">www.agnelli.it.  3600  IN  A   46.105.204.27</span>
+<span class="rc">;; Received 87 bytes from 5.135.82.125#53(</span><span class="who">ns113.ovh.net</span><span class="rc">) in 24 ms</span></div>
+      <p class="note">Output semplificato: sono state tolte le righe legate alla sicurezza del DNS (RRSIG, DS, NSEC3) e alcuni messaggi di errore, argomenti che vedremo più avanti.</p>
+    </section>
+
+    <section class="explain" aria-live="polite">
+      <p id="tt"></p>
+      <span id="who"></span>
+      <div id="dd"></div>
+      <div class="facts" id="facts"></div>
+      <div class="nav">
+        <button type="button" id="prev">Indietro</button>
+        <button type="button" id="next" class="primary">Avanti</button>
+        <small>oppure frecce ← →</small>
+      </div>
+    </section>
+  </div>
+
+  <section class="anat" aria-label="Come si legge una riga">
+    <h2>Come si legge una riga<small>ogni riga è un record DNS</small></h2>
+    <div class="rec">
+      <div class="tok n"><code>www.agnelli.it.</code><span>il nome di cui si parla</span></div>
+      <div class="tok t"><code>3600</code><span>TTL: per quanti secondi si può ricordare</span></div>
+      <div class="tok c"><code>IN</code><span>classe: Internet</span></div>
+      <div class="tok y"><code>A</code><span>tipo: A = indirizzo IP, NS = server DNS</span></div>
+      <div class="tok v"><code>46.105.204.27</code><span>il valore: qui l’indirizzo IP</span></div>
+    </div>
+  </section>
+</div>
+</main>
+</div>
+
+<script>
+(function(){
+  var S=[
+    {b:[0],s:'Il comando',t:'Il comando',w:null,
+     d:'<p><code>dig</code> è un programma per fare domande al DNS. Normalmente chiede la risposta al server DNS della rete e mostra solo il risultato.</p><p>Con <code>+trace</code> invece parte dalla cima dell’albero DNS e segue i rimandi da un server all’altro, mostrando ogni passaggio.</p><p>L’output è diviso in blocchi: ogni blocco è la risposta di un server diverso, e l’ultima riga del blocco dice chi ha risposto.</p>',
+     f:[['Domanda','IP di www.agnelli.it'],['Blocchi','4'],['Server interrogati','4']]},
+    {b:[1],s:'Chi sono i root server?',t:'1. Chi sono i root server?',w:'risponde: 192.168.1.1',
+     d:'<p>Per cominciare dalla cima, dig deve sapere chi sono i <b>root server</b>, i server in cima all’albero DNS. Lo chiede al server DNS della rete locale, qui il router <code>192.168.1.1</code>.</p><p>La risposta è un elenco di record <code>NS</code>: sono i 13 root server, chiamati con le lettere da a a m.</p>',
+     f:[['Tempo','11 ms'],['Tipo di record','NS'],['TTL','circa 4 giorni']]},
+    {b:[2],s:'Il root rimanda a .it',t:'2. Il root rimanda a .it',w:'risponde: i.root-servers.net',
+     d:'<p>dig chiede a un root server: <b>qual è l’indirizzo di www.agnelli.it?</b></p><p>Il root non lo sa, ma sa chi gestisce i nomi che finiscono in <code>.it</code> e risponde con l’elenco dei loro server. È un rimando: «non lo so, chiedi a loro».</p><p>I server di .it sono gestiti dal Registro .it, presso il CNR di Pisa.</p>',
+     f:[['Tempo','25 ms'],['Tipo di risposta','rimando'],['TTL','2 giorni']]},
+    {b:[3],s:'.it rimanda ad agnelli.it',t:'3. .it rimanda ad agnelli.it',w:'risponde: nameserver.cnr.it',
+     d:'<p>dig ripete la stessa domanda a uno dei server di .it.</p><p>Anche lui non conosce l’indirizzo, ma sa a chi è affidato il dominio <code>agnelli.it</code>: ai server <code>ns113.ovh.net</code> e <code>dns113.ovh.net</code>. OVH è l’azienda che ospita il DNS della scuola.</p><p>È un altro rimando.</p>',
+     f:[['Tempo','23 ms'],['Tipo di risposta','rimando'],['TTL','1 ora']]},
+    {b:[4],s:'La risposta finale',t:'4. La risposta finale',w:'risponde: ns113.ovh.net',
+     d:'<p>Finalmente il server giusto: <code>ns113.ovh.net</code> conosce tutti i nomi del dominio agnelli.it.</p><p>Risponde con un record <code>A</code>: l’indirizzo IP di <b>www.agnelli.it</b> è <b>46.105.204.27</b>.</p><p>Questa volta non è un rimando, ma la risposta definitiva.</p>',
+     f:[['Tempo','24 ms'],['Tipo di record','A'],['TTL','1 ora']]},
+    {b:[1,2,3,4],s:'Riepilogo',t:'Riepilogo',w:null,
+     d:'<p>Per trovare un solo indirizzo sono serviti quattro server, dalla cima dell’albero fino al server della scuola: router → root → .it → OVH.</p><p>Nella vita di tutti i giorni questo lavoro lo fa il server DNS della rete, non il nostro computer. E grazie al TTL ricorda le risposte: la seconda volta che chiediamo lo stesso nome, risponde subito senza rifare tutto il percorso.</p>',
+     f:[['Server interrogati','4'],['Tempo totale','circa 83 ms'],['Risposta','46.105.204.27']]}
+  ];
+  var i=0,stepsEl=document.getElementById('steps'),term=document.getElementById('term');
+  var parts=term.querySelectorAll('[data-b]');
+  S.forEach(function(s,j){
+    var li=document.createElement('li'),b=document.createElement('button');b.type='button';
+    var n=document.createElement('span');n.className='n';n.textContent=j===0?'$':(j===S.length-1?'Σ':j);
+    var t=document.createElement('span');t.textContent=s.s;
+    b.appendChild(n);b.appendChild(t);b.onclick=function(){i=j;draw();};
+    li.appendChild(b);stepsEl.appendChild(li);
+  });
+  function draw(){
+    var s=S[i];
+    term.classList.add('focus');
+    Array.prototype.forEach.call(parts,function(p){
+      p.classList.toggle('hl',s.b.indexOf(+p.getAttribute('data-b'))>=0);
+    });
+    document.getElementById('tt').textContent=s.t;
+    var w=document.getElementById('who');
+    if(s.w){w.hidden=false;w.textContent=s.w;}else w.hidden=true;
+    document.getElementById('dd').innerHTML=s.d;
+    var f=document.getElementById('facts');f.textContent='';
+    s.f.forEach(function(x){
+      var d=document.createElement('div');d.className='fact';
+      var sm=document.createElement('small');sm.textContent=x[0];
+      var b=document.createElement('b');b.textContent=x[1];
+      d.appendChild(sm);d.appendChild(b);f.appendChild(d);
+    });
+    Array.prototype.forEach.call(stepsEl.querySelectorAll('button'),function(b,j){
+      b.className=j===i?'on':(j<i?'done':'');
+      if(j===i)b.setAttribute('aria-current','step');else b.removeAttribute('aria-current');
+    });
+    document.getElementById('next').textContent=i===S.length-1?'Ricomincia':'Avanti';
+  }
+  function next(){i=(i+1)%S.length;draw();}
+  function prev(){i=(i-1+S.length)%S.length;draw();}
+  document.getElementById('next').onclick=next;
+  document.getElementById('prev').onclick=prev;
+  document.addEventListener('keydown',function(e){
+    if(e.key==='ArrowRight'||e.key==='PageDown')next();
+    if(e.key==='ArrowLeft'||e.key==='PageUp')prev();
+  });
+  var stage=document.getElementById('stage'),narrow=window.matchMedia('(max-width:760px)');
+  function fit(){
+    if(narrow.matches){stage.style.removeProperty('--s');return;}
+    var s=Math.min((window.innerWidth-24)/1600,(window.innerHeight-24)/900);
+    stage.style.setProperty('--s',Math.max(s,0.2).toFixed(4));
+  }
+  window.addEventListener('resize',fit);
+  if(narrow.addEventListener)narrow.addEventListener('change',fit);
+  fit();draw();
+})();
+</script>
+</body>
+</html>

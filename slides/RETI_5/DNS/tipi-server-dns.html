@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>DNS: zone e tipi di server</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme: light;
+  --desk:#C9D1DE; --paper:#F7F8FB; --card:#FFFFFF; --ink:#111C33; --muted:#4A5670; --line:#D3DAE5;
+  --navy:#0F1E45; --navy-2:#1B2D5E; --navy-line:#3A4C7E; --navy-ink:#FFFFFF; --navy-muted:#B9C4DD;
+  --cy:#0B7FA3; --cy-bg:#DCF1F8; --cy-ink:#065068; --cy-hi:#7FD8F0;
+  --am:#C46F1C; --am-bg:#FCEAD5; --am-ink:#7E420C; --am-hi:#FFC27A;
+  --vi:#5B4BC4; --vi-bg:#ECE9FB; --vi-ink:#3A2E8F;
+  --gr:#6B7487; --gr-bg:#ECEFF4; --gr-ink:#2E3A52;
+  --chip:#ECEFF4; --chip-ink:#2E3A52; --code:#F1F4F8;
+  --display:"Space Grotesk", "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --sans:"IBM Plex Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --mono:"IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  box-sizing:border-box;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme: dark;
+    --desk:#05080F; --paper:#0F1626; --card:#162036; --ink:#E6EBF5; --muted:#A6B2CA; --line:#26324B;
+    --navy:#08112A; --navy-2:#13214A; --navy-line:#2E4070;
+    --cy:#5CC6E6; --cy-bg:#0F3140; --cy-ink:#BDEBF8;
+    --am:#F2A65A; --am-bg:#3A2610; --am-ink:#FBD9B5;
+    --vi:#A79BF0; --vi-bg:#262052; --vi-ink:#DCD6FF;
+    --gr:#8E98AC; --gr-bg:#202C45; --gr-ink:#CED6E6;
+    --chip:#202C45; --chip-ink:#CED6E6; --code:#121B2E;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme: dark;
+  --desk:#05080F; --paper:#0F1626; --card:#162036; --ink:#E6EBF5; --muted:#A6B2CA; --line:#26324B;
+  --navy:#08112A; --navy-2:#13214A; --navy-line:#2E4070;
+  --cy:#5CC6E6; --cy-bg:#0F3140; --cy-ink:#BDEBF8;
+  --am:#F2A65A; --am-bg:#3A2610; --am-ink:#FBD9B5;
+  --vi:#A79BF0; --vi-bg:#262052; --vi-ink:#DCD6FF;
+  --gr:#8E98AC; --gr-bg:#202C45; --gr-ink:#CED6E6;
+  --chip:#202C45; --chip-ink:#CED6E6; --code:#121B2E;
+}
+*,*::before,*::after{box-sizing:inherit}
+html,body{margin:0;height:100%}
+body{background:var(--desk);color:var(--ink);font-family:var(--sans)}
+
+.viewport{width:100%;height:100%;overflow:hidden;position:relative}
+.stage{width:1600px;height:900px;position:absolute;left:50%;top:50%;transform-origin:center center;transform:translate(-50%,-50%) scale(var(--s,1));display:grid;grid-template-columns:420px minmax(0,1fr);background:var(--paper);border-radius:10px;overflow:hidden}
+.stage[hidden]{display:none}
+.ico{width:26px;height:26px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
+
+.side{background:var(--navy);color:var(--navy-ink);padding:52px 44px 44px;display:flex;flex-direction:column;gap:22px}
+.kicker{font-family:var(--mono);font-size:14px;color:var(--cy-hi);margin:0}
+.side h1{font-family:var(--display);font-weight:700;font-size:62px;line-height:1;letter-spacing:-0.02em;margin:0}
+.side h1 span{display:block;color:var(--am-hi)}
+.side .lead{margin:0;font-size:16px;line-height:1.55;color:var(--navy-muted)}
+.tree{width:100%;max-width:300px;height:auto;display:block;margin:4px auto 0}
+.flags{margin-top:auto;display:flex;flex-direction:column;gap:10px}
+.flag{display:flex;align-items:center;gap:14px;background:var(--navy-2);border:1px solid var(--navy-line);border-radius:12px;padding:10px 14px}
+.flag .t{font-family:var(--display);font-weight:700;font-size:24px;width:56px;height:44px;border-radius:8px;display:grid;place-items:center;flex:none;background:var(--am-hi);color:#0F1E45}
+.flag .t.w{width:84px;font-size:19px}
+.flag p{margin:0;font-size:14px;line-height:1.4;color:var(--navy-muted)}
+.flag p b{font-weight:600;color:var(--navy-ink)}
+
+.main{padding:44px 48px;display:flex;flex-direction:column;gap:26px;min-width:0}
+.sec-h{display:flex;align-items:baseline;gap:14px;margin:0 0 14px}
+.sec-h h2{font-family:var(--display);font-size:26px;font-weight:700;margin:0;letter-spacing:-0.01em}
+.sec-h span{font-size:15px;color:var(--muted)}
+.c{color:var(--cy)} .a{color:var(--am)}
+
+.journey{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));row-gap:12px;position:relative}
+.journey::before{content:"";position:absolute;left:8.33%;right:8.33%;top:32px;border-top:2px dashed var(--line)}
+.hop{grid-column:span 2;display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;position:relative}
+.dot{width:64px;height:64px;border-radius:50%;display:grid;place-items:center;border:2px solid}
+.dot.c{background:var(--cy-bg);border-color:var(--cy);color:var(--cy-ink)}
+.dot.a{background:var(--am-bg);border-color:var(--am);color:var(--am-ink)}
+.hop b{font-size:15px;font-weight:600}
+.hop small{font-family:var(--mono);font-size:13px;color:var(--muted)}
+.bar{height:30px;border-radius:15px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:13.5px;font-weight:500}
+.bar.c{grid-column:2 / 6;background:var(--cy-bg);color:var(--cy-ink);border:1px solid var(--cy)}
+.bar.a{grid-column:6 / 12;background:var(--am-bg);color:var(--am-ink);border:1px solid var(--am)}
+
+.g3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.g4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;display:flex;flex-direction:column;gap:8px}
+.card .top{display:flex;align-items:center;gap:12px}
+.badge{width:44px;height:44px;border-radius:11px;display:grid;place-items:center;flex:none}
+.badge.c{background:var(--cy-bg);color:var(--cy-ink)}
+.badge.a{background:var(--am-bg);color:var(--am-ink)}
+.card h3{margin:0;font-family:var(--display);font-size:19px;font-weight:700;line-height:1.15}
+.ex{font-family:var(--mono);font-size:13px;color:var(--muted);line-height:1.4}
+.card p{margin:0;font-size:14.5px;line-height:1.5}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:auto}
+.chip{font-family:var(--mono);font-size:12.5px;padding:3px 9px;border-radius:999px;background:var(--chip);color:var(--chip-ink)}
+.chip.c{background:var(--cy-bg);color:var(--cy-ink)}
+.chip.a{background:var(--am-bg);color:var(--am-ink)}
+
+/* pagina zone */
+.zgrid{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:20px;flex:1;min-height:0}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 20px;display:flex;flex-direction:column;gap:10px;min-height:0}
+.panel h3{margin:0;font-family:var(--display);font-size:19px;font-weight:700}
+.panel .sub{margin:0;font-size:14px;color:var(--muted)}
+.zsvg{width:100%;height:auto;display:block}
+.zsvg .ln{stroke:var(--gr);stroke-width:1.6;fill:none}
+.zsvg .cut{stroke:var(--vi);stroke-width:2.2;fill:none;stroke-dasharray:6 5}
+.zsvg .pill{fill:var(--card);stroke:var(--gr);stroke-width:1.4}
+.zsvg .pill.off{stroke-dasharray:4 4}
+.zsvg .lbl{font-family:var(--mono);font-size:15px;fill:var(--ink)}
+.zsvg .lbl.off{fill:var(--muted)}
+.zsvg .z-root{fill:var(--gr-bg);stroke:var(--gr)}
+.zsvg .z-it{fill:var(--am-bg);stroke:var(--am)}
+.zsvg .z-ex{fill:var(--cy-bg);stroke:var(--cy)}
+.zsvg .z-lab{fill:var(--vi-bg);stroke:var(--vi)}
+.zsvg .zr{stroke-width:1.6;stroke-dasharray:7 5}
+.zsvg .zt{font-family:var(--mono);font-size:13.5px;font-weight:500}
+.zsvg .zt.root{fill:var(--gr-ink)} .zsvg .zt.it{fill:var(--am-ink)} .zsvg .zt.ex{fill:var(--cy-ink)} .zsvg .zt.lab{fill:var(--vi-ink)}
+.zsvg .cutl{font-family:var(--mono);font-size:12.5px;fill:var(--vi-ink)}
+pre.zone{margin:0;background:var(--code);border-radius:10px;padding:14px 16px;font:400 13.5px/1.6 var(--mono);color:var(--ink);overflow:hidden;white-space:pre}
+pre.zone .cm{color:var(--muted)}
+pre.zone .k{color:var(--cy-ink);font-weight:500}
+pre.zone .d{color:var(--vi-ink);font-weight:500}
+.callout{display:flex;align-items:center;gap:16px;background:var(--vi-bg);border:1px solid var(--vi);border-radius:14px;padding:14px 20px}
+.callout .big{font-family:var(--display);font-weight:700;font-size:22px;color:var(--vi-ink);flex:none}
+.callout p{margin:0;font-size:15px;line-height:1.5;color:var(--vi-ink)}
+.callout code{font-family:var(--mono);font-size:14px}
+
+.note-line{margin:12px 0 0;font-size:14px;color:var(--muted)}
+
+/* navigazione */
+.nav{position:fixed;right:18px;bottom:18px;display:flex;gap:8px;align-items:center;z-index:5}
+.nav button{font:500 14px var(--sans);color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:999px;padding:8px 14px;cursor:pointer}
+.nav button:focus-visible{outline:2px solid var(--cy);outline-offset:2px}
+.nav .pos{font:500 13px var(--mono);color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:999px;padding:8px 12px}
+
+@media (max-width:760px){
+  html,body{height:auto}
+  .viewport{height:auto;overflow:visible}
+  .stage,.stage[hidden]{position:static;transform:none;width:auto;height:auto;display:grid;grid-template-columns:minmax(0,1fr);border-radius:0}
+  .stage + .stage{margin-top:8px}
+  .side{padding:30px 22px}
+  .side h1{font-size:44px}
+  .main{padding:24px 18px}
+  .journey{grid-template-columns:repeat(6,minmax(0,1fr))}
+  .journey::before,.bar{display:none}
+  .g3,.g4,.zgrid{grid-template-columns:minmax(0,1fr)}
+  pre.zone{overflow-x:auto;font-size:12.5px}
+  .callout{flex-direction:column;align-items:flex-start}
+  .nav{display:none}
+}
+@page{size:1600px 900px;margin:0}
+@media print{
+  html,body{height:auto;background:#FFFFFF}
+  .viewport{height:auto;overflow:visible}
+  .stage,.stage[hidden]{position:static;transform:none;border-radius:0;display:grid;break-after:page}
+  .nav{display:none}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+</style>
+</head>
+<body>
+<div class="viewport">
+
+<!-- ===================== Pagina 1: zone ===================== -->
+<main class="stage" id="zone" aria-label="Pagina 1: le zone DNS">
+<aside class="side">
+  <p class="kicker">Sistemi e Reti · protocollo DNS</p>
+  <h1>Domini<span>e zone</span></h1>
+  <p class="lead">Il DNS è un unico albero di nomi, ma nessuno lo gestisce tutto. L’albero è diviso in zone, e ogni zona ha i suoi server autoritativi.</p>
+  <div class="flags">
+    <div class="flag"><div class="t w">Dominio</div><p><b>Un nodo dell’albero</b> e tutto ciò che sta sotto di lui.</p></div>
+    <div class="flag"><div class="t w">Zona</div><p><b>La parte di albero</b> gestita da un’unica autorità. Finisce dove inizia una delega.</p></div>
+    <div class="flag"><div class="t w">Delega</div><p><b>Record NS nella zona padre</b> che affidano un sottodominio ad altri server.</p></div>
+  </div>
+</aside>
+
+<div class="main">
+  <div class="zgrid">
+    <section class="panel">
+      <h3>Lo stesso albero, diviso in zone</h3>
+      <p class="sub">Ogni area tratteggiata è una zona. La linea viola è un taglio di delega.</p>
+      <svg class="zsvg" viewBox="0 0 780 620" role="img" aria-label="Albero DNS con le zone radice, it., example.it. e lab.example.it.">
+        <rect class="z-root zr" x="320" y="18" width="140" height="62" rx="14"/>
+        <text class="zt root" x="470" y="55">zona .</text>
+        <rect class="z-it zr" x="352" y="140" width="136" height="62" rx="14"/>
+        <text class="zt it" x="498" y="177">zona it.</text>
+        <rect class="z-ex zr" x="330" y="262" width="250" height="222" rx="16"/>
+        <text class="zt ex" x="346" y="470">zona example.it.</text>
+        <rect class="z-lab zr" x="592" y="400" width="178" height="206" rx="16"/>
+        <text class="zt lab" x="606" y="592">zona lab.example.it.</text>
+
+        <path class="ln" d="M390 66 L160 154"/>
+        <path class="ln" d="M390 66 L420 154"/>
+        <path class="ln" d="M420 188 L250 284"/>
+        <path class="ln" d="M420 188 L460 284"/>
+        <path class="ln" d="M460 318 L385 414"/>
+        <path class="ln" d="M460 318 L505 414"/>
+        <path class="cut" d="M480 318 L650 414"/>
+        <text class="cutl" x="548" y="352">delega NS</text>
+        <path class="ln" d="M670 448 L635 524"/>
+        <path class="ln" d="M670 448 L725 524"/>
+
+        <rect class="pill" x="360" y="32" width="60" height="34" rx="17"/>
+        <text class="lbl" x="390" y="54" text-anchor="middle">.</text>
+        <rect class="pill off" x="115" y="154" width="90" height="34" rx="17"/>
+        <text class="lbl off" x="160" y="176" text-anchor="middle">com.</text>
+        <rect class="pill" x="375" y="154" width="90" height="34" rx="17"/>
+        <text class="lbl" x="420" y="176" text-anchor="middle">it.</text>
+        <rect class="pill off" x="185" y="284" width="130" height="34" rx="17"/>
+        <text class="lbl off" x="250" y="306" text-anchor="middle">scuola.it.</text>
+        <rect class="pill" x="395" y="284" width="130" height="34" rx="17"/>
+        <text class="lbl" x="460" y="306" text-anchor="middle">example.it.</text>
+        <rect class="pill" x="345" y="414" width="80" height="34" rx="17"/>
+        <text class="lbl" x="385" y="436" text-anchor="middle">www</text>
+        <rect class="pill" x="465" y="414" width="80" height="34" rx="17"/>
+        <text class="lbl" x="505" y="436" text-anchor="middle">mail</text>
+        <rect class="pill" x="630" y="414" width="80" height="34" rx="17"/>
+        <text class="lbl" x="670" y="436" text-anchor="middle">lab</text>
+        <rect class="pill" x="600" y="524" width="70" height="34" rx="17"/>
+        <text class="lbl" x="635" y="546" text-anchor="middle">pc1</text>
+        <rect class="pill" x="690" y="524" width="70" height="34" rx="17"/>
+        <text class="lbl" x="725" y="546" text-anchor="middle">pc2</text>
+      </svg>
+    </section>
+
+    <section class="panel">
+      <h3>Il file di zona di example.it.</h3>
+      <p class="sub">Sta sul server primario: è qui che si scrivono i record.</p>
+<pre class="zone"><span class="cm">$TTL 3600</span>
+@      IN <span class="k">SOA</span> ns1.example.it. admin.example.it. (
+             2026102201 <span class="cm">; serial</span>
+             7200       <span class="cm">; refresh</span>
+             900        <span class="cm">; retry</span>
+             1209600    <span class="cm">; expire</span>
+             3600 )     <span class="cm">; TTL negativo</span>
+       IN <span class="k">NS</span>  ns1.example.it.
+       IN <span class="k">NS</span>  ns2.example.it.
+       IN <span class="k">MX</span>  10 mail.example.it.
+ns1    IN <span class="k">A</span>   192.0.2.53
+ns2    IN <span class="k">A</span>   198.51.100.53
+www    IN <span class="k">A</span>   192.0.2.10
+mail   IN <span class="k">A</span>   192.0.2.25
+<span class="cm">; delega della sottozona</span>
+<span class="d">lab    IN NS  ns.lab.example.it.</span>
+<span class="d">ns.lab IN A   192.0.2.80</span>  <span class="cm">; glue</span></pre>
+    </section>
+  </div>
+
+  <div class="callout">
+    <div class="big">Dominio ≠ zona</div>
+    <p><code>lab.example.it</code> fa parte del <b>dominio</b> example.it, ma non della sua <b>zona</b>: è delegato con un record NS ed è servito da altri server autoritativi.</p>
+  </div>
+</div>
+</main>
+
+<!-- ===================== Pagina 2: tipi di server ===================== -->
+<main class="stage" id="server" aria-label="Pagina 2: i tipi di server DNS" hidden>
+<aside class="side">
+  <p class="kicker">Sistemi e Reti · protocollo DNS</p>
+  <h1>Chi cerca,<span>chi risponde</span></h1>
+  <p class="lead">I tipi di server DNS divisi per ruolo: chi va a cercare le risposte e chi possiede le zone in cui sono scritte.</p>
+  <svg class="tree" viewBox="0 0 250 180" role="img" aria-label="Gerarchia DNS: radice, TLD e dominio">
+    <g stroke="#3A4C7E" stroke-width="1.5" fill="none">
+      <path d="M125 34 L50 92"/><path d="M125 34 L200 92"/>
+    </g>
+    <path d="M125 34 L125 92 M125 108 L125 148" stroke="#FFC27A" stroke-width="2.5" fill="none" stroke-dasharray="5 4"/>
+    <circle cx="125" cy="22" r="14" fill="#FFC27A"/>
+    <text x="125" y="27" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="15" font-weight="500" fill="#0F1E45">.</text>
+    <rect x="22" y="84" width="56" height="26" rx="13" fill="#1B2D5E" stroke="#3A4C7E"/>
+    <text x="50" y="101" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="12" fill="#B9C4DD">com.</text>
+    <rect x="97" y="84" width="56" height="26" rx="13" fill="#FFC27A"/>
+    <text x="125" y="101" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="12" font-weight="500" fill="#0F1E45">it.</text>
+    <rect x="172" y="84" width="56" height="26" rx="13" fill="#1B2D5E" stroke="#3A4C7E"/>
+    <text x="200" y="101" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="12" fill="#B9C4DD">org.</text>
+    <rect x="72" y="148" width="106" height="28" rx="14" fill="#7FD8F0"/>
+    <text x="125" y="166" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="12" font-weight="500" fill="#0F1E45">example.it.</text>
+  </svg>
+  <div class="flags" aria-label="Flag dell’header DNS">
+    <div class="flag"><div class="t">RD</div><p><b>Recursion desired</b>: chi chiede vuole che il server risolva per lui.</p></div>
+    <div class="flag"><div class="t">RA</div><p><b>Recursion available</b>: il server accetta di risolvere per il client.</p></div>
+    <div class="flag"><div class="t">AA</div><p><b>Authoritative answer</b>: risponde chi ospita la zona.</p></div>
+  </div>
+</aside>
+
+<div class="main">
+
+<section>
+  <div class="sec-h"><h2>Il viaggio di una query</h2><span>da www.example.it all’indirizzo IP</span></div>
+  <div class="journey">
+    <div class="hop"><div class="dot c"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="11" rx="1.5"/><path d="M2 19h20"/></svg></div><b>Stub</b><small>chiede</small></div>
+    <div class="hop"><div class="dot c"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h13"/><path d="m13 7 5 5-5 5"/></svg></div><b>Forwarder</b><small>cache, inoltra</small></div>
+    <div class="hop"><div class="dot c"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6"/><path d="m20 20-4.5-4.5"/></svg></div><b>Ricorsivo</b><small>risolve</small></div>
+    <div class="hop"><div class="dot a"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a14 14 0 0 1 0 18a14 14 0 0 1 0-18z"/></svg></div><b>Root</b><small>zona .</small></div>
+    <div class="hop"><div class="dot a"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3h8l10 10-8 8L3 11z"/><circle cx="7.5" cy="7.5" r="1.5"/></svg></div><b>TLD</b><small>zona it.</small></div>
+    <div class="hop"><div class="dot a"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v12c0 1.7 3.1 3 7 3s7-1.3 7-3V6"/><path d="M5 12c0 1.7 3.1 3 7 3s7-1.3 7-3"/></svg></div><b>Autoritativo</b><small>zona example.it.</small></div>
+    <div class="bar c">query ricorsive · RD=1</div>
+    <div class="bar a">query iterative · referral fino alla risposta AA=1</div>
+  </div>
+</section>
+
+<section>
+  <div class="sec-h"><h2 class="c">Risolutori</h2><span>chi cerca le risposte</span></div>
+  <div class="g3">
+    <article class="card">
+      <div class="top"><div class="badge c"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="11" rx="1.5"/><path d="M2 19h20"/></svg></div><h3>Stub resolver</h3></div>
+      <div class="ex">glibc, client DNS di Windows</div>
+      <p>Vive nel sistema operativo e non risolve nulla da solo: invia una query ricorsiva al server configurato e attende la risposta finale.</p>
+      <div class="chips"><span class="chip c">invia RD=1</span><span class="chip">cache: minima</span></div>
+    </article>
+    <article class="card">
+      <div class="top"><div class="badge c"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h13"/><path d="m13 7 5 5-5 5"/></svg></div><h3>Forwarder con cache</h3></div>
+      <div class="ex">systemd-resolved, dnsmasq</div>
+      <p>Accetta query ricorsive dai client. Risponde dalla cache oppure inoltra a un resolver ricorsivo upstream. Non contatta mai i root server.</p>
+      <div class="chips"><span class="chip c">RA=1</span><span class="chip">cache: sì</span></div>
+    </article>
+    <article class="card">
+      <div class="top"><div class="badge c"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6"/><path d="m20 20-4.5-4.5"/></svg></div><h3>Resolver ricorsivo</h3></div>
+      <div class="ex">Unbound, BIND, 1.1.1.1</div>
+      <p>Parte dai root hints e segue i referral, interrogando in modo iterativo root, TLD e autoritativi. Conserva ogni risposta in cache per il suo TTL.</p>
+      <div class="chips"><span class="chip c">RA=1</span><span class="chip">cache: sì</span><span class="chip">AA=0</span></div>
+    </article>
+  </div>
+</section>
+
+<section>
+  <div class="sec-h"><h2 class="a">Server autoritativi</h2><span>chi possiede le risposte</span></div>
+  <div class="g4">
+    <article class="card">
+      <div class="top"><div class="badge a"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a14 14 0 0 1 0 18a14 14 0 0 1 0-18z"/></svg></div><h3>Root server</h3></div>
+      <div class="ex">a … m.root-servers.net</div>
+      <p>Ospitano la zona radice e rispondono con un referral verso il TLD. Sono 13 identità servite da centinaia di istanze anycast.</p>
+      <div class="chips"><span class="chip a">referral</span><span class="chip">zona .</span></div>
+    </article>
+    <article class="card">
+      <div class="top"><div class="badge a"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3h8l10 10-8 8L3 11z"/><circle cx="7.5" cy="7.5" r="1.5"/></svg></div><h3>Server TLD</h3></div>
+      <div class="ex">a.dns.it, gtld-servers.net</div>
+      <p>Ospitano la zona del dominio di primo livello con le deleghe a ogni dominio registrato e rimandano ai suoi autoritativi.</p>
+      <div class="chips"><span class="chip a">referral</span><span class="chip">DS</span></div>
+    </article>
+    <article class="card">
+      <div class="top"><div class="badge a"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v12c0 1.7 3.1 3 7 3s7-1.3 7-3V6"/><path d="M5 12c0 1.7 3.1 3 7 3s7-1.3 7-3"/></svg></div><h3>Primario</h3></div>
+      <div class="ex">BIND, NSD, PowerDNS, Knot</div>
+      <p>È la fonte di verità della zona: qui l’amministratore aggiunge e modifica i record. A ogni modifica incrementa il serial del SOA, il numero di versione della zona.</p>
+      <div class="chips"><span class="chip a">AA=1</span><span class="chip">modificabile</span></div>
+    </article>
+    <article class="card">
+      <div class="top"><div class="badge a"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3"/></svg></div><h3>Secondario</h3></div>
+      <div class="ex">stessi software, su un altro host</div>
+      <p>Copia in sola lettura della zona. Avvisato dal primario con un NOTIFY, confronta il serial e, se è cambiato, scarica la zona via AXFR o IXFR (TCP/53).</p>
+      <div class="chips"><span class="chip a">AA=1</span><span class="chip">sola lettura</span></div>
+    </article>
+  </div>
+</section>
+
+</div>
+</main>
+
+</div>
+
+<nav class="nav" aria-label="Pagine">
+  <button type="button" id="prev">Indietro</button>
+  <span class="pos" id="pos">1 / 2</span>
+  <button type="button" id="next">Avanti</button>
+</nav>
+
+<script>
+(function(){
+  var pages=[document.getElementById('zone'),document.getElementById('server')];
+  var cur=0;
+  var narrow=window.matchMedia('(max-width:760px)');
+  function fit(){
+    pages.forEach(function(p){
+      if(narrow.matches){p.style.removeProperty('--s');return;}
+      var s=Math.min((window.innerWidth-24)/1600,(window.innerHeight-24)/900);
+      p.style.setProperty('--s',Math.max(s,0.2).toFixed(4));
+    });
+  }
+  function show(i){
+    cur=(i+pages.length)%pages.length;
+    pages.forEach(function(p,j){p.hidden=j!==cur;});
+    document.getElementById('pos').textContent=(cur+1)+' / '+pages.length;
+  }
+  document.getElementById('prev').onclick=function(){show(cur-1);};
+  document.getElementById('next').onclick=function(){show(cur+1);};
+  document.addEventListener('keydown',function(e){
+    if(e.key==='ArrowRight'||e.key==='PageDown')show(cur+1);
+    if(e.key==='ArrowLeft'||e.key==='PageUp')show(cur-1);
+  });
+  window.addEventListener('resize',fit);
+  if(narrow.addEventListener)narrow.addEventListener('change',fit);
+  fit();show(0);
+})();
+</script>
+</body>
+</html>
