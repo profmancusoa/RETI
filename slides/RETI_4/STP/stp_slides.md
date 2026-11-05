@@ -12,8 +12,8 @@ lineNumbers: false
 aspectRatio: "16_/9"
 routerMode: "hash"
 materia: RETI 4
-as: 2024/2025
-version: "1.1.1"
+as: 2026/2027
+version: "1.2.0"
 # devo definire:
 # 1- bridge id (mac + priority)
 # 2- costo dei link
@@ -73,10 +73,10 @@ Spanning Tree Protocol
 
 # STP
 
-definizioni
+definizioni222
 
-<div style="background-color:green; color:white;padding:3rem;font-size: 2rem;line-height:3rem;">
-Lo Spanning Tree Protocol (STP) è un protocollo di rete di livello 2 che ha il compito di riconfigurare una rete magliata e con presenza di loop in una rete con topologia ad albero priva di loop
+<div style="background-color:green; color:white;padding:3rem;font-size: 1.8rem;line-height:3rem;">
+Lo Spanning Tree Protocol (STP) è un protocollo di rete di livello 2 che ha il compito di ricavare, da una rete magliata e con presenza di loop, una topologia logica ad albero priva di loop, bloccando alcune porte. La topologia fisica non cambia: in caso di guasto di un collegamento l'albero viene ricalcolato riattivando i collegamenti di riserva
 </div>
 
 ---
@@ -85,18 +85,28 @@ Lo Spanning Tree Protocol (STP) è un protocollo di rete di livello 2 che ha il 
 
 definizioni
 
-- **priorità**: valore di priorità assegnata ad uno switch e ad ogni porta
-  - valori più bassi indicano priorità maggiore
-  - gli switch hanno per default priorità pari a 32768 
+- **priorità**: valori più bassi indicano priorità maggiore
+  - **bridge priority**: priorità dello switch, per default pari a 32768 (configurabile a multipli di 4096)
+  - **port priority**: priorità di ogni porta, per default pari a 128
 - **bridge ID**: Identificativo univoco di uno switch composto da: `priorità + MAC address`
+  - sugli switch Cisco alla priorità viene sommato il numero di VLAN: sulla VLAN 1 si legge 32769
+- **port ID**: Identificativo di una porta composto da: `port priority + numero di porta`
+
+---
+
+# STP
+
+definizioni
+
 - **costo di un link**: costo assegnato ad ogni link in funzione della sua velocità
   - link a maggior velocità hanno un costo minore
 
-| Tipo             | Velocità  | Costo |
-| ---------------- | --------- | ----- |
-| Ethernet         | 10 Mbps   | 100   |
-| Fast Ethernet    | 100 Mbps  | 19    |
-| Gigabit Ethernet | 1000 Mbps | 4     |
+| Tipo                | Velocità   | Costo |
+| ------------------- | ---------- | ----- |
+| Ethernet            | 10 Mbps    | 100   |
+| Fast Ethernet       | 100 Mbps   | 19    |
+| Gigabit Ethernet    | 1000 Mbps  | 4     |
+| 10 Gigabit Ethernet | 10000 Mbps | 2     |
 
 
 --- #slide 1
@@ -108,7 +118,7 @@ definizioni
 - **root bridge**: switch alla radice della topologia ad albero
 - **root port**: la porta più "conveniente" che interconnette uno switch al root bridge. Questa porta è in forwarding mode
 - **designated port**: per ogni segmento si determina una sola porta (designated) che connette il segmento al root bridge. Questa porta è in forwarding mode
-- **blocked port**: porta che non partecipa attivamente alla topologia e non effettua il forwarding del traffico
+- **blocked port**: porta che non effettua il forwarding del traffico e non apprende indirizzi MAC, ma continua a ricevere le BPDU per potersi riattivare in caso di guasto
 
 
 --- #slide 1
@@ -117,11 +127,11 @@ definizioni
 
 Algoritmo di risoluzione
 
-- Il protocollo di Spanning Tree compie i seguenti passi per determinare lo stato di ogno porta di ogni switch della rete
+- Il protocollo di Spanning Tree compie i seguenti passi per determinare lo stato di ogni porta di ogni switch della rete
 
 1. **elezione del root bridge**: siccome ci deve essere un solo switch root per un albero, si determina come root bridge lo switch che ha bridgeID minore di tutti
 
-    ***Da notare che il root bridge ha TUTTE porte di tipo designated***
+    ***Da notare che il root bridge ha TUTTE le porte di tipo designated***
 
 
 2. **selezione della root port**: per ogni switch, diverso dal root bridge, si identifica una sola porta che è più "conveniente" nell'interconnettere lo switch al root bridge
@@ -129,7 +139,7 @@ Algoritmo di risoluzione
    La maggior "convenienza" si determina in base a:
    1. percorso a minor costo
    2. minor bridgeID ricevuto su una data porta
-   <!-- 3. minor numero di porta -->
+   3. minor port ID ricevuto su una data porta (serve con due collegamenti paralleli verso lo stesso switch)
 
 --- #slide 1
 
@@ -140,8 +150,8 @@ Algoritmo di risoluzione
 3. **selezione delle designated port**: per ogni segmento o rete si elegge una sola designated port che ha il compito di connettere il segmento al root bridge. Su un dato segmento è la porta che è più "vicina" al root bridge
 
 La maggior "vicinanza" al root bridge si determina in base a:
-1. percorso più preve verso il root bridge
-2. in caso di parità, si determina in base la minor Bridge ID
+1. percorso a minor costo verso il root bridge
+2. in caso di parità, si determina in base al minor Bridge ID
 
 
 
@@ -166,59 +176,11 @@ Come funziona STP (Youtube)
 
 Esempio 1
 
-<img src="/media/stp_01.jpg" width=550 style="margin:auto;position:relative;top:-100px;">
+<img src="/media/stp_esempio1.png" style="max-height:330px;margin:0.5rem auto 0;">
 
----
-
-# STP
-
-Esempio 1
-
-<img src="/media/stp_02.jpg" width=550 style="margin:auto;position:relative;top:-100px;">
-
-
----
-
-# STP
-
-Esempio 1
-
-<img src="/media/stp_03.jpg" width=550 style="margin:auto;position:relative;top:-100px;">
-
----
-
-# STP
-
-Esempio 1
-
-<img src="/media/stp_04.jpg" width=550 style="margin:auto;position:relative;top:-100px;">
-
-
----
-
-# STP
-
-Esempio 1
-
-<img src="/media/stp_05.jpg" width=550 style="margin:auto;position:relative;top:-100px;">
-
-
----
-
-# STP
-
-Esempio 1
-
-<img src="/media/stp_06.jpg" width=550 style="margin:auto;position:relative;top:-100px;">
-
-
----
-
-# STP
-
-Esempio 1
-
-<img src="/media/stp_07.jpg" width=550 style="margin:auto;position:relative;top:-100px;">
+<div style="text-align:center;margin-top:1rem;font-size:1.1rem;">
+Vedi simulatore: <a href="https://reti.mancusoa.it/4/stp_simulatore.html" target="_blank">https://reti.mancusoa.it/4/stp_simulatore.html</a> (pulsante <b>Esempio 1</b>)
+</div>
 
 ---
 
@@ -226,54 +188,11 @@ Esempio 1
 
 Esempio 2
 
-<img src="/media/stp_08.jpg" width=550 style="margin:auto;position:relative;top:-100px;">
+<img src="/media/stp_esempio2.png" style="max-height:330px;margin:0.5rem auto 0;">
 
-
----
-
-# STP
-
-Esempio 2
-
-<img src="/media/stp_09.jpg" width=550 style="margin:auto;position:relative;top:-100px;">
-
-
----
-
-# STP
-
-Esempio 2
-
-<img src="/media/stp_10.jpg" width=550 style="margin:auto;position:relative;top:-100px;">
-
-
----
-
-# STP
-
-Esempio 2
-
-<img src="/media/stp_11.jpg" width=550 style="margin:auto;position:relative;top:-100px;">
-
-
----
-
-# STP
-
-Esempio 2
-
-<img src="/media/stp_12.jpg" width=550 style="margin:auto;position:relative;top:-100px;">
-
-
----
-
-# STP
-
-Esempio 2
-
-<img src="/media/stp_13.jpg" width=550 style="margin:auto;position:relative;top:-100px;">
-
-
+<div style="text-align:center;margin-top:1rem;font-size:1.1rem;">
+Vedi simulatore: <a href="https://reti.mancusoa.it/4/stp_simulatore.html" target="_blank">https://reti.mancusoa.it/4/stp_simulatore.html</a> (pulsante <b>Esempio 2</b>)
+</div>
 
 ---
 
@@ -281,72 +200,8 @@ Esempio 2
 
 Esempio 3
 
-<img src="/media/stp_14.jpg" width=550 style="margin:auto;position:relative;top:-100px;">
+<img src="/media/stp_esempio3.png" style="max-height:330px;margin:0.5rem auto 0;">
 
----
-
-# STP
-
-Esempio 3
-
-<img src="/media/stp_15.jpg" width=550 style="margin:auto;position:relative;top:-100px;">
-
-
----
-
-# STP
-
-Esempio 3
-
-<img src="/media/stp_16.jpg" width=550 style="margin:auto;position:relative;top:-100px;">
-
-
-
----
-
-# STP
-
-Esempio 3
-
-<img src="/media/stp_17.jpg" width=550 style="margin:auto;position:relative;top:-100px;">
-
-
-
----
-
-# STP
-
-Esempio 3
-
-<img src="/media/stp_18.jpg" width=550 style="margin:auto;position:relative;top:-100px;">
-
-
-
----
-
-# STP
-
-Esempio 3
-
-<img src="/media/stp_19.jpg" width=550 style="margin:auto;position:relative;top:-100px;">
-
-
-
----
-
-# STP
-
-Esempio 3
-
-<img src="/media/stp_20.jpg" width=550 style="margin:auto;position:relative;top:-100px;">
-
-
-
----
-
-# STP
-
-Esempio 3
-
-<img src="/media/stp_21.jpg" width=550 style="margin:auto;position:relative;top:-100px;">
-
+<div style="text-align:center;margin-top:1rem;font-size:1.1rem;">
+Vedi simulatore: <a href="https://reti.mancusoa.it/4/stp_simulatore.html" target="_blank">https://reti.mancusoa.it/4/stp_simulatore.html</a> (pulsante <b>Esempio 3</b>)
+</div>

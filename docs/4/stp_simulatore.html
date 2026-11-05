@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Spanning Tree passo per passo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Sans+Condensed:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme: light;
+  --paper:#E8EDF1; --sheet:#F8FAFC; --grid:#DFE6EC; --ink:#16212C; --ink2:#55636F;
+  --line:#C5CFD8; --panel:#FFFFFF; --accent:#1D5FC4; --accent-soft:#DCE7F9;
+  --fwd:#1A9553; --blk:#C55E14; --blk-soft:#FBE7D6; --hl:#E9A800;
+  --c10:#8A949F; --c100:#B5830C; --c1g:#2C6BD0; --c10g:#7849C6; --swfill:#FFFFFF;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme: dark;
+    --paper:#10161C; --sheet:#151D25; --grid:#1F2A35; --ink:#E4EBF1; --ink2:#98A7B4;
+    --line:#2D3B48; --panel:#1A232C; --accent:#6EA3F3; --accent-soft:#1F3352;
+    --fwd:#3CC27B; --blk:#F08A3C; --blk-soft:#3A2717; --hl:#F5C542;
+    --c10:#7F8A96; --c100:#DDAA36; --c1g:#5C94EE; --c10g:#A57EEB; --swfill:#1D2832;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme: dark;
+  --paper:#10161C; --sheet:#151D25; --grid:#1F2A35; --ink:#E4EBF1; --ink2:#98A7B4;
+  --line:#2D3B48; --panel:#1A232C; --accent:#6EA3F3; --accent-soft:#1F3352;
+  --fwd:#3CC27B; --blk:#F08A3C; --blk-soft:#3A2717; --hl:#F5C542;
+  --c10:#7F8A96; --c100:#DDAA36; --c1g:#5C94EE; --c10g:#A57EEB; --swfill:#1D2832;
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px);height:100%}
+body{
+  height:100%; margin:0; background:var(--paper); color:var(--ink);
+  font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  font-size:15px; line-height:1.45;
+  display:grid; grid-template-rows:auto 1fr;
+}
+header{
+  display:flex; flex-wrap:wrap; align-items:center; gap:10px 18px;
+  padding:10px 16px; background:var(--panel); border-bottom:1px solid var(--line);
+}
+h1{font-size:19px; font-weight:700; margin:0 8px 0 0; letter-spacing:-.01em}
+.group{display:flex; align-items:center; gap:6px}
+.group > span{font-size:13px; color:var(--ink2)}
+.seg{display:inline-flex; border:1px solid var(--line); border-radius:8px; overflow:hidden}
+.seg button{border:0; border-right:1px solid var(--line); border-radius:0}
+.seg button:last-child{border-right:0}
+button{
+  font:inherit; font-size:14px; font-weight:500; color:var(--ink);
+  background:var(--panel); border:1px solid var(--line); border-radius:8px;
+  padding:7px 12px; cursor:pointer;
+}
+button:hover{background:var(--accent-soft)}
+button[aria-pressed="true"]{background:var(--accent); color:#fff}
+button:disabled{opacity:.4; cursor:default; background:var(--panel)}
+button:focus-visible, input:focus-visible, select:focus-visible{outline:3px solid var(--accent); outline-offset:1px}
+.sw-dot{display:inline-block; width:14px; height:4px; border-radius:2px; vertical-align:middle; margin-right:6px}
+.spacer{flex:1}
+
+main{display:grid; grid-template-columns:minmax(0,1fr) 390px; min-height:0}
+.stage{position:relative; min-height:0; padding:12px}
+svg#board{
+  width:100%; height:100%; display:block; background:var(--sheet);
+  border:1px solid var(--line); border-radius:10px; touch-action:none; user-select:none;
+}
+.status{
+  position:absolute; left:26px; bottom:24px; font-size:14px; color:var(--ink2);
+  background:var(--panel); border:1px solid var(--line); border-radius:8px; padding:6px 10px;
+  max-width:calc(100% - 52px);
+}
+aside{
+  overflow-y:auto; background:var(--panel); border-left:1px solid var(--line);
+  padding:16px 18px 24px; display:flex; flex-direction:column; gap:22px;
+}
+h2{font-size:16px; margin:0 0 8px; font-weight:700}
+h3{font-size:15px; margin:0 0 8px; font-weight:600}
+label{display:block; font-size:13px; color:var(--ink2); margin-bottom:10px}
+label input, label select{
+  display:block; width:100%; box-sizing:border-box; margin-top:4px;
+  font:inherit; font-size:15px; color:var(--ink); background:var(--sheet);
+  border:1px solid var(--line); border-radius:7px; padding:7px 9px;
+}
+.err{color:var(--blk); font-size:13px; margin:-6px 0 10px; min-height:0}
+.muted{color:var(--ink2); font-size:14px; margin:0}
+.radio{display:grid; grid-template-columns:1fr 1fr; gap:6px; margin-bottom:12px}
+.radio button{text-align:left; font-size:13px}
+.bid{font-size:13px; color:var(--ink2); margin:0 0 12px}
+.danger{color:var(--blk); border-color:var(--blk)}
+.danger:hover{background:var(--blk-soft)}
+
+.phases{list-style:none; padding:0; margin:0 0 12px; display:grid; grid-template-columns:repeat(4,1fr); gap:4px; counter-reset:ph}
+.phases li{
+  counter-increment:ph; font-size:12px; line-height:1.25; color:var(--ink2);
+  border-top:4px solid var(--line); padding-top:5px;
+}
+.phases li::before{content:counter(ph) ". "; font-weight:700}
+.phases li.done{border-color:var(--ink2)}
+.phases li.now{border-color:var(--accent); color:var(--ink); font-weight:600}
+.nav{display:flex; gap:6px; flex-wrap:wrap; margin-bottom:10px}
+.nav .primary{background:var(--accent); color:#fff; border-color:var(--accent)}
+.nav .primary:disabled{background:var(--panel); color:var(--ink)}
+.counter{font-size:13px; color:var(--ink2); margin:0 0 4px}
+#stepTitle{font-size:18px; margin:0 0 8px}
+#stepBody{font-size:15.5px; line-height:1.55}
+#stepBody p{margin:0 0 10px}
+#stepBody ul, #stepBody ol{margin:0 0 10px; padding-left:20px}
+#stepBody li{margin-bottom:4px}
+#stepBody .win{color:var(--fwd); font-weight:600}
+#stepBody .lose{color:var(--blk); font-weight:600}
+.legend{width:100%; border-collapse:collapse; font-size:13.5px}
+.legend td{padding:5px 0; border-bottom:1px solid var(--line)}
+.legend td:last-child{text-align:right; font-weight:600}
+.keys{font-size:13px; color:var(--ink2); margin:8px 0 0}
+
+/* elementi SVG */
+.gridline{stroke:var(--grid); stroke-width:1}
+.cable{fill:none; stroke-width:5; stroke-linecap:round}
+.cable.c10{stroke:var(--c10)} .cable.c100{stroke:var(--c100)} .cable.c1g{stroke:var(--c1g)} .cable.c10g{stroke:var(--c10g)}
+.cable.off{stroke-dasharray:9 8; opacity:.45}
+.cable.sel{stroke-width:8}
+.cable.hl{stroke-width:9}
+.hit{fill:none; stroke:transparent; stroke-width:24; cursor:pointer}
+.hl-under{fill:none; stroke:var(--hl); stroke-width:16; stroke-linecap:round; opacity:.45}
+.sel-under{fill:none; stroke:var(--accent); stroke-width:14; stroke-linecap:round; opacity:.35}
+.lnlbl rect{fill:var(--sheet); stroke:var(--line)}
+.lnlbl text{font:600 13px "IBM Plex Sans Condensed","IBM Plex Sans",sans-serif; fill:var(--ink); text-anchor:middle; dominant-baseline:central}
+.lnlbl{cursor:pointer}
+.sw{cursor:grab}
+.sw .box{fill:var(--swfill); stroke:var(--ink); stroke-width:2}
+.sw.root .box{stroke-width:4}
+.sw.sel .box{stroke:var(--accent); stroke-width:4}
+.sw.pend .box{stroke:var(--accent); stroke-width:4; stroke-dasharray:6 4}
+.sw .halo{fill:none; stroke:var(--hl); stroke-width:6; opacity:.8}
+.sw text{text-anchor:middle; fill:var(--ink)}
+.sw .nm{font:700 18px "IBM Plex Sans",sans-serif}
+.sw .pr{font:500 13px "IBM Plex Sans Condensed","IBM Plex Sans",sans-serif; fill:var(--ink2)}
+.sw .mac{font:500 12.5px "IBM Plex Sans Condensed","IBM Plex Sans",sans-serif; fill:var(--ink2)}
+.sw .rootlbl{font:700 14px "IBM Plex Sans",sans-serif; fill:var(--accent)}
+.sw .cost{font:600 13px "IBM Plex Sans Condensed","IBM Plex Sans",sans-serif; fill:var(--ink)}
+.sw .mac, .sw .cost, .sw .rootlbl, .port .pnum{paint-order:stroke; stroke:var(--sheet); stroke-width:5px; stroke-linejoin:round}
+.port{pointer-events:none}
+.port rect{fill:var(--panel); stroke:var(--ink); stroke-width:1.5}
+.port.nd rect{fill:var(--blk-soft); stroke:var(--blk)}
+.port text{font:700 13px "IBM Plex Sans Condensed","IBM Plex Sans",sans-serif; fill:var(--ink); text-anchor:middle; dominant-baseline:central}
+.port.nd text{fill:var(--blk)}
+.port .pnum{font:500 11px "IBM Plex Sans Condensed",sans-serif; fill:var(--ink2)}
+.led{stroke:var(--sheet); stroke-width:2}
+.led.f{fill:var(--fwd)} .led.b{fill:var(--blk)} .led.n{fill:var(--line)}
+.empty{font:500 18px "IBM Plex Sans",sans-serif; fill:var(--ink2); text-anchor:middle}
+
+@media (max-width: 960px){
+  html,body{height:auto}
+  body{display:block}
+  main{grid-template-columns:1fr}
+  .stage{height:62vh}
+  aside{border-left:0; border-top:1px solid var(--line)}
+}
+@media (prefers-reduced-motion: no-preference){
+  button{transition:background-color .12s}
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>Spanning Tree passo per passo</h1>
+  <div class="group" role="group" aria-label="Strumento">
+    <div class="seg">
+      <button data-mode="select" aria-pressed="true">Seleziona e sposta</button>
+      <button data-mode="add" aria-pressed="false">Aggiungi switch</button>
+      <button data-mode="link" aria-pressed="false">Collega</button>
+      <button data-mode="delete" aria-pressed="false">Elimina</button>
+    </div>
+  </div>
+  <div class="group" role="group" aria-label="Velocità del nuovo collegamento">
+    <span>Nuovo collegamento</span>
+    <div class="seg" id="speedSeg"></div>
+  </div>
+  <div class="group" role="group" aria-label="Esempi delle slide">
+    <span>Esempi delle slide</span>
+    <div class="seg">
+      <button data-ex="1">Esempio 1</button>
+      <button data-ex="2">Esempio 2</button>
+      <button data-ex="3">Esempio 3</button>
+    </div>
+  </div>
+  <div class="spacer"></div>
+  <button id="clearBtn" class="danger">Svuota foglio</button>
+</header>
+
+<main>
+  <div class="stage">
+    <svg id="board" viewBox="0 0 1000 640" preserveAspectRatio="xMidYMid meet" aria-label="Topologia della rete">
+      <defs>
+        <pattern id="gridp" width="40" height="40" patternUnits="userSpaceOnUse">
+          <path d="M40 0H0V40" class="gridline" fill="none"/>
+        </pattern>
+      </defs>
+      <rect x="0" y="0" width="1000" height="640" fill="url(#gridp)"/>
+      <g id="scene"></g>
+    </svg>
+    <div class="status" id="status"></div>
+  </div>
+
+  <aside>
+    <section aria-labelledby="simH">
+      <h2 id="simH">Esecuzione dell’algoritmo</h2>
+      <ol class="phases" id="phases">
+        <li>Root bridge</li><li>Root port</li><li>Designated port</li><li>Blocking</li>
+      </ol>
+      <div class="nav">
+        <button id="prevBtn">Indietro</button>
+        <button id="nextBtn" class="primary">Avanti</button>
+        <button id="endBtn">Vai al risultato</button>
+        <button id="resetBtn">Ricomincia</button>
+      </div>
+      <p class="counter" id="counter"></p>
+      <h3 id="stepTitle"></h3>
+      <div id="stepBody"></div>
+    </section>
+
+    <section aria-labelledby="propH">
+      <h2 id="propH">Proprietà</h2>
+      <div id="props"></div>
+    </section>
+
+    <section aria-labelledby="legH">
+      <h2 id="legH">Costi dei collegamenti</h2>
+      <table class="legend" id="legend"></table>
+      <p class="keys">Tasti: frecce ← → (o Pag su/giù) per i passi, Canc per eliminare la selezione, Esc per annullare.</p>
+    </section>
+  </aside>
+</main>
+
+<script>
+(() => {
+"use strict";
+
+const SPEEDS = {
+  "10M":  {short:"Eth",  name:"Ethernet 10 Mbps",         btn:"10 Mbps",  cost:100, cls:"c10"},
+  "100M": {short:"FE",   name:"Fast Ethernet 100 Mbps",   btn:"100 Mbps", cost:19,  cls:"c100"},
+  "1G":   {short:"GE",   name:"Gigabit Ethernet 1 Gbps",  btn:"1 Gbps",   cost:4,   cls:"c1g"},
+  "10G":  {short:"10GE", name:"10 Gigabit Ethernet",      btn:"10 Gbps",  cost:2,   cls:"c10g"}
+};
+const PRIOS = Array.from({length:16}, (_, i) => i * 4096);
+const STORE = "stp-passo-passo-v1";
+const W = 1000, H = 640;
+
+let S = load() || {sw:[], ln:[], nSw:1, nLn:1};
+const ui = {mode:"select", newSpeed:"1G", sel:null, pending:null, step:0, drag:null};
+let steps = [];
+
+const svg = document.getElementById("board");
+const scene = document.getElementById("scene");
+const $ = id => document.getElementById(id);
+
+/* ---------- utilità ---------- */
+function load(){
+  try{
+    const raw = localStorage.getItem(STORE);
+    if(!raw) return null;
+    const d = JSON.parse(raw);
+    if(!Array.isArray(d.sw) || !Array.isArray(d.ln)) return null;
+    return d;
+  }catch(e){ return null; }
+}
+function save(){ try{ localStorage.setItem(STORE, JSON.stringify(S)); }catch(e){} }
+function esc(s){ return String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
+const swById = id => S.sw.find(s => s.id === id);
+const lnById = id => S.ln.find(l => l.id === id);
+const other = (l, id) => l.a === id ? l.b : l.a;
+const pk = (lid, sid) => lid + "|" + sid;
+function hex2(n){ return n.toString(16).padStart(2, "0"); }
+function autoMac(n){ return "00:00:0c:00:" + hex2((n >> 8) & 255) + ":" + hex2(n & 255); }
+function normMac(str){
+  const h = String(str).toLowerCase().replace(/[^0-9a-f]/g, "");
+  if(h.length !== 12) return null;
+  return h.match(/../g).join(":");
+}
+function bidCmp(a, b){ return (a.prio - b.prio) || (a.mac < b.mac ? -1 : a.mac > b.mac ? 1 : 0); }
+const bidStr = s => s.prio + " / " + s.mac;
+function portsOf(sid){ return S.ln.filter(l => l.a === sid || l.b === sid); }
+function portNum(sid, lid){ return portsOf(sid).findIndex(l => l.id === lid) + 1; }
+const nm = s => "<b>" + esc(s.name) + "</b>";
+function plural(n, one, many){ return n === 1 ? one : many; }
+
+/* ---------- algoritmo: produce la sequenza dei passi ---------- */
+function compute(){
+  const out = [];
+  const cur = {roots:new Set(), cost:new Map(), roles:new Map(), final:false};
+  const push = (phase, title, html, hs = [], hl = []) => out.push({
+    phase, title, html,
+    roots:new Set(cur.roots), cost:new Map(cur.cost), roles:new Map(cur.roles),
+    final:cur.final, hs:new Set(hs), hl:new Set(hl)
+  });
+
+  const N = S.sw.length, M = S.ln.length;
+  if(N < 2 || M === 0){
+    push(0, "Topologia da completare",
+      "<p>Servono almeno due switch collegati. Usa “Aggiungi switch” e clicca sul foglio, poi “Collega” e clicca due switch in sequenza.</p>");
+    return out;
+  }
+
+  // componenti connesse
+  const adj = new Map(S.sw.map(s => [s.id, []]));
+  S.ln.forEach(l => { adj.get(l.a).push(l); adj.get(l.b).push(l); });
+  const compOf = new Map(), comps = [];
+  for(const s of S.sw){
+    if(compOf.has(s.id)) continue;
+    const c = [], q = [s.id]; compOf.set(s.id, comps.length);
+    while(q.length){
+      const x = q.shift(); c.push(x);
+      for(const l of adj.get(x)){ const y = other(l, x); if(!compOf.has(y)){ compOf.set(y, comps.length); q.push(y); } }
+    }
+    comps.push(c);
+  }
+  const C = comps.length, toBlock = M - N + C;
+
+  // passo 0: topologia
+  let h0 = "<p>" + N + " switch, " + M + " " + plural(M, "collegamento", "collegamenti") +
+    (C > 1 ? ", " + C + " reti separate (ognuna avrà il proprio albero)" : "") + ".</p>";
+  if(toBlock > 0){
+    h0 += "<p>La topologia contiene anelli: senza STP un broadcast circolerebbe all’infinito. Per ottenere un albero senza anelli bisognerà bloccare <b>" +
+      toBlock + " " + plural(toBlock, "collegamento", "collegamenti") + "</b>.</p>";
+  } else {
+    h0 += "<p>Non ci sono anelli: STP non bloccherà nessuna porta, ma esegue comunque gli stessi passi.</p>";
+  }
+  h0 += "<p>Premi Avanti per eseguire l’algoritmo.</p>";
+  push(0, "Topologia di partenza", h0);
+
+  // passo 1: elezione root bridge
+  let h1 = "<p>Vince lo switch con il <b>Bridge ID minore</b>: si confronta prima la priorità, a parità di priorità il MAC address.</p>";
+  const rootSw = [];
+  comps.forEach((c, i) => {
+    const list = c.map(swById).sort(bidCmp);
+    const r = list[0]; rootSw.push(r);
+    cur.roots.add(r.id); cur.cost.set(r.id, 0);
+    for(const l of adj.get(r.id)) cur.roles.set(pk(l.id, r.id), "D");
+    if(C > 1) h1 += "<p><b>Rete " + (i + 1) + "</b></p>";
+    if(list.length === 1){
+      h1 += "<p>" + nm(r) + " è isolato: è root di sé stesso e non ha porte.</p>";
+      return;
+    }
+    h1 += "<ol>" + list.map((s, k) =>
+      "<li" + (k === 0 ? ' class="win"' : "") + ">" + esc(s.name) + ": priorità " + s.prio + ", MAC " + s.mac + "</li>").join("") + "</ol>";
+    const s2 = list[1];
+    if(r.prio < s2.prio) h1 += "<p>" + nm(r) + " ha la priorità più bassa (" + r.prio + ") ed è eletto <b>root bridge</b>.</p>";
+    else h1 += "<p>Le priorità migliori sono pari (" + r.prio + "): decide il MAC più basso. " + nm(r) + " è eletto <b>root bridge</b>.</p>";
+  });
+  h1 += "<p>Tutte le porte del root bridge sono <b>designated (D)</b>.</p>";
+  push(1, "Passo 1: elezione del root bridge", h1, rootSw.map(s => s.id));
+
+  // costi minimi verso la root (servono per spiegare i confronti)
+  const dist = new Map(S.sw.map(s => [s.id, Infinity]));
+  rootSw.forEach(r => dist.set(r.id, 0));
+  const done = new Set();
+  for(;;){
+    let u = null;
+    for(const s of S.sw){
+      if(done.has(s.id) || dist.get(s.id) === Infinity) continue;
+      if(u === null || dist.get(s.id) < dist.get(u)) u = s.id;
+    }
+    if(u === null) break;
+    done.add(u);
+    for(const l of adj.get(u)){
+      const v = other(l, u), d = dist.get(u) + SPEEDS[l.speed].cost;
+      if(d < dist.get(v)) dist.set(v, d);
+    }
+  }
+  const rootOf = id => rootSw[compOf.get(id)];
+
+  // passo 2: root port
+  const nonRoot = S.sw.filter(s => !cur.roots.has(s.id) && adj.get(s.id).length)
+    .sort((a, b) => (dist.get(a.id) - dist.get(b.id)) || a.name.localeCompare(b.name, "it", {numeric:true}));
+  for(const s of nonRoot){
+    const cands = adj.get(s.id).map(l => {
+      const n = swById(other(l, s.id)), c = SPEEDS[l.speed].cost;
+      return {l, n, c, dn:dist.get(n.id), tot:dist.get(n.id) + c, np:portNum(n.id, l.id), mp:portNum(s.id, l.id)};
+    }).sort((x, y) => (x.tot - y.tot) || bidCmp(x.n, y.n) || (x.np - y.np));
+    const w = cands[0], s2 = cands[1];
+    let h = "<p>" + nm(s) + " calcola il costo per raggiungere la root (" + esc(rootOf(s.id).name) +
+      ") passando da ciascuna delle sue porte: costo del vicino verso la root + costo del collegamento.</p><ul>";
+    h += cands.map(k => "<li" + (k === w ? ' class="win"' : "") + ">Porta " + k.mp + " verso " + esc(k.n.name) +
+      " (" + SPEEDS[k.l.speed].short + "): " + k.dn + " + " + k.c + " = " + k.tot + "</li>").join("") + "</ul>";
+    let why;
+    if(!s2) why = "È l’unica porta, quindi è per forza la root port.";
+    else if(w.tot < s2.tot) why = "Vince il percorso a minor costo (" + w.tot + ").";
+    else if(bidCmp(w.n, s2.n) !== 0) why = "Parità di costo (" + w.tot + "): vince la porta collegata al vicino con Bridge ID minore, " +
+      nm(w.n) + " (" + bidStr(w.n) + ").";
+    else why = "Parità di costo e stesso vicino " + nm(w.n) + " (collegamenti paralleli): vince la porta collegata alla porta del vicino con Port ID minore (128." +
+      w.np + " contro 128." + s2.np + ").";
+    h += "<p>" + why + " La porta " + w.mp + " di " + nm(s) + " diventa <b>root port (R)</b>. Costo di " + nm(s) + " verso la root: " + w.tot + ".</p>";
+    cur.roles.set(pk(w.l.id, s.id), "R");
+    cur.cost.set(s.id, w.tot);
+    push(2, "Passo 2: root port di " + s.name, h, [s.id], [w.l.id]);
+  }
+
+  // passo 3: designated port (i segmenti del root bridge sono già decisi)
+  for(const l of S.ln){
+    const A = swById(l.a), B = swById(l.b);
+    if(cur.roots.has(A.id) || cur.roots.has(B.id)) continue;
+    const ea = {s:A, c:dist.get(A.id), p:portNum(A.id, l.id)}, eb = {s:B, c:dist.get(B.id), p:portNum(B.id, l.id)};
+    const cmp = (ea.c - eb.c) || bidCmp(ea.s, eb.s) || (ea.p - eb.p);
+    const [w, lo] = cmp < 0 ? [ea, eb] : [eb, ea];
+    let h = "<p>Sul segmento " + nm(A) + "–" + nm(B) + " (" + SPEEDS[l.speed].short + ") si elegge una sola porta designated: quella dello switch più vicino alla root.</p><ul>" +
+      "<li>" + esc(A.name) + " (porta " + ea.p + "): costo verso la root " + ea.c + "</li>" +
+      "<li>" + esc(B.name) + " (porta " + eb.p + "): costo verso la root " + eb.c + "</li></ul>";
+    if(w.c < lo.c) h += "<p>" + nm(w.s) + " è più vicino alla root (" + w.c + " contro " + lo.c + ").";
+    else h += "<p>Parità di costo (" + w.c + "): vince il Bridge ID minore, " + nm(w.s) + " (" + bidStr(w.s) + ").";
+    h += " La porta " + w.p + " di " + nm(w.s) + " diventa <b>designated (D)</b>.</p>";
+    cur.roles.set(pk(l.id, w.s.id), "D");
+    if(cur.roles.get(pk(l.id, lo.s.id)) === "R"){
+      h += "<p>La porta " + lo.p + " di " + nm(lo.s) + " su questo segmento è già la sua root port e resta tale.</p>";
+    } else {
+      cur.roles.set(pk(l.id, lo.s.id), "ND");
+      h += '<p>La porta ' + lo.p + ' di ' + nm(lo.s) + ' non è né root né designated: è <span class="lose">non designated (ND)</span>.</p>';
+    }
+    push(3, "Passo 3: segmento " + A.name + "–" + B.name, h, [A.id, B.id], [l.id]);
+  }
+
+  // risultato
+  cur.final = true;
+  const blocked = [];
+  for(const l of S.ln){
+    for(const sid of [l.a, l.b]){
+      if(!cur.roles.has(pk(l.id, sid))) cur.roles.set(pk(l.id, sid), "ND");
+      if(cur.roles.get(pk(l.id, sid)) === "ND") blocked.push({l, s:swById(sid)});
+    }
+  }
+  let hf = "<p>Le porte root (R) e designated (D) vanno in <b>forwarding (F)</b>. Tutte le altre vanno in <b>blocking (BLK)</b>.</p>";
+  if(blocked.length){
+    hf += "<p>Porte bloccate:</p><ul>" + blocked.map(b => '<li class="lose">' + esc(b.s.name) + " porta " + portNum(b.s.id, b.l.id) +
+      " (verso " + esc(swById(other(b.l, b.s.id)).name) + ")</li>").join("") + "</ul>";
+  } else hf += "<p>Nessuna porta bloccata.</p>";
+  hf += "<p>Collegamenti attivi: " + (N - C) + " su " + M + ". Sono esattamente quelli necessari per raggiungere tutti gli switch senza anelli; i collegamenti bloccati restano di riserva in caso di guasto.</p>";
+  push(4, "Risultato: forwarding e blocking", hf, [], blocked.map(b => b.l.id));
+  return out;
+}
+
+function recalc(){
+  const wasFinal = steps.length > 1 && ui.step === steps.length - 1;
+  steps = compute();
+  ui.step = wasFinal ? steps.length - 1 : Math.min(ui.step, steps.length - 1);
+}
+
+/* ---------- disegno ---------- */
+function geometry(){
+  const groups = new Map();
+  for(const l of S.ln){
+    const k = Math.min(l.a, l.b) + "-" + Math.max(l.a, l.b);
+    if(!groups.has(k)) groups.set(k, []);
+    groups.get(k).push(l);
+  }
+  const g = new Map();
+  for(const list of groups.values()){
+    list.forEach((l, k) => {
+      const lo = swById(Math.min(l.a, l.b)), hi = swById(Math.max(l.a, l.b));
+      const dx = hi.x - lo.x, dy = hi.y - lo.y, len = Math.hypot(dx, dy) || 1;
+      const nx = -dy / len, ny = dx / len;
+      const off = (k - (list.length - 1) / 2) * 40;
+      const cx = (lo.x + hi.x) / 2 + nx * off * 2, cy = (lo.y + hi.y) / 2 + ny * off * 2;
+      const P = swById(l.a), Q = swById(l.b);
+      const at = t => ({x:(1-t)*(1-t)*P.x + 2*(1-t)*t*cx + t*t*Q.x, y:(1-t)*(1-t)*P.y + 2*(1-t)*t*cy + t*t*Q.y});
+      g.set(l.id, {d:"M" + P.x + " " + P.y + " Q" + cx + " " + cy + " " + Q.x + " " + Q.y, at, len, nx, ny});
+    });
+  }
+  return g;
+}
+
+function pill(x, y, text, cls, extra){
+  const w = Math.max(26, text.length * 7.6 + 14);
+  return '<g class="' + cls + '"' + (extra || "") + '><rect x="' + (x - w/2) + '" y="' + (y - 11) + '" width="' + w +
+    '" height="22" rx="6"/><text x="' + x + '" y="' + y + '">' + esc(text) + "</text></g>";
+}
+
+function renderScene(){
+  const st = steps[ui.step];
+  const geo = geometry();
+  let out = "";
+
+  if(!S.sw.length){
+    out += '<text class="empty" x="500" y="310">Foglio vuoto: scegli “Aggiungi switch” e clicca qui</text>';
+  }
+
+  // collegamenti
+  for(const l of S.ln){
+    const g = geo.get(l.id);
+    const off = st.final && (st.roles.get(pk(l.id, l.a)) === "ND" || st.roles.get(pk(l.id, l.b)) === "ND");
+    const sel = ui.sel && ui.sel.t === "ln" && ui.sel.id === l.id;
+    if(st.hl.has(l.id) && !st.final) out += '<path class="hl-under" d="' + g.d + '"/>';
+    if(sel) out += '<path class="sel-under" d="' + g.d + '"/>';
+    out += '<path class="cable ' + SPEEDS[l.speed].cls + (off ? " off" : "") + '" d="' + g.d + '"/>';
+    out += '<path class="hit" data-ln="' + l.id + '" d="' + g.d + '"/>';
+  }
+  for(const l of S.ln){
+    const m = geo.get(l.id).at(0.5);
+    out += pill(m.x, m.y, SPEEDS[l.speed].short + " (" + SPEEDS[l.speed].cost + ")", "lnlbl", ' data-ln="' + l.id + '"');
+  }
+
+  // switch
+  for(const s of S.sw){
+    const isRoot = st.roots.has(s.id);
+    const cls = ["sw"];
+    if(isRoot) cls.push("root");
+    if(ui.sel && ui.sel.t === "sw" && ui.sel.id === s.id) cls.push("sel");
+    if(ui.pending === s.id) cls.push("pend");
+    out += '<g class="' + cls.join(" ") + '" data-sw="' + s.id + '" transform="translate(' + s.x + " " + s.y + ')">';
+    if(st.hs.has(s.id)) out += '<rect class="halo" x="-64" y="-37" width="128" height="74" rx="13"/>';
+    out += '<rect class="box" x="-56" y="-29" width="112" height="58" rx="8"/>';
+    out += '<text class="nm" y="-4">' + esc(s.name) + "</text>";
+    out += '<text class="pr" y="16">priorità ' + s.prio + "</text>";
+    out += '<text class="mac" y="47">' + esc(s.mac) + "</text>";
+    if(isRoot) out += '<text class="rootlbl" y="-45">Root bridge</text>';
+    if(!isRoot && st.cost.has(s.id)) out += '<text class="cost" y="65">costo verso root: ' + st.cost.get(s.id) + "</text>";
+    out += "</g>";
+  }
+
+  // porte
+  for(const l of S.ln){
+    const g = geo.get(l.id);
+    const t0 = Math.min(0.42, Math.max(0.12, 82 / g.len));
+    [[l.a, t0], [l.b, 1 - t0]].forEach(([sid, t]) => {
+      const p = g.at(t);
+      const role = st.roles.get(pk(l.id, sid));
+      const num = portNum(sid, l.id);
+      let led = "n";
+      if(st.final && role) led = role === "ND" ? "b" : "f";
+      out += '<circle class="led ' + led + '" cx="' + p.x + '" cy="' + p.y + '" r="6.5" pointer-events="none"/>';
+      const lx = p.x + g.nx * 22, ly = p.y + g.ny * 22;
+      if(role){
+        const txt = role + (st.final ? (role === "ND" ? " BLK" : " F") : "");
+        out += pill(lx, ly, txt, "port" + (role === "ND" ? " nd" : ""));
+      } else {
+        out += '<g class="port"><text class="pnum" x="' + lx + '" y="' + ly + '">p' + num + "</text></g>";
+      }
+    });
+  }
+  scene.innerHTML = out;
+}
+
+function renderSim(){
+  const st = steps[ui.step];
+  $("counter").textContent = "Passo " + (ui.step + 1) + " di " + steps.length;
+  $("stepTitle").textContent = st.title;
+  $("stepBody").innerHTML = st.html;
+  $("prevBtn").disabled = ui.step === 0;
+  $("nextBtn").disabled = ui.step >= steps.length - 1;
+  $("endBtn").disabled = ui.step >= steps.length - 1;
+  $("resetBtn").disabled = ui.step === 0;
+  [...$("phases").children].forEach((li, i) => {
+    li.className = st.phase === i + 1 ? "now" : (st.phase > i + 1 ? "done" : "");
+  });
+}
+
+function renderStatus(){
+  const msg = {
+    select:"Trascina gli switch per spostarli, clicca uno switch o un collegamento per modificarlo.",
+    add:"Clicca su un punto libero del foglio per aggiungere uno switch.",
+    link: ui.pending ? "Ora clicca il secondo switch (Esc per annullare)." :
+      "Clicca il primo switch da collegare. Velocità: " + SPEEDS[ui.newSpeed].btn + ".",
+    delete:"Clicca uno switch o un collegamento per eliminarlo."
+  }[ui.mode];
+  $("status").textContent = msg;
+}
+
+function renderProps(){
+  const box = $("props");
+  if(ui.sel && ui.sel.t === "sw" && swById(ui.sel.id)){
+    const s = swById(ui.sel.id);
+    box.innerHTML =
+      '<label>Nome<input id="pName" maxlength="10" value="' + esc(s.name) + '"></label>' +
+      '<label>Priorità<select id="pPrio">' + PRIOS.map(p => '<option value="' + p + '"' + (p === s.prio ? " selected" : "") + ">" + p + "</option>").join("") + "</select></label>" +
+      '<label>MAC address<input id="pMac" value="' + esc(s.mac) + '" spellcheck="false"></label>' +
+      '<p class="err" id="pMacErr"></p>' +
+      '<p class="bid" id="pBid">Bridge ID: ' + esc(bidStr(s)) + "</p>" +
+      '<button id="pDel" class="danger">Elimina switch</button>';
+    $("pName").addEventListener("input", e => {
+      s.name = e.target.value.trim() || ("SW" + s.id);
+      changed();
+    });
+    $("pPrio").addEventListener("change", e => {
+      s.prio = +e.target.value;
+      $("pBid").textContent = "Bridge ID: " + bidStr(s);
+      changed();
+    });
+    const applyMac = () => {
+      const v = normMac($("pMac").value);
+      if(!v){ $("pMacErr").textContent = "MAC non valido: servono 12 cifre esadecimali."; return; }
+      const dup = S.sw.find(o => o.id !== s.id && o.mac === v);
+      if(dup){ $("pMacErr").textContent = "MAC già usato da " + dup.name + ": il Bridge ID deve essere univoco."; return; }
+      $("pMacErr").textContent = "";
+      s.mac = v; $("pMac").value = v;
+      $("pBid").textContent = "Bridge ID: " + bidStr(s);
+      changed();
+    };
+    $("pMac").addEventListener("change", applyMac);
+    $("pMac").addEventListener("keydown", e => { if(e.key === "Enter") applyMac(); });
+    $("pDel").addEventListener("click", () => delSwitch(s.id));
+  } else if(ui.sel && ui.sel.t === "ln" && lnById(ui.sel.id)){
+    const l = lnById(ui.sel.id), A = swById(l.a), B = swById(l.b);
+    box.innerHTML =
+      '<p class="bid">' + esc(A.name) + " porta " + portNum(A.id, l.id) + " ↔ " + esc(B.name) + " porta " + portNum(B.id, l.id) + "</p>" +
+      '<div class="radio" role="group" aria-label="Velocità">' + Object.entries(SPEEDS).map(([k, v]) =>
+        '<button data-sp="' + k + '" aria-pressed="' + (l.speed === k) + '"><span class="sw-dot" style="background:var(--' + v.cls + ')"></span>' +
+        v.btn + " (" + v.cost + ")</button>").join("") + "</div>" +
+      '<button id="pDel" class="danger">Elimina collegamento</button>';
+    box.querySelectorAll("[data-sp]").forEach(b => b.addEventListener("click", () => {
+      l.speed = b.dataset.sp;
+      box.querySelectorAll("[data-sp]").forEach(x => x.setAttribute("aria-pressed", x === b));
+      changed();
+    }));
+    $("pDel").addEventListener("click", () => delLink(l.id));
+  } else {
+    box.innerHTML = '<p class="muted">Seleziona uno switch per modificarne nome, priorità e MAC, oppure un collegamento per cambiarne la velocità. Le modifiche si applicano subito, anche durante l’esecuzione.</p>';
+  }
+}
+
+function renderAll(){ renderScene(); renderSim(); renderStatus(); }
+function changed(){ save(); recalc(); renderScene(); renderSim(); }
+
+/* ---------- modifiche alla topologia ---------- */
+function addSwitch(x, y){
+  const n = S.nSw++;
+  let mac = autoMac(n);
+  while(S.sw.some(s => s.mac === mac)) mac = autoMac(n + 256 * Math.ceil(Math.random() * 200));
+  const s = {id:n, name:"SW" + n, prio:32768, mac, x:clampX(x), y:clampY(y)};
+  S.sw.push(s);
+  ui.sel = {t:"sw", id:s.id};
+  renderProps(); changed();
+}
+function addLink(a, b){
+  S.ln.push({id:S.nLn++, a, b, speed:ui.newSpeed});
+  changed();
+}
+function delSwitch(id){
+  S.sw = S.sw.filter(s => s.id !== id);
+  S.ln = S.ln.filter(l => l.a !== id && l.b !== id);
+  if(ui.sel && ui.sel.t === "sw" && ui.sel.id === id) ui.sel = null;
+  if(ui.pending === id) ui.pending = null;
+  renderProps(); changed(); renderStatus();
+}
+function delLink(id){
+  S.ln = S.ln.filter(l => l.id !== id);
+  if(ui.sel && ui.sel.t === "ln" && ui.sel.id === id) ui.sel = null;
+  renderProps(); changed();
+}
+const clampX = x => Math.max(70, Math.min(W - 70, x));
+const clampY = y => Math.max(60, Math.min(H - 80, y));
+
+/* ---------- interazione ---------- */
+function svgPt(e){
+  const p = svg.createSVGPoint(); p.x = e.clientX; p.y = e.clientY;
+  return p.matrixTransform(svg.getScreenCTM().inverse());
+}
+svg.addEventListener("pointerdown", e => {
+  const pt = svgPt(e);
+  const swEl = e.target.closest("[data-sw]");
+  const lnEl = e.target.closest("[data-ln]");
+  if(swEl){
+    const id = +swEl.dataset.sw;
+    if(ui.mode === "delete"){ delSwitch(id); return; }
+    if(ui.mode === "link"){
+      if(ui.pending === null) ui.pending = id;
+      else if(ui.pending === id) ui.pending = null;
+      else { const a = ui.pending; ui.pending = null; addLink(a, id); }
+      renderScene(); renderStatus();
+      return;
+    }
+    const s = swById(id);
+    ui.sel = {t:"sw", id};
+    ui.drag = {id, dx:pt.x - s.x, dy:pt.y - s.y};
+    svg.setPointerCapture(e.pointerId);
+    renderProps(); renderScene();
+    return;
+  }
+  if(lnEl){
+    const id = +lnEl.dataset.ln;
+    if(ui.mode === "delete"){ delLink(id); return; }
+    ui.sel = {t:"ln", id};
+    renderProps(); renderScene();
+    return;
+  }
+  if(ui.mode === "add"){ addSwitch(pt.x, pt.y); return; }
+  if(ui.mode === "link"){ ui.pending = null; renderScene(); renderStatus(); return; }
+  if(ui.sel){ ui.sel = null; renderProps(); renderScene(); }
+});
+svg.addEventListener("pointermove", e => {
+  if(!ui.drag) return;
+  const pt = svgPt(e), s = swById(ui.drag.id);
+  if(!s) return;
+  s.x = clampX(pt.x - ui.drag.dx); s.y = clampY(pt.y - ui.drag.dy);
+  renderScene();
+});
+const endDrag = () => { if(ui.drag){ ui.drag = null; save(); } };
+svg.addEventListener("pointerup", endDrag);
+svg.addEventListener("pointercancel", endDrag);
+
+document.querySelectorAll("[data-mode]").forEach(b => b.addEventListener("click", () => {
+  ui.mode = b.dataset.mode; ui.pending = null;
+  document.querySelectorAll("[data-mode]").forEach(x => x.setAttribute("aria-pressed", x === b));
+  renderScene(); renderStatus();
+}));
+
+const speedSeg = $("speedSeg");
+speedSeg.innerHTML = Object.entries(SPEEDS).map(([k, v]) =>
+  '<button data-ns="' + k + '" aria-pressed="' + (k === ui.newSpeed) + '"><span class="sw-dot" style="background:var(--' + v.cls + ')"></span>' + v.btn + "</button>").join("");
+speedSeg.querySelectorAll("[data-ns]").forEach(b => b.addEventListener("click", () => {
+  ui.newSpeed = b.dataset.ns;
+  speedSeg.querySelectorAll("[data-ns]").forEach(x => x.setAttribute("aria-pressed", x === b));
+  renderStatus();
+}));
+
+$("legend").innerHTML = Object.values(SPEEDS).map(v =>
+  '<tr><td><span class="sw-dot" style="background:var(--' + v.cls + ')"></span>' + v.name + " (" + v.short + ")</td><td>" + v.cost + "</td></tr>").join("") +
+  '<tr><td colspan="2" style="color:var(--ink2);font-size:12.5px;border:0;padding-top:8px">Valori IEEE 802.1D-1998. Port ID = 128.numero porta.</td></tr>';
+
+/* esempi delle slide: MAC crescenti (MAC1 < MAC2 < ...) */
+const mk = (id, x, y, prio) => ({id, name:"SW" + id, prio:prio || 32768, mac:autoMac(id), x, y});
+const EXAMPLES = {
+  "1": {sw:[mk(1, 500, 130), mk(2, 250, 480), mk(3, 750, 480)],
+        ln:[["1G", 1, 2], ["1G", 1, 3], ["1G", 2, 3]]},
+  "2": {sw:[mk(1, 500, 130), mk(2, 250, 480), mk(3, 750, 480)],
+        ln:[["100M", 1, 2], ["1G", 1, 3], ["1G", 2, 3]]},
+  "3": {sw:[mk(1, 500, 110), mk(2, 230, 320), mk(3, 770, 320, 16384), mk(4, 500, 530)],
+        ln:[["1G", 1, 2], ["100M", 1, 4], ["100M", 1, 3], ["1G", 2, 4], ["1G", 3, 4]]}
+};
+document.querySelectorAll("[data-ex]").forEach(btn => btn.addEventListener("click", () => {
+  const n = btn.dataset.ex, ex = EXAMPLES[n];
+  if(S.sw.length && !confirm("Sostituire la topologia attuale con l’esempio " + n + "?")) return;
+  S = {
+    sw: ex.sw.map(s => ({...s})),
+    ln: ex.ln.map((l, i) => ({id:i + 1, a:l[1], b:l[2], speed:l[0]})),
+    nSw: ex.sw.length + 1, nLn: ex.ln.length + 1
+  };
+  ui.sel = null; ui.pending = null; ui.step = 0;
+  renderProps(); changed(); renderStatus();
+}));
+
+$("clearBtn").addEventListener("click", () => {
+  if(!S.sw.length) return;
+  if(!confirm("Eliminare tutti gli switch e i collegamenti?")) return;
+  S = {sw:[], ln:[], nSw:1, nLn:1};
+  ui.sel = null; ui.pending = null; ui.step = 0;
+  renderProps(); changed();
+});
+
+function go(i){ ui.step = Math.max(0, Math.min(steps.length - 1, i)); renderScene(); renderSim(); }
+$("prevBtn").addEventListener("click", () => go(ui.step - 1));
+$("nextBtn").addEventListener("click", () => go(ui.step + 1));
+$("endBtn").addEventListener("click", () => go(steps.length - 1));
+$("resetBtn").addEventListener("click", () => go(0));
+
+document.addEventListener("keydown", e => {
+  const tag = (e.target.tagName || "").toLowerCase();
+  if(tag === "input" || tag === "select" || tag === "textarea") return;
+  if(e.key === "ArrowRight" || e.key === "PageDown"){ e.preventDefault(); go(ui.step + 1); }
+  else if(e.key === "ArrowLeft" || e.key === "PageUp"){ e.preventDefault(); go(ui.step - 1); }
+  else if(e.key === "Escape"){ ui.pending = null; ui.sel = null; renderProps(); renderScene(); renderStatus(); }
+  else if((e.key === "Delete" || e.key === "Backspace") && ui.sel){
+    e.preventDefault();
+    if(ui.sel.t === "sw") delSwitch(ui.sel.id); else delLink(ui.sel.id);
+  }
+});
+
+/* ---------- avvio ---------- */
+recalc();
+renderProps();
+renderAll();
+})();
+</script>
+</body>
+</html>
