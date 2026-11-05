@@ -73,7 +73,7 @@ Spanning Tree Protocol
 
 # STP
 
-definizioni222
+definizioni
 
 <div style="background-color:green; color:white;padding:3rem;font-size: 1.8rem;line-height:3rem;">
 Lo Spanning Tree Protocol (STP) è un protocollo di rete di livello 2 che ha il compito di ricavare, da una rete magliata e con presenza di loop, una topologia logica ad albero priva di loop, bloccando alcune porte. La topologia fisica non cambia: in caso di guasto di un collegamento l'albero viene ricalcolato riattivando i collegamenti di riserva
