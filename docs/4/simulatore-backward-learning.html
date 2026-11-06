@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Switch: backward learning e forwarding</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#E8EDF0;--surface:#FFFFFF;--surface-2:#F2F5F7;--ink:#1D2A33;--muted:#56666F;--line:#C3CED5;
+  --slate:#3E525E;--slate-ink:#FFFFFF;--accent:#D9481A;--accent-soft:#FCE2D7;
+  --ok:#1C7F46;--ok-soft:#DCF1E4;--bad:#B3261E;--bad-soft:#F8DEDC;
+  --dst:#1E8A4C;--dst-ink:#FFFFFF;--src:#F2A33A;--src-ink:#1D2A33;
+  color-scheme:light;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#12191E;--surface:#1B242A;--surface-2:#232E35;--ink:#E4EBEF;--muted:#9AABB5;--line:#3A4952;
+    --slate:#2E3E48;--slate-ink:#E4EBEF;--accent:#FF7A4A;--accent-soft:#4A2A1E;
+    --ok:#5CC98B;--ok-soft:#1C3A28;--bad:#F2847C;--bad-soft:#45231F;
+    --dst:#2C9E5E;--dst-ink:#FFFFFF;--src:#F2A33A;--src-ink:#1D2A33;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#12191E;--surface:#1B242A;--surface-2:#232E35;--ink:#E4EBEF;--muted:#9AABB5;--line:#3A4952;
+  --slate:#2E3E48;--slate-ink:#E4EBEF;--accent:#FF7A4A;--accent-soft:#4A2A1E;
+  --ok:#5CC98B;--ok-soft:#1C3A28;--bad:#F2847C;--bad-soft:#45231F;
+  --dst:#2C9E5E;--dst-ink:#FFFFFF;--src:#F2A33A;--src-ink:#1D2A33;
+  color-scheme:dark;
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Atkinson Hyperlegible","Segoe UI",system-ui,-apple-system,sans-serif;font-size:16px;line-height:1.45}
+.wrap{max-width:1880px;margin:0 auto;padding:20px 16px 16px}
+.top{display:flex;flex-wrap:wrap;gap:16px;align-items:flex-end;justify-content:space-between;margin-bottom:16px}
+h1{font-size:1.65rem;line-height:1.15;margin:0 0 4px}
+.sub{margin:0;color:var(--muted);max-width:60ch}
+.toolbar{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+label{display:inline-flex;gap:6px;align-items:center}
+select,input[type=number]{font:inherit;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:6px 8px}
+input[type=number]{width:5.5em}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden;padding:0;margin:0}
+.seg label{padding:6px 12px;cursor:pointer;background:var(--surface)}
+.seg label:has(input:checked){background:var(--slate);color:var(--slate-ink)}
+.seg input{position:absolute;opacity:0;pointer-events:none}
+.seg label:has(input:focus-visible){outline:3px solid var(--accent);outline-offset:-3px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.btn{font:inherit;padding:8px 14px;border-radius:8px;border:1px solid var(--line);background:var(--surface-2);color:var(--ink);cursor:pointer}
+.btn:hover:not(:disabled){border-color:var(--slate)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:700}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.scenario{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;background:var(--surface);border:2px solid var(--accent);border-radius:12px;padding:12px 16px;margin-bottom:16px}
+.scenario p{margin:4px 0 0;max-width:75ch}
+.scenario .prog{color:var(--muted);font-size:.9rem;margin-left:6px;font-weight:400}
+.layout{display:grid;grid-template-columns:minmax(0,0.8fr) minmax(0,1.25fr) minmax(0,1.25fr) minmax(0,0.9fr);gap:16px;align-items:stretch}
+#fc{max-height:540px}
+.log-panel{display:flex;flex-direction:column}
+.log-panel #log{flex:1 1 0;min-height:200px;max-height:none}
+@media (max-width:1400px){.layout{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.log-panel #log{flex:none;max-height:330px}}
+@media (max-width:920px){.layout{grid-template-columns:minmax(0,1fr)}}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px;min-width:0}
+.panel h2{font-size:1.05rem;margin:0 0 10px}
+svg{display:block;width:100%;height:auto}
+svg text{fill:var(--ink);font-family:inherit}
+.link{stroke:var(--line);stroke-width:3;transition:stroke .2s}
+.link.on{stroke:var(--accent)}
+.sw-body{fill:var(--slate)}
+.sw-label{fill:var(--slate-ink)!important;font-weight:700;font-size:17px}
+.port{fill:var(--surface);stroke:var(--slate-ink);stroke-width:1.5}
+.port-num{fill:var(--accent)!important;font-weight:700;font-size:16px}
+.host-body{fill:var(--surface-2);stroke:var(--slate);stroke-width:2}
+.host-base{fill:var(--slate)}
+.host-letter{font-weight:700;font-size:20px}
+.host-mac{fill:var(--muted)!important;font-size:13px}
+.host-status{font-size:12.5px;font-weight:700}
+.host-status.ok{fill:var(--ok)!important}
+.host-status.bad{fill:var(--bad)!important}
+.pkt-dst{fill:var(--dst)}.pkt-src{fill:var(--src)}
+.pkt-dst-t{fill:var(--dst-ink)!important;font-size:11px;font-weight:700}
+.pkt-src-t{fill:var(--src-ink)!important;font-size:11px;font-weight:700}
+.legend{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:.9rem;color:var(--muted);margin:6px 0 12px}
+.chip{display:inline-block;padding:1px 8px;border-radius:3px;font-weight:700;font-size:.8rem}
+.chip.dst{background:var(--dst);color:var(--dst-ink)}.chip.src{background:var(--src);color:var(--src-ink)}
+.controls{border-top:1px solid var(--line);padding-top:12px;display:grid;gap:10px}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.score{margin-left:auto;font-weight:700}
+.hint{margin:0;min-height:1.4em;color:var(--bad)}
+.predict{background:var(--surface-2);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:8px;padding:12px}
+.predict p{margin:0 0 8px}
+.pchecks{display:flex;flex-wrap:wrap;gap:8px 16px;margin-bottom:10px}
+.feedback{margin:10px 0 0!important}
+.feedback.ok{color:var(--ok)}.feedback.bad{color:var(--bad)}
+.fc-node rect{fill:var(--surface);stroke:var(--line);stroke-width:1.5}
+.fc-node.dec rect{fill:var(--surface-2)}
+.fc-node text{font-size:12px}
+.fc-node.visited rect{stroke:var(--accent)}
+.fc-node.active rect{fill:var(--accent-soft);stroke:var(--accent);stroke-width:2.5}
+.fc-node.active text{font-weight:700}
+.fc-node.ghost rect{fill:none;stroke-dasharray:4 3}
+.fc-node.ghost text{fill:var(--muted)}
+.fc-edge{fill:none;stroke:var(--muted);stroke-width:1.4}
+.fc-edge.taken{stroke:var(--accent);stroke-width:2.6}
+.fc-edge.ghost{stroke-dasharray:4 3;opacity:.6}
+.fc-lab{font-size:11px;fill:var(--muted)!important}
+.fc-sec{font-size:12px;font-weight:700;fill:var(--muted)!important}
+.fc-sep{stroke:var(--line);stroke-dasharray:6 4}
+.arr{fill:var(--muted)}.arr-on{fill:var(--accent)}
+.note{font-size:.88rem;color:var(--muted);margin:10px 0 0;max-width:70ch}
+.tbl-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
+.clock{font-family:"JetBrains Mono",ui-monospace,Consolas,monospace;font-weight:600;font-size:1.1rem}
+.time-row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:4px 0 12px}
+.tbl-wrap{overflow-x:auto}
+table.mac{width:100%;border-collapse:collapse;font-family:"JetBrains Mono",ui-monospace,Consolas,monospace;font-size:.92rem}
+table.mac th{background:var(--slate);color:var(--slate-ink);text-align:left;padding:8px;font-family:"Atkinson Hyperlegible",system-ui,sans-serif;font-weight:700}
+table.mac td{padding:7px 8px;border-bottom:1px solid var(--line);white-space:nowrap}
+table.mac td.empty{white-space:normal;color:var(--muted);font-family:"Atkinson Hyperlegible",system-ui,sans-serif;padding:14px 8px}
+tr.new td{background:var(--ok-soft)}
+tr.upd td{background:var(--accent-soft)}
+tr.hit td{box-shadow:inset 0 2px 0 var(--accent),inset 0 -2px 0 var(--accent)}
+tr.hit td:first-child{box-shadow:inset 0 2px 0 var(--accent),inset 0 -2px 0 var(--accent),inset 3px 0 0 var(--accent)}
+tr.low td:last-child{color:var(--bad);font-weight:600}
+#log{list-style:none;margin:0;padding:0;max-height:330px;overflow-y:auto}
+#log li{display:grid;grid-template-columns:auto 1fr;gap:10px;padding:6px 0;border-bottom:1px solid var(--line)}
+#log li:last-child{border-bottom:none;font-weight:700}
+#log .seq{font-family:"JetBrains Mono",ui-monospace,monospace;color:var(--muted);font-size:.85rem;font-weight:600;padding-top:2px;min-width:2.2em;text-align:right}
+#log li.sep span{color:var(--accent);font-weight:700}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div>
+      <h1>Switch: backward learning e forwarding</h1>
+      <p class="sub">Invia frame tra gli host e osserva, passo dopo passo, come lo switch impara su quale porta si trova ogni host e decide dove inoltrare il frame.</p>
+    </div>
+    <div class="toolbar">
+      <label>Scenario
+        <select id="scenario">
+          <option value="">Nessuno (uso libero)</option>
+          <option value="s1">1. Tabella vuota</option>
+          <option value="s2">2. Voce già presente</option>
+          <option value="s3">3. Broadcast</option>
+          <option value="s4">4. Aging</option>
+        </select>
+      </label>
+      <fieldset class="seg">
+        <legend class="sr">Modalità</legend>
+        <label><input type="radio" name="mode" value="libera" checked>Libera</label>
+        <label><input type="radio" name="mode" value="esercizio">Esercizio</label>
+      </fieldset>
+      <button id="reset" class="btn">Ricomincia</button>
+    </div>
+  </header>
+
+  <section id="scPanel" class="scenario" hidden>
+    <div>
+      <strong id="scTitle"></strong><span id="scProg" class="prog"></span>
+      <p id="scNote"></p>
+    </div>
+    <button id="scStep" class="btn primary"></button>
+  </section>
+
+  <main class="layout">
+    <section class="panel">
+      <div class="tbl-head">
+        <h2>MAC address table</h2>
+        <div>Ora <span id="clock" class="clock">09:25:00</span></div>
+      </div>
+      <div class="time-row">
+        <button id="t10" class="btn">+10 s</button>
+        <button id="t60" class="btn">+60 s</button>
+        <label><input type="checkbox" id="auto"> Tempo automatico</label>
+        <label>Aging <input type="number" id="aging" value="60" min="10" max="600" step="5"> s</label>
+      </div>
+      <div class="tbl-wrap">
+        <table class="mac">
+          <thead><tr><th>MAC address</th><th>Porta</th><th>Timestamp</th><th>Timeout</th></tr></thead>
+          <tbody id="tbody"></tbody>
+        </table>
+      </div>
+      <p class="note">Sugli switch Cisco Catalyst l’aging predefinito è 300 s; qui è ridotto per poterlo osservare durante la lezione.</p>
+    </section>
+
+    <section class="panel">
+      <h2>Rete</h2>
+      <svg id="topo" viewBox="0 0 600 400" role="img" aria-label="Switch con quattro host: A sulla porta 5, B sulla porta 8, C sulla porta 2, D sulla porta 11"></svg>
+      <div class="legend">Frame in viaggio: <span class="chip dst">MAC destinazione</span><span class="chip src">MAC sorgente</span></div>
+      <div class="controls">
+        <div class="row">
+          <label>Sorgente <select id="src"></select></label>
+          <label>Destinazione <select id="dst"></select></label>
+          <button id="send" class="btn primary">Invia frame</button>
+        </div>
+        <div class="row">
+          <button id="next" class="btn">Avanti di un passo</button>
+          <button id="all" class="btn">Esegui fino alla fine</button>
+          <span id="score" class="score" hidden></span>
+        </div>
+        <p id="hint" class="hint" aria-live="polite"></p>
+        <div id="predict" class="predict" hidden>
+          <p><strong>Prevedi:</strong> su quali porte uscirà il frame?</p>
+          <div id="pchecks" class="pchecks"></div>
+          <button id="pverify" class="btn primary">Verifica previsione</button>
+          <p id="pfeedback" class="feedback" aria-live="polite"></p>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>Algoritmo</h2>
+      <svg id="fc" viewBox="0 0 420 504" role="img" aria-label="Diagramma di flusso dell’algoritmo di learning e forwarding"></svg>
+      <p class="note">Il ramo tratteggiato “Frame scartato” qui non viene mai percorso: si verifica solo quando più host condividono la stessa porta dello switch (ad esempio tramite un hub), così sorgente e destinazione risultano sulla stessa porta d’ingresso.</p>
+    </section>
+
+    <section class="panel log-panel">
+      <h2>Cosa sta succedendo</h2>
+      <ol id="log"></ol>
+    </section>
+  </main>
+</div>
+
+<script>
+const $ = s => document.querySelector(s);
+const NS = "http://www.w3.org/2000/svg";
+const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const HOSTS = {
+  A:{port:5, x:100, y:70,  top:true},
+  B:{port:8, x:500, y:70,  top:true},
+  C:{port:2, x:100, y:330, top:false},
+  D:{port:11,x:500, y:330, top:false}
+};
+const PORTS = {5:{x:250,y:165}, 8:{x:350,y:165}, 2:{x:250,y:235}, 11:{x:350,y:235}};
+const PORT_LIST = [2,5,8,11];
+const hostOnPort = p => Object.keys(HOSTS).find(h => HOSTS[h].port === p);
+const BASE = 9*3600 + 25*60;
+const PW = 124; // packet width
+
+const state = {now:0, aging:60, table:new Map(), pending:null, busy:false, mode:"libera",
+  score:{ok:0,tot:0}, scenario:null, scIdx:0, flash:null, hit:null};
+
+function el(tag, attrs, parent){
+  const e = document.createElementNS(NS, tag);
+  for (const k in attrs) e.setAttribute(k, attrs[k]);
+  if (parent) parent.appendChild(e);
+  return e;
+}
+function fmt(t){
+  const s = BASE + t;
+  return [Math.floor(s/3600)%24, Math.floor(s/60)%60, s%60].map(v => String(v).padStart(2,"0")).join(":");
+}
+const sleep = ms => new Promise(r => setTimeout(r, reduce ? 0 : ms));
+const dstLabel = d => d === "BCAST" ? "broadcast (FF:FF:FF:FF:FF:FF)" : "MAC " + d;
+
+/* ---------- Topologia ---------- */
+function buildTopo(){
+  const svg = $("#topo");
+  const gl = el("g", {}, svg);
+  for (const h in HOSTS){
+    const H = HOSTS[h], P = PORTS[H.port];
+    H.ax = H.x; H.ay = H.top ? H.y + 30 : H.y - 30;
+    el("line", {x1:H.ax, y1:H.ay, x2:P.x, y2:P.y, class:"link", id:"link-"+h}, gl);
+  }
+  const sw = el("g", {}, svg);
+  el("rect", {x:200, y:165, width:200, height:70, rx:8, class:"sw-body"}, sw);
+  el("text", {x:300, y:206, "text-anchor":"middle", class:"sw-label"}, sw).textContent = "Switch";
+  for (const p of PORT_LIST){
+    const P = PORTS[p], top = P.y < 200;
+    el("rect", {x:P.x-9, y:P.y-6, width:18, height:12, rx:2, class:"port"}, sw);
+    el("text", {x:P.x + (P.x < 300 ? -22 : 22), y: top ? P.y - 10 : P.y + 22, "text-anchor":"middle", class:"port-num"}, sw).textContent = p;
+  }
+  for (const h in HOSTS){
+    const H = HOSTS[h];
+    const g = el("g", {class:"host"}, svg);
+    el("rect", {x:H.x-30, y:H.y-22, width:60, height:40, rx:5, class:"host-body"}, g);
+    el("rect", {x:H.x-38, y:H.y+18, width:76, height:7, rx:2, class:"host-base"}, g);
+    el("text", {x:H.x, y:H.y+5, "text-anchor":"middle", class:"host-letter"}, g).textContent = h;
+    el("text", {x:H.x, y:H.top ? H.y-32 : H.y+44, "text-anchor":"middle", class:"host-mac"}, g).textContent = "MAC " + h + " (porta " + H.port + ")";
+    el("text", {x:H.x, y:H.top ? H.y-52 : H.y+64, "text-anchor":"middle", class:"host-status", id:"status-"+h}, g);
+  }
+  state.pktLayer = el("g", {}, svg);
+}
+function makePacket(dst, src){
+  const g = el("g", {}, state.pktLayer);
+  el("rect", {x:0, y:0, width:PW/2, height:20, rx:3, class:"pkt-dst"}, g);
+  el("text", {x:PW/4, y:14, "text-anchor":"middle", class:"pkt-dst-t"}, g).textContent = dst === "BCAST" ? "Broadcast" : "MAC " + dst;
+  el("rect", {x:PW/2, y:0, width:PW/2, height:20, rx:3, class:"pkt-src"}, g);
+  el("text", {x:PW*3/4, y:14, "text-anchor":"middle", class:"pkt-src-t"}, g).textContent = "MAC " + src;
+  return g;
+}
+function move(g, x1, y1, x2, y2, dur = 1000){
+  return new Promise(res => {
+    const put = (x, y) => g.setAttribute("transform", `translate(${x - PW/2},${y - 10})`);
+    if (reduce){ put(x2, y2); res(); return; }
+    const t0 = performance.now();
+    function f(t){
+      const k = Math.min(1, (t - t0) / dur);
+      const e = k < .5 ? 2*k*k : 1 - Math.pow(-2*k + 2, 2) / 2;
+      put(x1 + (x2 - x1) * e, y1 + (y2 - y1) * e);
+      if (k < 1) requestAnimationFrame(f); else res();
+    }
+    requestAnimationFrame(f);
+  });
+}
+const setLink = (h, on) => $("#link-"+h).classList.toggle("on", on);
+function clearLinks(){ for (const h in HOSTS) setLink(h, false); }
+function setStatus(h, text, cls){ const s = $("#status-"+h); s.textContent = text; s.setAttribute("class", "host-status " + (cls || "")); }
+function clearStatuses(){ for (const h in HOSTS) setStatus(h, "", ""); }
+
+/* ---------- Diagramma di flusso ---------- */
+const FC_NODES = {
+  start:  {x:120,y:8,  w:160,h:36,t:["Frame ricevuto","sulla porta d’ingresso"]},
+  d1:     {x:120,y:66, w:160,h:36,t:["Sorgente già","in tabella?"],dec:true},
+  add:    {x:10, y:124,w:150,h:42,t:["Aggiunge la sorgente","con porta e timer"]},
+  upd:    {x:260,y:124,w:150,h:42,t:["Aggiorna porta","e timer"]},
+  d4:     {x:120,y:196,w:160,h:36,t:["Destinazione","broadcast?"],dec:true},
+  d5:     {x:120,y:256,w:160,h:36,t:["Destinazione","in tabella?"],dec:true},
+  d6:     {x:120,y:316,w:160,h:40,t:["Destinazione sulla","porta d’ingresso?"],dec:true},
+  flood:  {x:298,y:250,w:114,h:64,t:["Flooding: tutte","le porte tranne","l’ingresso"]},
+  discard:{x:8,  y:370,w:104,h:44,t:["Frame","scartato"],ghost:true},
+  fwd:    {x:120,y:386,w:160,h:40,t:["Inoltro diretto","sulla porta nota"]},
+  end:    {x:160,y:466,w:80, h:30,t:["Fine"]}
+};
+const FC_EDGES = {
+  e_start_d1:{d:"M200 44 L200 66"},
+  e_d1_add:  {d:"M120 84 L85 84 L85 124", l:["No",102,78]},
+  e_d1_upd:  {d:"M280 84 L335 84 L335 124", l:["Sì",300,78]},
+  e_add_m:   {d:"M85 166 L85 178 L200 178", noArrow:true},
+  e_upd_m:   {d:"M335 166 L335 178 L200 178", noArrow:true},
+  e_m_d4:    {d:"M200 178 L200 196"},
+  e_d4_d5:   {d:"M200 232 L200 256", l:["No",214,248]},
+  e_d4_flood:{d:"M280 214 L355 214 L355 250", l:["Sì",302,208]},
+  e_d5_flood:{d:"M280 274 L298 274", l:["No",289,268]},
+  e_d5_d6:   {d:"M200 292 L200 316", l:["Sì",214,308]},
+  e_d6_disc: {d:"M120 336 L60 336 L60 370", l:["Sì",90,330], ghost:true},
+  e_d6_fwd:  {d:"M200 356 L200 386", l:["No",214,374]},
+  e_fwd_end: {d:"M200 426 L200 466"},
+  e_flood_end:{d:"M355 314 L355 481 L240 481"},
+  e_disc_end:{d:"M60 414 L60 481 L160 481", ghost:true}
+};
+function buildFc(){
+  const svg = $("#fc");
+  const defs = el("defs", {}, svg);
+  for (const [id, cls] of [["arr","arr"],["arr-on","arr-on"]]){
+    const m = el("marker", {id, viewBox:"0 0 10 10", refX:"9", refY:"5", markerWidth:"8", markerHeight:"8", markerUnits:"userSpaceOnUse", orient:"auto"}, defs);
+    el("path", {d:"M0 0 L10 5 L0 10 z", class:cls}, m);
+  }
+  el("line", {x1:0, y1:188, x2:420, y2:188, class:"fc-sep"}, svg);
+  el("text", {x:8, y:30, class:"fc-sec"}, svg).textContent = "Learning";
+  el("text", {x:8, y:206, class:"fc-sec"}, svg).textContent = "Forwarding";
+  for (const id in FC_EDGES){
+    const E = FC_EDGES[id];
+    const p = el("path", {d:E.d, id:"fce-"+id, class:"fc-edge" + (E.ghost ? " ghost" : "")}, svg);
+    if (!E.noArrow) p.setAttribute("marker-end", "url(#arr)");
+    if (E.l) el("text", {x:E.l[1], y:E.l[2], "text-anchor":"middle", class:"fc-lab"}, svg).textContent = E.l[0];
+  }
+  for (const id in FC_NODES){
+    const N = FC_NODES[id];
+    const g = el("g", {id:"fcn-"+id, class:"fc-node" + (N.dec ? " dec" : "") + (N.ghost ? " ghost" : "")}, svg);
+    el("rect", {x:N.x, y:N.y, width:N.w, height:N.h, rx: N.dec ? 14 : 5}, g);
+    const cx = N.x + N.w/2, cy = N.y + N.h/2, n = N.t.length;
+    N.t.forEach((line, i) => {
+      el("text", {x:cx, y: cy - (n-1)*7 + i*14 + 4, "text-anchor":"middle"}, g).textContent = line;
+    });
+  }
+}
+function clearFc(){
+  document.querySelectorAll("#fc .fc-node").forEach(n => n.classList.remove("active","visited"));
+  document.querySelectorAll("#fc .fc-edge").forEach(e => {
+    e.classList.remove("taken");
+    if (e.hasAttribute("marker-end")) e.setAttribute("marker-end","url(#arr)");
+  });
+}
+function mark(id, edges){
+  document.querySelectorAll("#fc .fc-node.active").forEach(n => { n.classList.remove("active"); n.classList.add("visited"); });
+  $("#fcn-"+id).classList.add("active");
+  for (const e of edges){
+    const p = $("#fce-"+e);
+    p.classList.add("taken");
+    if (p.hasAttribute("marker-end")) p.setAttribute("marker-end","url(#arr-on)");
+  }
+}
+
+/* ---------- Tabella, orologio, log ---------- */
+function renderTable(){
+  const tb = $("#tbody");
+  tb.innerHTML = "";
+  if (!state.table.size){
+    tb.innerHTML = '<tr><td colspan="4" class="empty">Tabella vuota. Invia un frame: lo switch imparerà su quale porta si trova la sorgente.</td></tr>';
+    return;
+  }
+  for (const [mac, e] of state.table){
+    const left = Math.max(0, state.aging - (state.now - e.ts));
+    const tr = document.createElement("tr");
+    if (state.flash && state.flash.mac === mac) tr.classList.add(state.flash.kind);
+    if (state.hit === mac) tr.classList.add("hit");
+    if (left <= 10) tr.classList.add("low");
+    tr.innerHTML = `<td>MAC ${mac}</td><td>${e.port}</td><td>${fmt(e.ts)}</td><td>${left} s</td>`;
+    tb.appendChild(tr);
+  }
+}
+function renderClock(){ $("#clock").textContent = fmt(state.now); }
+function log(msg, cls){
+  const li = document.createElement("li");
+  if (cls) li.className = cls;
+  const t = document.createElement("b"); t.className = "seq"; t.textContent = ++state.logN;
+  const s = document.createElement("span"); s.textContent = msg;
+  li.append(t, s);
+  const ol = $("#log"); ol.appendChild(li); ol.scrollTop = ol.scrollHeight;
+}
+function checkAging(){
+  for (const [mac, e] of [...state.table]){
+    if (state.now - e.ts >= state.aging){
+      state.table.delete(mac);
+      log(`Aging: la voce MAC ${mac} (porta ${e.port}) non è stata rinfrescata da almeno ${state.aging} s ed è stata rimossa dalla tabella.`);
+    }
+  }
+}
+function tick(sec){
+  state.now += sec;
+  checkAging();
+  renderTable(); renderClock();
+}
+function hint(msg){ $("#hint").textContent = msg || ""; }
+
+/* ---------- Elaborazione del frame ---------- */
+function send(src, dst){
+  if (state.pending) return;
+  hint("");
+  if (src === dst){ hint("Scegli una destinazione diversa dalla sorgente."); return; }
+  clearFc(); clearStatuses(); clearLinks();
+  state.flash = null; state.hit = null; renderTable();
+  state.pending = {src, dst, ingress:HOSTS[src].port, phase:"enter", predicted:false};
+  log(`Nuovo frame da MAC ${src} verso ${dstLabel(dst)}.`, "sep");
+  updateUI();
+}
+
+async function step(){
+  const p = state.pending;
+  if (!p || state.busy) return;
+  state.busy = true; updateUI();
+  try {
+    switch (p.phase){
+      case "enter": {
+        mark("start", []);
+        const H = HOSTS[p.src], P = PORTS[p.ingress];
+        setLink(p.src, true);
+        const g = makePacket(p.dst, p.src);
+        await move(g, H.ax, H.ay, P.x, P.y);
+        await sleep(150); g.remove(); setLink(p.src, false);
+        log(`Il frame entra nello switch dalla porta ${p.ingress}. Lo switch legge prima il MAC sorgente (learning), poi il MAC destinazione (forwarding).`);
+        p.phase = "learnQ"; break;
+      }
+      case "learnQ": {
+        p.known = state.table.has(p.src);
+        mark("d1", ["e_start_d1"]);
+        state.hit = p.known ? p.src : null; renderTable();
+        log(p.known ? `Learning: MAC ${p.src} è già presente in tabella.` : `Learning: MAC ${p.src} non è presente in tabella.`);
+        p.phase = "learn"; break;
+      }
+      case "learn": {
+        state.table.set(p.src, {port:p.ingress, ts:state.now});
+        if (p.known){
+          mark("upd", ["e_d1_upd"]);
+          state.flash = {mac:p.src, kind:"upd"};
+          log(`Aggiornato il timestamp di MAC ${p.src} a ${fmt(state.now)}: il timer di aging riparte da zero.`);
+        } else {
+          mark("add", ["e_d1_add"]);
+          state.flash = {mac:p.src, kind:"new"};
+          log(`Aggiunta la voce MAC ${p.src} → porta ${p.ingress}, timestamp ${fmt(state.now)}. Da ora lo switch sa dove si trova ${p.src}.`);
+        }
+        state.hit = null; renderTable();
+        p.via = p.known ? "e_upd_m" : "e_add_m";
+        p.phase = "bcastQ"; break;
+      }
+      case "bcastQ": {
+        mark("d4", [p.via, "e_m_d4"]);
+        if (p.dst === "BCAST"){
+          log("Forwarding: la destinazione è l’indirizzo broadcast FF:FF:FF:FF:FF:FF, destinato a tutti gli host. La tabella non viene consultata.");
+          p.outcome = {type:"flood", edge:"e_d4_flood", reason:"bcast"};
+          toOutcome(p);
+        } else {
+          log(`Forwarding: la destinazione non è broadcast, quindi lo switch cerca MAC ${p.dst} in tabella.`);
+          p.phase = "tableQ";
+        }
+        break;
+      }
+      case "tableQ": {
+        mark("d5", ["e_d4_d5"]);
+        const e = state.table.get(p.dst);
+        if (!e){
+          log(`MAC ${p.dst} non è in tabella: lo switch non sa su quale porta si trova.`);
+          p.outcome = {type:"flood", edge:"e_d5_flood", reason:"unknown"};
+          toOutcome(p);
+        } else {
+          p.entry = {...e};
+          state.hit = p.dst; renderTable();
+          log(`MAC ${p.dst} è in tabella, associato alla porta ${e.port}.`);
+          p.phase = "portQ";
+        }
+        break;
+      }
+      case "portQ": {
+        mark("d6", ["e_d5_d6"]);
+        if (p.entry.port === p.ingress){
+          log(`La porta di MAC ${p.dst} coincide con la porta d’ingresso: il destinatario ha già ricevuto il frame sul segmento condiviso.`);
+          p.outcome = {type:"discard", edge:"e_d6_disc"};
+        } else {
+          log(`La porta ${p.entry.port} è diversa dalla porta d’ingresso ${p.ingress}.`);
+          p.outcome = {type:"fwd", edge:"e_d6_fwd", port:p.entry.port};
+        }
+        toOutcome(p);
+        break;
+      }
+      case "outcome": {
+        if (state.mode === "esercizio" && !p.predicted){ showPrediction(); break; }
+        hidePrediction();
+        const o = p.outcome;
+        mark(o.type, [o.edge]);
+        state.hit = null; renderTable();
+        if (o.type === "flood"){
+          log(o.reason === "bcast"
+            ? `Flooding: il frame broadcast esce da tutte le porte tranne la ${p.ingress}, cioè ${o.ports.join(", ")}. Tutti gli host lo accettano.`
+            : `Flooding: il frame esce da tutte le porte tranne quella d’ingresso (${p.ingress}), cioè ${o.ports.join(", ")}. Gli host diversi da ${p.dst} lo scartano perché il MAC di destinazione non è il loro.`);
+        } else if (o.type === "fwd"){
+          log(`Inoltro diretto: il frame esce solo dalla porta ${o.port}. Gli host sulle altre porte non lo vedono.`);
+        } else {
+          log("Il frame viene scartato senza essere inoltrato.");
+        }
+        const P = PORTS[p.ingress];
+        const anims = o.ports.map(port => {
+          const h = hostOnPort(port), H = HOSTS[h], Q = PORTS[port];
+          setLink(h, true);
+          const g = makePacket(p.dst, p.src);
+          return move(g, Q.x, Q.y, H.ax, H.ay).then(() => {
+            g.remove();
+            if (p.dst === "BCAST" || h === p.dst) setStatus(h, "Accettato", "ok");
+            else setStatus(h, "Scartato dalla scheda di rete", "bad");
+          });
+        });
+        void P;
+        await Promise.all(anims);
+        await sleep(200); clearLinks();
+        p.phase = "end"; break;
+      }
+      case "end": {
+        const o = p.outcome;
+        mark("end", [o.type === "flood" ? "e_flood_end" : o.type === "fwd" ? "e_fwd_end" : "e_disc_end"]);
+        log("Elaborazione del frame completata.");
+        state.pending = null;
+        renderScenario();
+        break;
+      }
+    }
+  } finally {
+    state.busy = false; updateUI();
+  }
+}
+function toOutcome(p){
+  const o = p.outcome;
+  o.ports = o.type === "flood" ? PORT_LIST.filter(x => x !== p.ingress) : o.type === "fwd" ? [o.port] : [];
+  p.phase = "outcome";
+  if (state.mode === "esercizio") showPrediction();
+}
+async function runAll(){
+  while (state.pending){
+    const p = state.pending;
+    if (p.phase === "outcome" && state.mode === "esercizio" && !p.predicted){ showPrediction(); break; }
+    await step();
+    if (state.pending) await sleep(350);
+  }
+}
+
+/* ---------- Modalità esercizio ---------- */
+function showPrediction(){
+  const p = state.pending;
+  if (!p) return;
+  const box = $("#predict");
+  if (!box.hidden) return;
+  const wrap = $("#pchecks");
+  wrap.innerHTML = "";
+  for (const port of PORT_LIST){
+    const l = document.createElement("label");
+    l.innerHTML = `<input type="checkbox" value="${port}"> Porta ${port} (host ${hostOnPort(port)})`;
+    wrap.appendChild(l);
+  }
+  $("#pfeedback").textContent = ""; $("#pfeedback").className = "feedback";
+  $("#pverify").disabled = false;
+  box.hidden = false;
+  updateUI();
+}
+function hidePrediction(){ $("#predict").hidden = true; }
+function verifyPrediction(){
+  const p = state.pending;
+  if (!p || p.predicted) return;
+  const chosen = [...document.querySelectorAll("#pchecks input:checked")].map(i => +i.value).sort((a,b) => a-b);
+  const exp = [...p.outcome.ports].sort((a,b) => a-b);
+  const ok = chosen.length === exp.length && chosen.every((v,i) => v === exp[i]);
+  state.score.tot++; if (ok) state.score.ok++;
+  p.predicted = true;
+  document.querySelectorAll("#pchecks input").forEach(i => i.disabled = true);
+  $("#pverify").disabled = true;
+  const fb = $("#pfeedback");
+  let why = "";
+  if (p.outcome.reason === "bcast") why = "Un frame broadcast va sempre in flooding, qualunque sia il contenuto della tabella.";
+  else if (p.outcome.reason === "unknown") why = `MAC ${p.dst} non è in tabella, quindi lo switch fa flooding.`;
+  else if (p.outcome.type === "fwd") why = `MAC ${p.dst} è in tabella sulla porta ${p.outcome.port}: inoltro diretto solo su quella porta.`;
+  if (!ok && chosen.includes(p.ingress)) why += " La porta d’ingresso non viene mai usata per rispedire il frame.";
+  fb.textContent = (ok ? "Previsione corretta. " : `Previsione sbagliata: le porte giuste sono ${exp.join(", ") || "nessuna"}. `) + why + " Premi “Avanti di un passo” per vedere lo switch in azione.";
+  fb.className = "feedback " + (ok ? "ok" : "bad");
+  updateUI();
+}
+
+/* ---------- Scenari ---------- */
+const SCENARIOS = {
+  s1:{title:"Tabella vuota: flooding e poi inoltro diretto", init:[], steps:[
+    {f:["A","C"], note:"A invia un frame a C. La tabella è vuota: lo switch non sa dove si trova C."},
+    {f:["C","A"], note:"C risponde ad A. Durante il frame precedente lo switch ha imparato dove si trova A: cosa cambia?"}
+  ]},
+  s2:{title:"Voce già presente: aggiornamento del timer", init:[], steps:[
+    {f:["A","C"], note:"A invia un frame a C con la tabella vuota."},
+    {f:["C","A"], note:"C risponde ad A."},
+    {t:20, note:"Lasciamo passare 20 secondi senza traffico. Osserva l’età residua delle voci."},
+    {f:["A","C"], note:"A invia di nuovo a C. A è già in tabella: cosa succede alla sua voce? E dove esce il frame?"}
+  ]},
+  s3:{title:"Broadcast", init:["A","B","C","D"], steps:[
+    {f:["B","BCAST"], note:"Lo switch conosce già tutti gli host. B invia un frame broadcast: la tabella serve a qualcosa?"}
+  ]},
+  s4:{title:"Aging: una voce scade", aging:60, init:[], steps:[
+    {f:["A","C"], note:"A invia un frame a C."},
+    {f:["C","A"], note:"C risponde ad A. Ora la tabella contiene sia A sia C."},
+    {t:40, note:"Lasciamo passare 40 secondi senza traffico."},
+    {f:["C","B"], note:"C invia un frame a B: la voce di C viene rinfrescata, quella di A no."},
+    {t:25, note:"Passano altri 25 secondi. L’aging è di 60 s: quale voce sopravvive?"},
+    {f:["C","A"], note:"C invia di nuovo ad A. A è ancora in tabella?"}
+  ]}
+};
+function resetAll(){
+  state.table.clear(); state.now = 0; state.pending = null; state.busy = false;
+  state.flash = null; state.hit = null; state.score = {ok:0, tot:0};
+  $("#auto").checked = false;
+  clearFc(); clearStatuses(); clearLinks(); hidePrediction(); hint("");
+  state.pktLayer.innerHTML = "";
+  $("#log").innerHTML = ""; state.logN = 0;
+}
+function loadScenario(id){
+  resetAll();
+  const sc = SCENARIOS[id] || null;
+  state.scenario = sc; state.scIdx = 0;
+  if (sc){
+    if (sc.aging){ state.aging = sc.aging; $("#aging").value = sc.aging; }
+    for (const h of sc.init) state.table.set(h, {port:HOSTS[h].port, ts:0});
+    log(`Scenario: ${sc.title}.` + (sc.init.length ? " La tabella è già popolata con tutti gli host." : " La tabella parte vuota."), "sep");
+  } else {
+    log(`Simulatore pronto. Tabella vuota, aging ${state.aging} s.`, "sep");
+  }
+  renderTable(); renderClock(); renderScenario(); updateUI();
+}
+function renderScenario(){
+  const sc = state.scenario, panel = $("#scPanel");
+  if (!sc){ panel.hidden = true; return; }
+  panel.hidden = false;
+  $("#scTitle").textContent = sc.title;
+  const btn = $("#scStep");
+  if (state.scIdx >= sc.steps.length){
+    $("#scProg").textContent = "";
+    $("#scNote").textContent = "Scenario completato. Puoi continuare a inviare frame liberamente o sceglierne un altro.";
+    btn.hidden = true;
+  } else {
+    const s = sc.steps[state.scIdx];
+    $("#scProg").textContent = `Passo ${state.scIdx + 1} di ${sc.steps.length}`;
+    $("#scNote").textContent = s.note;
+    btn.hidden = false;
+    btn.textContent = s.f ? `Invia il frame ${s.f[0]} → ${s.f[1] === "BCAST" ? "broadcast" : s.f[1]}` : `Fai avanzare il tempo di ${s.t} s`;
+  }
+  updateUI();
+}
+function scenarioStep(){
+  const sc = state.scenario;
+  if (!sc || state.pending || state.scIdx >= sc.steps.length) return;
+  const s = sc.steps[state.scIdx++];
+  if (s.f){
+    $("#src").value = s.f[0]; $("#dst").value = s.f[1];
+    send(s.f[0], s.f[1]);
+    $("#scNote").textContent = s.note + " Usa “Avanti di un passo” per seguire l’algoritmo.";
+    $("#scStep").hidden = true;
+  } else {
+    log(`Il tempo avanza di ${s.t} s.`);
+    tick(s.t);
+    renderScenario();
+  }
+}
+
+/* ---------- UI ---------- */
+function updateUI(){
+  const p = state.pending;
+  const waitPred = !!p && p.phase === "outcome" && state.mode === "esercizio" && !p.predicted;
+  $("#send").disabled = !!p;
+  $("#src").disabled = !!p;
+  $("#dst").disabled = !!p;
+  $("#next").disabled = !p || state.busy || waitPred;
+  $("#all").disabled = !p || state.busy || waitPred;
+  $("#scStep").disabled = !!p;
+  const sc = $("#score");
+  sc.hidden = state.mode !== "esercizio";
+  sc.textContent = `Previsioni corrette: ${state.score.ok} su ${state.score.tot}`;
+}
+function init(){
+  buildTopo(); buildFc();
+  const src = $("#src"), dst = $("#dst");
+  for (const h in HOSTS){
+    src.add(new Option("MAC " + h, h));
+    dst.add(new Option("MAC " + h, h));
+  }
+  dst.add(new Option("Broadcast (FF:FF:FF:FF:FF:FF)", "BCAST"));
+  src.value = "A"; dst.value = "C";
+  $("#send").onclick = () => send(src.value, dst.value);
+  $("#next").onclick = () => step();
+  $("#all").onclick = () => runAll();
+  $("#pverify").onclick = verifyPrediction;
+  $("#t10").onclick = () => { log("Il tempo avanza di 10 s."); tick(10); };
+  $("#t60").onclick = () => { log("Il tempo avanza di 60 s."); tick(60); };
+  $("#aging").onchange = e => {
+    let v = Math.round(+e.target.value);
+    if (!(v >= 10)) v = 10; if (v > 600) v = 600;
+    e.target.value = v; state.aging = v;
+    log(`Aging impostato a ${v} s.`);
+    checkAging(); renderTable();
+  };
+  $("#scenario").onchange = e => loadScenario(e.target.value);
+  $("#reset").onclick = () => loadScenario($("#scenario").value);
+  $("#scStep").onclick = scenarioStep;
+  document.querySelectorAll('input[name="mode"]').forEach(r => r.onchange = e => {
+    state.mode = e.target.value;
+    if (state.mode === "libera") hidePrediction();
+    else if (state.pending && state.pending.phase === "outcome" && !state.pending.predicted) showPrediction();
+    updateUI();
+  });
+  setInterval(() => { if ($("#auto").checked) tick(1); }, 1000);
+  loadScenario("");
+}
+init();
+</script>
+</body>
+</html>
