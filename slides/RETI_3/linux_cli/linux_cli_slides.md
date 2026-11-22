@@ -11,8 +11,8 @@ lineNumbers: false
 aspectRatio: "16_/9"
 routerMode: "hash"
 materia: RETI 3
-as: 2025/2026
-version: "1.2.7"
+as: 2026/2027
+version: "1.3.0"
 ---  
 
 <!-- https://www.linuxjournal.com/content/linux-command-line-interface-introduction-guide#firstlook -->
@@ -779,6 +779,24 @@ In shell moderne come *zsh* e *fish* il tab può anche completare i comandi e il
 
 ---
 
+# Linux CLI
+
+&nbsp;
+
+**I tre canali (stream) di un processo**
+
+Ogni comando Linux, quando viene eseguito, dispone di tre canali standard, identificati da un numero (il *file descriptor*):
+
+| Canale | Nome | Descrittore | A cosa serve |
+|--------|------|:-----------:|--------------|
+| stdin  | standard input  | `0` | da dove il comando **legge** i dati |
+| stdout | standard output | `1` | dove il comando **scrive** i risultati |
+| stderr | standard error  | `2` | dove il comando **scrive** i messaggi di errore |
+
+Di default `stdout` e `stderr` finiscono **entrambi a video**, quindi sembrano un unico flusso. In realtà sono separati: questo ci permette di gestirli in modo indipendente.
+
+---
+
 # Linux CLI 
 
 &nbsp;
@@ -804,6 +822,171 @@ $ more file.txt
 ciao io sono Linux
 ed io sono Babbo Natale
 ```
+
+---
+
+# Linux CLI
+
+Scrivere un file da terminale: l'Here-Document
+
+Finora abbiamo rediretto l'output *verso* un file con `>`. Possiamo anche fare il contrario: fornire a un comando un blocco di testo scritto direttamente nel terminale, usando `<<`. Questa costruzione si chiama **here-document**.
+
+```bash
+$ cat > nomefile << 'FINE'
+prima riga
+seconda riga
+FINE
+```
+
+Come si legge, pezzo per pezzo:
+- `cat` normalmente legge da stdin (la tastiera) e lo ricopia su stdout;
+- `> nomefile` redirige quell'output nel file `nomefile`;
+- `<< 'FINE'` dice alla shell: *"come input, prendi tutte le righe che scrivo da qui fino a quando trovo la parola `FINE` su una riga da sola"*;
+- la parola `FINE` è un **delimitatore** scelto da noi (potrebbe essere `EOF`, `STOP`, qualsiasi parola): non viene scritta nel file, serve solo a segnare dove finisce il testo.
+
+Risultato: il file `nomefile` conterrà le due righe, senza aprire un editor.
+
+```bash
+$ cat nomefile
+prima riga
+seconda riga
+```
+
+---
+
+# Linux CLI
+
+Prepariamo uno script di prova
+
+Per sperimentare la redirezione ci serve un comando che scriva sia un risultato sia un errore. Creiamo questo piccolo script e proviamo di persona gli esempi che seguono:
+
+```bash
+$ cat > script.sh << 'FINE'
+#!/bin/bash
+echo "RISULTATO"      # va su stdout (descrittore 1)
+echo "ERRORE" >&2     # va su stderr (descrittore 2)
+FINE
+
+$ chmod +x script.sh   # lo rendo eseguibile
+
+$ ./script.sh          # proviamolo: i due messaggi finiscono entrambi a video
+RISULTATO
+ERRORE
+```
+
+La sintassi `>&2` nell'`echo` significa *"manda questo output al descrittore 2"*, cioè su stderr. È il trucco che useremo per generare un errore da redirigere.
+
+---
+
+# Linux CLI
+
+Redirigere stdout e stderr separatamente
+
+Il simbolo `>` che già conosciamo è in realtà un'abbreviazione di `1>` (redirige il descrittore 1, cioè stdout). Per redirigere gli errori si usa `2>`.
+
+```bash
+$ ./script.sh
+RISULTATO
+ERRORE
+
+$ ./script.sh > out.txt      # equivale a 1> out.txt: salva solo stdout
+ERRORE                       # l'errore resta a video
+$ cat out.txt
+RISULTATO
+
+$ ./script.sh 2> err.txt     # salva solo stderr
+RISULTATO                    # il risultato resta a video
+$ cat err.txt
+ERRORE
+```
+
+---
+
+# Linux CLI
+
+Il cestino `/dev/null` e come isolare un solo canale
+
+<br>
+
+`/dev/null` è un file speciale che **scarta** tutto ciò che vi viene scritto. È il "cestino" del sistema. Combinandolo con `2>` possiamo tenere **solo** uno dei due canali.
+
+```bash
+# voglio vedere SOLO gli errori, scartando il risultato:
+$ ./script.sh > /dev/null    # stdout nel cestino
+ERRORE
+
+# voglio vedere SOLO il risultato, scartando gli errori:
+$ ./script.sh 2> /dev/null   # stderr nel cestino
+RISULTATO
+```
+
+Questo è utilissimo quando un comando produce molti messaggi di errore (es. `find` su cartelle senza permessi) e vogliamo leggere solo l'output utile.
+
+---
+
+# Linux CLI
+
+Unire i due canali: `2>&1`
+
+A volte vogliamo il contrario: mandare **entrambi** i canali nello stesso posto. La sintassi `2>&1` significa *"manda il descrittore 2 dove sta andando il descrittore 1"*.
+
+```bash
+# salvo sia risultati sia errori nello stesso file
+$ ./script.sh > tutto.txt 2>&1
+$ cat tutto.txt
+RISULTATO
+ERRORE
+```
+
+Si legge: `>` manda stdout nel file, poi `2>&1` manda stderr **nella stessa destinazione di stdout** (il file).
+
+---
+
+# Linux CLI
+
+&nbsp;
+
+**ATTENZIONE: l'ordine conta!**
+
+`2>&1` copia la destinazione **attuale** di stdout nel momento in cui viene letto. Se cambiamo l'ordine, cambia il risultato.
+
+```bash
+# CASO A — prima rediriggo stdout, poi aggancio stderr a stdout
+$ ./script.sh > /dev/null 2>&1
+# 1) stdout -> /dev/null
+# 2) stderr -> "dove va stdout" = /dev/null
+# RISULTATO: a video non appare NULLA
+
+# CASO B — prima aggancio stderr a stdout, poi rediriggo stdout
+$ ./script.sh 2>&1 > /dev/null
+# 1) stderr -> "dove va stdout" = a video (ancora!)
+# 2) stdout -> /dev/null
+# RISULTATO: a video appare SOLO stderr (ERRORE)
+```
+
+La shell legge le redirezioni **da sinistra a destra**. In B, quando incontra `2>&1`, stdout va ancora a video, quindi stderr viene agganciato al video; solo dopo stdout viene spostato in `/dev/null`.
+
+---
+
+# Linux CLI
+
+Caso pratico: estrarre SOLO i messaggi di errore
+
+Mettendo insieme i pezzi, ecco come isolare lo stderr di un comando per elaborarlo (es. contarlo, filtrarlo con una pipe):
+
+```bash
+# stampo a video solo lo stderr, scartando stdout
+$ ./script.sh 2>&1 > /dev/null
+ERRORE
+
+# e posso persino passarlo a un altro comando con la pipe:
+$ ./script.sh 2>&1 > /dev/null | wc -l
+1
+```
+
+> Nota: `2>` e `2>&1` sono funzionalità della **shell** (bash), non di un singolo comando. Li trovi in `man bash`, sezione *REDIRECTION*.
+
+[https://linuxjourney.com/lesson/stderr-standard-error-redirect](https://linuxjourney.com/lesson/stderr-standard-error-redirect)
 
 
 ---
@@ -1501,6 +1684,7 @@ android-studio
 AndroidStudioProjects
 antonio
 ```
+
 ---
 
 # Linux CLI 
@@ -1623,6 +1807,7 @@ drwxrwxr-x 2 antonio antonio 4096 set 10 12:33 .
 drwxrwxr-x 3 antonio antonio 4096 set 10 12:31 ..
 -rw-rw-r-- 1 antonio antonio    5 set 10 12:33 file1
 ```
+
 ---
 
 # Linux CLI 
@@ -1905,6 +2090,7 @@ $ rm -i fileAAA2
 rm: rimuovere file regolare 'fileAAA2'? y
 
 ```
+
 ---
 
 # Linux CLI 
@@ -2179,6 +2365,33 @@ Esercitazione cli_12
 
 - Domande agli studenti sul contenuto dell'esercitazione
 
+
+---
+
+# Linux CLI
+
+sort: ordine alfabetico vs ordine numerico
+
+Di default `sort` ordina le righe come fossero **parole** (ordine lessicografico), non come numeri. Questo produce un risultato sorprendente con i numeri:
+
+```bash
+$ cat numeri.txt
+10
+2
+1
+20
+3
+
+$ sort numeri.txt       # ordine alfabetico: confronta carattere per carattere
+1
+10
+2
+20
+3
+```
+
+"10" viene prima di "2" perché il primo carattere '1' viene prima di '2', esattamente come in un vocabolario "casa" viene prima di "zaino". Per ordinare davvero per valore numerico serve un flag apposito (`-n`, oppure `-g` che vedremo), che studieremo nelle prossime slide.
+
 ---
 
 # Linux CLI 
@@ -2250,6 +2463,7 @@ $ sort -rg file1 # usa ordine numerico inverso (reverse)
 - Sort ha 20 parametri opzionali inclusi **g** e **r**
 - Consultare il manuale per eventuali necessità
   
+
 ---
 
 # Linux CLI 
@@ -2393,6 +2607,7 @@ drwxrwxr-x   2 antonio antonio   4096 set 10 12:37 DIR2
 -rw-rw-r--   1 antonio antonio      9 set 12 15:04 file2
 -rw-rw-r--   1 antonio antonio      0 set 12 15:22 file4
 ```
+
 ---
 
 # Linux CLI 
@@ -2447,6 +2662,7 @@ $ du -h # visualizza le dimensioni human readable
 12K	./DIR4
 52K	.
 ```
+
 ---
 
 # Linux CLI 
@@ -2526,6 +2742,65 @@ $ find . -mtime 2 # cerca tutti i file che sono stati modificati esattamente 2 g
 $ find . -mtime +2 # cerca tutti i file che sono stati modificati più di 2 giorni fà
 $ find . -size 512c # cerca tutti i file di 512 byte
 $ find . -size +100M -exec rm {} \; # rimuove tutti i file più grandi di 100MByte
+```
+
+---
+
+# Linux CLI
+
+find: cercare per dimensione (`-size`) e le unità
+
+Il parametro `-size` accetta un suffisso che indica l'unità di misura. Il più preciso è `c`, che significa **byte** (character):
+
+```bash
+$ find . -size 4042c    # file di ESATTAMENTE 4042 byte
+$ find . -size +100k    # file più GRANDI di 100 kB   (+ = maggiore)
+$ find . -size -1M      # file più PICCOLI di 1 MB    (- = minore)
+```
+
+Regola dei segni, valida per `-size` e anche per `-mtime`:
+- nessun segno → valore **esatto**
+- `+` → **maggiore** del valore
+- `-` → **minore** del valore
+
+Unità principali: `c` = byte, `k` = kByte, `M` = MByte, `G` = GByte.
+
+---
+
+# Linux CLI
+
+find: combinare più condizioni (intervallo)
+
+Si possono indicare più condizioni di seguito: `find` le combina in **AND** (devono valere tutte). Così si cerca, ad esempio, un file in un intervallo di dimensioni:
+
+```bash
+# file .txt con dimensione compresa tra 1024 e 1099 byte
+$ find . -name '*.txt' -size +1024c -size -1099c
+
+# e posso contare quanti sono passando il risultato a wc -l
+$ find . -name '*.txt' -size +1024c -size -1099c | wc -l
+```
+
+Qui agiscono insieme tre condizioni: il nome (`-name '*.txt'`), la dimensione minima (`-size +1024c`) e la dimensione massima (`-size -1099c`).
+
+---
+
+# Linux CLI
+
+find: nascondere gli errori di permesso
+
+Cercando a partire da `/` o da cartelle di sistema, `find` incontra directory su cui non abbiamo i permessi e stampa molti messaggi `Permission denied`. Questi messaggi vanno su **stderr**: possiamo scartarli con `2> /dev/null` (vedi la redirezione), tenendo pulito solo il risultato utile.
+
+```bash
+# senza filtro: l'output utile è sommerso dagli errori
+$ find / -name 'flag*'
+find: '/root': Permission denied
+find: '/etc/ssl/private': Permission denied
+/home/hacker/flag.txt
+
+# con 2> /dev/null: vediamo solo i file trovati
+$ find / -name 'flag*' 2> /dev/null
+/home/hacker/flag.txt
 ```
 
 ---
@@ -2876,6 +3151,7 @@ drwx------  3 root root  4096 lug  3  2022 .launchpadlib
 
 ```
   
+
 ---
 
 # Linux CLI 
